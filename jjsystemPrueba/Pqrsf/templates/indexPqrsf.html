@@ -1,0 +1,15 @@
+{% extends "menu.html" %}
+{% block titulo %} Index {% endblock %}
+{% load static %} 
+{% block contenido %}
+    <section class="contenedor-productos">
+        <div class="card" style="width: 18 rem;">
+            <img src="{% static 'images/pqrsf.jpg' %}" class="card-img-top" alt="producto dashboard">
+            <div class="card-body">
+            <h5 class="card-title">PQRSF</h5>
+            <p class="card-text">Gestion de pqrsf</p>
+            <a href="{% url 'homePqrsf' %}" class="btn btn-primary">Ver PQRSF</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

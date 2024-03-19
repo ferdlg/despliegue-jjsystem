@@ -1,0 +1,63 @@
+{% extends "menu.html" %}
+{% block titulo %} Envios {% endblock %}    
+
+{% block contenido %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/envios.css' %}">
+    <div id="content" style="margin: 40px; margin-top: 70px;">
+        <nav class="available_prod">
+            <div class="container">
+                <div class="row">
+                    <div class="allowed_prod">
+                        <h2 class="font-weight-bold text-center text-lg-left">Envios</h2>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>    
+    <div id="content" style="margin: 40px">
+        <section style="padding: 5px; padding-top: 0%;">
+            <form class="form-inline" method="GET" style="width:25%">
+                <div class="input-group">
+                    <input type="search" class="form-control" name="search" placeholder="Buscar" aria-label="Search" >
+                    <div class="d-flex justify-content-between" style="padding-left: 10px">
+                        <a href="{% url 'createEnvio'%}" class="btn btn-primary btn">Añadir Envío</a>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="s-data-table">
+            <table class="table data-table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Dirección</th>
+                        <th scope="col">ID Tecnico</th>
+                        <th scope="col">Estado</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for e in envios %}
+                    <tr>
+                        <td>{{e.idenvio}}</td>
+                        <td>{{e.direccionenvio}}</td>
+                        <td>{{e.idtecnico.idtecnico}}</td>
+                        <td>{{e.idestadoenvio.nombreestadoenvio}}</td>
+                        <td class="col text-center"> 
+                            <a href="{% url 'detallesView' idEnvio=e.idenvio %}" class="" style="font-size: 14px;"> Mas información </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+        <div class="d-flex justify-content-start" style="margin-bottom: 70px;">
+            <a href="{% url 'homeEnvios' %}" class="btn btn-secondary">Regresar</a>
+        </div>
+    </div>
+{% endblock %}

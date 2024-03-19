@@ -1,0 +1,54 @@
+{% extends "landing/menuLanding.html" %}
+{% block titulo %} Productos {% endblock %}
+{% load static %} 
+{% block contenido %}
+    <div class="contenido">
+        <div class="row">
+            <aside class="col-md-3 col-xs-12 col-ms-12">
+                <p style="color: black;">Filtrar busqueda<p/>
+                <form id="filtroCategoria" action="" method="GET">
+                    <div class="mb-3">
+                        <select class="form-select" id="categoria" name="categoria">
+                            <option value="">Selecciona una categoría</option>
+                            <option value="-1">Todos</option>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria.idcategoriaproducto }}">{{ categoria.nombrecategoria }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
+            </aside>
+            
+            <div class="row">
+                {% if message %}
+                <div class="col-md-12">
+                    <h3 style="color: black;">{{ message }}</h3>
+                </div>
+                {% else %}
+                {% for producto in productos %}
+                <div class="col-md-4 producto" data-categoria="{{ producto.categoriaproducto }}">
+                    <div class="card mb-4 shadow-sm">
+                        <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ producto.nombreproducto }}</h5>
+                            <p class="card-text">{{ producto.descripcionproducto }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="{% url 'verProducto' id=producto.idproducto %}" class="btn btn-sm btn-outline-warning">Ver producto</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('categoria').addEventListener('change', function() {
+            document.getElementById('filtroCategoria').submit();
+        });
+    </script>
+{% endblock %}

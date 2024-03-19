@@ -1,0 +1,63 @@
+
+{% extends "menu.html" %}
+{% block contenido %}
+    <div class="analysis_service">
+        <br><h1>Registrar Pqrsf</h1>
+
+        <div class="pqrsf_description">
+            <p>
+                Para nuestra empresa J.J System es muy importante conocer su opinión sobre nuestra prestación
+                de servicios para poder mejorarlos continuamente, por eso queremos invitarlos a que registren
+                sus peticiones, quejas, reclamos, sugerencias y felicitaciones a través de este formulario,
+                diligenciando los datos requeridos para poder responderle oportunamente.
+            </p>
+        </div>
+    </div>
+
+    <br><div class="container">
+        <div class="first_form">
+
+            {% if messages %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+
+            <form action="{% url 'createPqrsf' %}" method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="fechaPQRSF" class="form-label"> Fecha</label>
+                    <input type="date" class="form-control" id="fechaPQRSF" name="fechaPQRSF" value="{{ request.POST.fechaPQRSF }}" required>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="TipoPQRSF" class="col-sm-2 col-form-label">Tipo Pqrsf</label>
+                    <div class="col-sm-5">
+                        <select name="TipoPQRSF_idTipoPQRSF" class="form-select" aria-label="Default select example" required>
+                            <option value="">Seleccionar el tipo</option>
+                            {% for tipoPQRSF in tipos %}
+                                <option value="{{ tipoPQRSF.idTipoPqrsf }}">{{ tipoPQRSF.nombreTipoPQRSF }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <br><div class="mb-3">
+                    <label for="informacionPQRSF" class="form-label"> Información Pqrsf <br>
+                        Si lo considera necesario, por favor especifique servicio, productos y/o personas involucradas.</label>
+                    <textarea class="form-control" id="informacionPQRSF" name="informacionPQRSF" rows="3">{{ request.POST.informacionPQRSF }}</textarea>
+                </div>
+
+                <a href="{% url 'indexPqrsf' %}" class="btn btn-secondary">Regresar</a>
+                <button type="submit" class="btn btn-success">Guardar</button>
+
+            </form>
+        </div>
+    </div>
+{% endblock %}

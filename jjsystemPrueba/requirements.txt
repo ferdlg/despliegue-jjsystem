@@ -1,0 +1,62 @@
+argon2-cffi==23.1.0
+argon2-cffi-bindings==21.2.0
+asgiref==3.7.2
+<<<<<<< HEAD
+<<<<<<< HEAD
+asn1crypto==1.5.1
+autopep8==2.1.0
+Brotli==1.1.0
+certifi==2024.2.2
+=======
+>>>>>>> parent of e53ea00 (configuraciones render)
+=======
+>>>>>>> parent of e53ea00 (configuraciones render)
+cffi==1.16.0
+colorama==0.4.6
+Django==5.0.1
+django-rest-framework==0.1.0
+djangorestframework==3.14.0
+<<<<<<< HEAD
+<<<<<<< HEAD
+gunicorn==21.2.0
+h11==0.14.0
+html5lib==1.1
+idna==3.6
+=======
+>>>>>>> parent of e53ea00 (configuraciones render)
+=======
+>>>>>>> parent of e53ea00 (configuraciones render)
+iniconfig==2.0.0
+mysqlclient==2.2.3
+packaging==23.2
+pluggy==1.4.0
+<<<<<<< HEAD
+<<<<<<< HEAD
+psycopg2==2.9.9
+psycopg2-binary==2.9.9
+pycodestyle==2.11.1
+=======
+>>>>>>> parent of e53ea00 (configuraciones render)
+=======
+>>>>>>> parent of e53ea00 (configuraciones render)
+pycparser==2.21
+PyJWT==2.8.0
+pytest==8.0.2
+pytz==2024.1
+sqlparse==0.4.4
+tzdata==2023.4
+<<<<<<< HEAD
+<<<<<<< HEAD
+tzlocal==5.2
+uritools==4.0.2
+urllib3==2.2.1
+uvicorn==0.28.1
+webencodings==0.5.1
+whitenoise==6.6.0
+xhtml2pdf==0.2.15
+=======
+reportlab==3.5.68
+>>>>>>> parent of e53ea00 (configuraciones render)
+=======
+reportlab==3.5.68
+>>>>>>> parent of e53ea00 (configuraciones render)

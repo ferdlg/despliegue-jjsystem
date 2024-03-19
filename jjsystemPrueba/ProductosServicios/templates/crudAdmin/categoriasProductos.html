@@ -1,0 +1,112 @@
+{% extends "menu.html" %}
+{% block titulo %} Categorias Productos {% endblock %}
+{% block contenido %}
+<div class="content">
+    <nav class="available_prod">
+        <div class="container">
+            <div class="row">
+                <div class="allowed_prod">
+                    <h2 class="font-weight-bold text-center text-lg-left">Categorias Productos</h2>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agregar-categoria">Agregar categoria</button>
+    <!-- Modal de agregar  -->
+    <div class="modal fade" id="agregar-categoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: black;">Agregar Categoría</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'createCategoriaProducto' %}" method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="nombreCategoria" class="form-label" style="color: black;">Nombre de la Categoría:</label>
+                            <input type="text" class="form-control" id="nombreCategoria" name="nombreCategoria" required>
+                        </div>
+                    
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="s-data-table">
+        <table class="table data-table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th style="width: 5%;"></th>
+                    <th style="width: 5%;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for categoria in categorias %}
+                <tr>
+                    <td>{{categoria.idcategoriaproducto}}</td>
+                    <td>{{categoria.nombrecategoria}}</td>
+                    <td> 
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editar-categoria-producto-{{categoria.idcategoriaproducto}}">Editar</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminar-categoria-producto-{{ categoria.idcategoriaproducto }}" tabindex="-1" aria-labelledby="eliminarModalLabel{{ categoria.idcategoriaproducto }}">Eliminar</button>
+                    </td>
+                </tr>
+                <!-- Modal de editar -->
+                <div class="modal fade" id="editar-categoria-producto-{{categoria.idcategoriaproducto}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: black;">Editar Categoria</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{% url 'editarCategoriaProducto' idCategoriaProducto=categoria.idcategoriaproducto %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="nombreCategoria" class="form-label" style="color: black;">Nombre de la Categoría:</label>
+                                        <input type="text" class="form-control" id="nombreCategoria" name="nombreCategoria" value="{{ categoria.nombrecategoria }}" required>
+                                    </div>
+                                
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal eliminar -->
+                <div class="modal fade" id="eliminar-categoria-producto-{{ categoria.idcategoriaproducto }}" tabindex="-1" aria-labelledby="eliminarModalLabel{{ categoria.idcategoriaproducto }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="eliminarModalLabel{{ categoria.idcategoriaproducto }}" style="color: black;">Confirmar Eliminación</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" style="color: black;">
+                                ¿Estás seguro de que deseas eliminar la categoría "{{ categoria.nombrecategoria }}"?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <a href="{% url 'eliminarCategoriaProducto' idCategoriaProducto=categoria.idcategoriaproducto %}" class="btn btn-danger">Eliminar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+{% endblock %}
+
+<script>
+    function submitForm(categoriaId) {
+        document.getElementById('editarForm' + categoriaId).submit();
+    }
+</script>

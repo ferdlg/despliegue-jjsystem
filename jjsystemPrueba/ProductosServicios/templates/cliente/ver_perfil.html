@@ -1,0 +1,121 @@
+{% extends "landing/menuLanding.html" %}
+{% block titulo %} Mi perfil {% endblock %}
+{% load static %} 
+{% block contenido %}
+<div class="contenido" style="margin: 150px;">
+    <div class="card mx-auto" style="max-width: 600px;">
+        <div class="card-header">
+            <h5 class="text-center">Datos Personales</h5>
+        </div>
+        <div class="card-body">
+            {% if form.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <ul>
+                    {% for field, error in form.errors.items %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+                <form id="perfil-form" method="POST" action="{% url 'actualizar_mis_datos' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombres </label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" value="{{ usuario.nombre }}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellido" class="form-label">Apellidos</label>
+                        <input type="text" class="form-control" id="apellido" name="apellido" value="{{ usuario.apellido }}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email </label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ usuario.email }}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="numerodocumento" class="form-label">No. Documento</label>
+                        <input type="number" class="form-control" id="numerodocumento" name="numerodocumento" value="{{ usuario.numerodocumento }}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="numerocontacto" class="form-label">No. Contacto</label>
+                        <input type="number" class="form-control" id="numerocontacto" name="numerocontacto" value="{{ usuario.numerocontacto }}" readonly>
+                    </div>
+                    <div id="update-btn" style="display: none; margin-bottom: 5px;">
+                        <button type="submit" class="btn btn-outline-success btn-block">Actualizar Datos</button>
+                    </div>
+                </form>
+                <a id="edit-icon" class="btn btn-outline-info" style="text-decoration: none;">Editar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                </svg></a>
+                <a id="change-password" class="btn btn-outline-danger"  data-bs-toggle="modal" data-bs-target="#exampleModalToggle">Cambiar contraseña</a>
+                <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Cambiar contraseña</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Ingresa tu contraseña actual</p>
+                            <form method="post" action="{% url 'validar_password'  %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Contraseña</label>
+                                    <input type="password" class="form-control" id="password">
+                                </div>                                
+                                <div class="modal-footer">
+                                    <button type="submit" id="btn-segundomodal" class="btn btn-primary">Continuar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("edit-icon").addEventListener("click", function() {
+        var inputs = document.querySelectorAll("#perfil-form input");
+        inputs.forEach(function(input) {
+            input.removeAttribute("readonly");
+        });
+        document.getElementById("update-btn").style.display = "block";
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const changePasswordBtn = document.getElementById('change-password');
+        const passwordModal = new bootstrap.Modal(document.getElementById('exampleModalToggle'));
+        
+        changePasswordBtn.addEventListener('click', function () {
+            passwordModal.show();
+        });
+        
+        const passwordFeedback = document.getElementById('password-feedback');
+        
+        const passwordForm = document.getElementById('password-form');
+        passwordForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            
+            const formData = new FormData(passwordForm);
+            fetch('{% url "validar_password" %}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text()) // Aquí esperamos el texto de la respuesta
+            .then(data => {
+                // Insertamos el contenido de la respuesta en el segundo modal de ver_perfil.html
+                const secondModalContent = document.querySelector('#exampleModalToggle2 .modal-body');
+                secondModalContent.innerHTML = data;
+                
+                // Mostramos el segundo modal
+                const secondModal = new bootstrap.Modal(document.getElementById('exampleModalToggle2'));
+                secondModal.show();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+</script>
+{% endblock %}

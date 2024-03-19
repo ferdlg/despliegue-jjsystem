@@ -1,0 +1,50 @@
+{% extends "landing/menuLanding.html" %}
+{% block titulo %} Envios {% endblock %}
+
+{% block contenido %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/envios.css' %}">
+    <div id="content" style="margin: 40px; margin-top: 70px;">
+        <nav class="available_prod">
+            <div class="container">
+                <div class="row">
+                    <div class="allowed_prod">
+                        <h2 class="font-weight-bold text-center text-lg-left">Envios</h2>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>    
+    <div id="content" style="margin: 40px">
+
+        <section class="s-data-table">
+            <table class="table data-table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Dirección</th>
+                        <th scope="col">ID Tecnico</th>
+                        <th scope="col">Estado</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for e in envios %}
+                    <tr>
+                        <td>{{e.idenvio}}</td>
+                        <td>{{e.direccionenvio}}</td>
+                        <td>{{e.idtecnico.idtecnico}}</td>
+                        <td>{{e.idestadoenvio.nombreestadoenvio}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+        <div class="d-flex justify-content-start" style="margin-bottom: 70px;">
+            <a href="{% url 'historial_envios_cliente' %}" class="btn btn-warning btn">Historial Envios</a>
+        </div>
+    </div>
+{% endblock %}

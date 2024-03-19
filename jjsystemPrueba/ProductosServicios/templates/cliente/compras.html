@@ -1,0 +1,27 @@
+{% extends "landing/menuLanding.html" %}
+{% block titulo %} Agregar Productos y Servicios a la Cotización {% endblock %}
+{% load static %} 
+{% block contenido %}
+<div class="contenido">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Envio</th>
+                <th scope="col">Cotizacion</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for compra in compras %}
+            <tr>
+                <td>{{ compra.idventa }}</td>
+                <td>{{ compra.fechaventa }}</td>
+                <td>{{ compra.idenvio.idenvio.direccionenvio }}</td>
+                <td>{{ compra.idcotizacion.descripcioncotizacion }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

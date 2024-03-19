@@ -1,0 +1,123 @@
+{% extends "menu.html" %}
+{% block titulo %} Tecnicos {% endblock %}
+{% block contenido %}
+<div class="content">
+    <nav class="available_prod">
+        <div class="container">
+            <div class="row">
+                <div class="allowed_prod">
+                    <h2 class="font-weight-bold text-center text-lg-left">Personal Tecnico</h2>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <section style="padding: 10px;">
+        <form class="form-inline position-relative my-2 d-inline-block">
+            <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search">
+            <button class="btn btn-search position-absolute" type="submit"></button>
+        </form>
+    </section>
+        <!-- Botón para abrir el modal de registro -->
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registrar-tecnico">Registrar Técnico</button>
+
+    <!-- Modal de registro de técnico -->
+    <div class="modal fade" id="registrar-tecnico" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg"> <!-- Añadimos la clase modal-lg para hacer el modal más grande -->
+            <div class="modal-content" style="color: black;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Registrar Técnico</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="text-decoration: none;">
+                    <!-- Formulario de registro -->
+                    <form method="post" action="{% url 'registrar_tecnico' %}">
+                        {% csrf_token %}
+                            {{ form.as_p }} 
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Registrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+        <section class="s-data-table">
+        <table class="table data-table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">No. Documento</th>
+                    <th scope="col">Especialidad</th>
+                    <th scope="col">Correo</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tecnico in tecnicos %}
+                <tr>
+                    <td>{{tecnico.idtecnico}}</td>
+                    <td>{{tecnico.numerodocumento.nombre}}{{tecnico.numerodocumento.apellido}}</td>
+                    <td>{{tecnico.numerodocumento.numerodocumento}}</td>
+                    <td>{{tecnico.especialidad}}</td>
+                    <td>{{tecnico.numerodocumento.email}}</td>
+                    <td> 
+                        <a class="btn btn-primary btn-sw" data-bs-toggle="modal" data-bs-target="#editarTecnicoModal{{ tecnico.idtecnico }}">Editar Datos</a>
+                        <!-- Modal de edición de técnico -->
+                        <div class="modal fade" id="editarTecnicoModal{{ tecnico.idtecnico }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Editar Datos del Técnico</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Formulario de edición de técnico -->
+                                        <form method="post" action="{% url 'editar_tecnico' idtecnico=tecnico.idtecnico %}">
+                                            {% csrf_token %}
+                                                {{ edit_form.as_p }}
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="{% url 'eliminar_tecnico' idtecnico=tecnico.idtecnico%}" class="btn btn-danger btn-sw"> Eliminar </a>
+                    </td>
+                    <td>
+                        <a href="#" class="btn btn-info btn-sw"> Ver Agenda </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% if tecnicos.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ tecnicos.previous_page_number }}">&laquo;</a></li>
+                {% endif %}
+                {% for i in tecnicos.paginator.page_range %}
+                <li class="page-item {% if tecnicos.number == i %}active{% endif %}"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endfor %}
+                {% if tecnicos.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ tecnicos.next_page_number }}">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </section>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
+{% endblock %}

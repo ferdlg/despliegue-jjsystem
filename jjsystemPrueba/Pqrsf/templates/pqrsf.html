@@ -1,0 +1,86 @@
+{% extends "menu.html" %}
+{% block titulo %} pqrsf {% endblock %}
+{% block contenido %}
+<div class="content">
+    <nav class="available_prod">
+        <div class="container">
+            <div class="row">
+                <div class="allowed_prod">
+                    <h2 class="font-weight-bold text-center text-lg-left">pqrsf</h2>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <aside class="col-md-3 col-xs-12 col-ms-12">
+        <p style="color: black;">Filtrar <p/>
+        <form id="filtroCategoria" action="" method="GET">
+            <div class="mb-3">
+                <select class="form-select" id="tipopqrsf" name="tipopqrsf">
+                    <option value="-1">Buscar por PQRSF</option>
+                    {% for tipo in tipos %}
+                        <option value="{{ tipo.idtipopqrsf }}">{{ tipo.nombretipopqrsf }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+    </aside>
+        <section class="s-data-table">
+        <table class="table data-table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Informacion</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Estado</th>
+                    <th></th>
+                    <th scope="col">Descargar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pqrsf_item in pqrsf %}
+                <tr>
+                    <td>{{pqrsf_item.idpqrsf}}</td>
+                    <td>{{pqrsf_item.fechapqrsf}}</td>
+                    <td>{{pqrsf_item.informacionpqrsf}}</td>
+                    <td>{{pqrsf_item.idcliente.idcliente}}</td>
+                    <td>{{pqrsf_item.idtipopqrsf.nombretipopqrsf}}</td>
+                    <td>{{pqrsf_item.idestadopqrsf.nombreestadopqrsf}}</td>
+                    <td> 
+                        <a href="#" class="btn btn-primary btn-sw"> Responder </a>
+                    </td>
+                    <td> 
+                        <a href="#" class="btn btn-outline-dark btn-sw"> PDF </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% if pqrsf.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ pqrsf.previous_page_number }}">&laquo;</a></li>
+                {% endif %}
+                {% for i in pqrsf.paginator.page_range %}
+                <li class="page-item {% if pqrsf.number == i %}active{% endif %}"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endfor %}
+                {% if pqrsf.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ pqrsf.next_page_number }}">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </section>
+</div>
+<script>
+    document.getElementById('tipopqrsf').addEventListener('change', function() {
+        document.getElementById('filtroCategoria').submit();
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
+{% endblock %}
