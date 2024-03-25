@@ -99,20 +99,20 @@ WSGI_APPLICATION = 'jjsystemPrueba.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='mysql://root:''@localhost:3306/jjsystem_db',
-        conn_max_age=600
-    )
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'jjsystem_db',
-    #     'USER': 'root',
-    #     'PASSWORD': '1021662854',
-    #     #'PASSWORD': '',
-    #     'HOST': 'localhost',
-    #     'PORT': '3306'
-    # }
+    # 'default': dj_database_url.config(
+    #     # Replace this value with your local database's connection string.
+    #     default='mysql://root:''@localhost:3306/jjsystem_db',
+    #     conn_max_age=600
+    # )
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'jjsystem_db',
+        'USER': 'root',
+        'PASSWORD': '1021662854',
+        #'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '3306'
+    }
 }
 
 

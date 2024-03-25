@@ -1,0 +1,74 @@
+{% extends "landing/menuLanding.html" %}
+{% block titulo %} Pqrsf {% endblock %}
+{% load static %} 
+{% block contenido %}
+<div class="content" style="margin-top: 200px;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        Crear PQRSF
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="{% url 'crear_pqrsf' %}">
+                            {% csrf_token %}
+                            <div class="form-group" style="color: black;">
+                                <label for="cliente">Cliente:</label>
+                                <input type="number" class="form-control" id="cliente" name="idcliente" readonly value="{{ request.user.numerodocumento }}" required>
+                                <input type="text" class="form-control" id="nombres" name="nombres" readonly style="margin-top: 5px;" placeholder="{{ request.user.nombre }} {{ request.user.apellido }}" required>
+                                
+                                <label for="fechapqrsf">Fecha PQRSF:</label>
+                                <input type="date" class="form-control" id="fechapqrsf" name="fechapqrsf" required>
+                                
+                                <label for="idtipopqrsf">Tipo PQRSF:</label>
+                                <select class="form-control" id="idtipopqrsf" name="idtipopqrsf" style="color: black;" required>
+                                    {% for tipo_pqrsf in tipos_pqrsf %}
+                                        <option value="{{ tipo_pqrsf.idtipopqrsf }}">{{ tipo_pqrsf.nombretipopqrsf }}</option>
+                                    {% endfor %}
+                                </select>
+                    
+                                <label for="idestadopqrsf">Estado PQRSF:</label>
+                                <select class="form-control" id="idestadopqrsf" name="idestadopqrsf" style="color: black;" required>
+                                    {% for estado_pqrsf in estados_pqrsf %}
+                                        <option value="{{ estado_pqrsf.idestadopqrsf }}">{{ estado_pqrsf.nombreestadopqrsf }}</option>
+                                    {% endfor %}
+                                </select>
+                                
+                                <label for="informacionpqrsf">Descripción:</label>
+                                <textarea class="form-control" id="informacionpqrsf" name="informacionpqrsf" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" style="margin-top: 5px;" class="btn btn-outline-success">Crear PQRSF</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4" style="overflow-y: auto; max-height: 400px;">
+                <div class="card">
+                    <div class="card-header">
+                        Mis PQRSF
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Informacion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for pqrsf in pqrsfs %}
+                                <tr>
+                                    <td>{{ pqrsf.idpqrsf }}</td>
+                                    <td>{{ pqrsf.fechapqrsf }}</td>
+                                    <td>{{ pqrsf.informacionpqrsf }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+{% endblock %}

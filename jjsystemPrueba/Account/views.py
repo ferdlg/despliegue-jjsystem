@@ -38,13 +38,13 @@ def userLogin(request):
     if request.user.is_authenticated:
         # Si el usuario ya está autenticado, redirige según su rol
         if request.user.idrol.idrol == 1:
-            return redirect('homeEnvios')
+            return redirect('home')
         elif request.user.idrol.idrol == 2:
             return redirect('productos')
         elif request.user.idrol.idrol == 3:
             return redirect('homeTecnicosEnvios')
         else:
-            return redirect('vista_por_defecto')
+            return redirect('Ingrese con un rol valido')
 
     if request.method == 'POST':
         form = LoginForm(request.POST)
