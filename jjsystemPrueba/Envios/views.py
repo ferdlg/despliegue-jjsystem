@@ -21,7 +21,12 @@ def homeEnvios(request):
     else:
         envios = Envios.objects.all()
 
-    return render(request, "crudAdmin/Index.html", {"envios": envios, "search_query": search_query})
+    detallesEnvio = DetalleEnviosVentas.objects.all()
+
+    return render(request, "crudAdmin/Index.html", {"envios": envios, "search_query": search_query, "detallesEnvio": detallesEnvio})
+
+
+
 
 #@login_required
 #@role_required(1)
