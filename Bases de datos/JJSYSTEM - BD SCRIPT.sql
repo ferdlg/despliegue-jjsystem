@@ -1,7 +1,5 @@
 DROP DATABASE IF EXISTS jjsystem_db;
-
 CREATE DATABASE jjsystem_db;
-
 USE jjsystem_db;
 
 CREATE TABLE IF NOT EXISTS Roles(
@@ -60,12 +58,16 @@ CREATE TABLE IF NOT EXISTS Administrador(
     PRIMARY KEY (idAdministrador),
     FOREIGN KEY (numeroDocumento) REFERENCES Usuarios (numeroDocumento)
 );
-
+CREATE TABLE IF NOT EXISTS Especialidad_tecnicos(
+	id_especialidad int AUTO_INCREMENT primary key,
+    nombre_especialidad VARCHAR(50)
+);
 CREATE TABLE IF NOT EXISTS Tecnicos (
     idTecnico INT NOT NULL AUTO_INCREMENT,
-    especialidad VARCHAR(50) NOT NULL,
+    id_especialidad_fk int NOT NULL,
     numeroDocumento BIGINT NOT NULL,
     PRIMARY KEY (idTecnico),
+	FOREIGN KEY (id_especialidad_fk) REFERENCES Especialidad_tecnicos (id_especialidad),
     FOREIGN KEY (numeroDocumento) REFERENCES Usuarios (numeroDocumento)
 );
 
