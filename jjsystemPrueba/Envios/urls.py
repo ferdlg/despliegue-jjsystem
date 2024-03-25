@@ -19,7 +19,6 @@ urlpatterns=[
     path('editarEnvio/<idEnvio>', views.editarEnvio, name='editarEnvio'),
     path('eliminarEnvio/<idEnvio>', views.eliminarEnvio, name='eliminarEnvio'),
     path('detalles/<idEnvio>/', views.detallesView, name='detallesView'),
-    path('enviosEntregados/', views.enviosEntregados, name='enviosEntregados'),
     path('tecnicos/', views.homeEnviosTecnico, name='homeTecnicosEnvios'),
     path('api/', include(router.urls)),
 

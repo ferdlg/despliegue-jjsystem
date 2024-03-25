@@ -9,21 +9,31 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from io import BytesIO
 from django.template.loader import get_template
 from django.template import Context
-from Account.models import Envios
+from Account.models import *
 from django.db import connection
 # Create your views here.
 
 def homeEnvios(request):
     search_query = request.GET.get('search', '')
+    estado_filter = request.GET.get('estado', '')  # Obtener el valor del filtro por estado
 
+    envios = Envios.objects.all()
+
+    # Filtrar los envíos por dirección si hay un término de búsqueda
     if search_query:
-        envios = Envios.objects.filter(idenvio__iexact=search_query)
-    else:
-        envios = Envios.objects.all()
+        envios = envios.filter(direccionenvio__icontains=search_query)
+    
+    # Filtrar los envíos por estado si se ha seleccionado un estado en el filtro
+    if estado_filter:
+        envios = envios.filter(idestadoenvio=estado_filter)
 
+    # Obtener todos los detalles de envío
     detallesEnvio = DetalleEnviosVentas.objects.all()
 
-    return render(request, "crudAdmin/Index.html", {"envios": envios, "search_query": search_query, "detallesEnvio": detallesEnvio})
+    # Obtener todos los estados de envío para el menú desplegable de filtro
+    estados = Estadosenvios.objects.all()
+
+    return render(request, "crudAdmin/Index.html", {"envios": envios, "search_query": search_query, "detallesEnvio": detallesEnvio, "estados": estados})
 
 
 
@@ -101,11 +111,6 @@ def detallesView(request, idEnvio):
     detallesEnvio = DetalleEnviosVentas.objects.get(idenvio=idEnvio)
     return render(request, 'crudAdmin/Detalles.html', {'detallesEnvio': detallesEnvio})
 
-def enviosEntregados(request):
-    # Filtrar los envíos por estado "Entregado" 
-    envios = Envios.objects.filter(idestadoenvio=3)
-
-    return render(request, "crudAdmin/EnviosEntregados.html", {"envios": envios})
 
 
 #Views del tecnico
