@@ -194,6 +194,7 @@ class DetalleEnviosVentas(models.Model):
     direccionenvio = models.CharField(max_length=255, blank=True, null=True)
     detallesventa = models.CharField(max_length=255, blank=True, null=True)
     tecnicoasignado = models.IntegerField(blank=True, null=True)
+    nombretecnico = models.CharField(max_length=255, blank=True, null=True)
     numerodocumento = models.CharField(max_length=255, blank=True, null=True)
     fechaventa = models.DateField(blank=True, null=True)
     idventa = models.IntegerField(blank=True, null=True)
