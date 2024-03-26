@@ -476,19 +476,25 @@ VALUES
 INSERT INTO Administrador (numeroDocumento) 
 VALUES (1021826839);
 
--- Inserción de técnicos
-INSERT INTO Tecnicos (especialidad, numeroDocumento)
+-- Inserción de especialidad de técnicos
+INSERT INTO Especialidad_tecnicos(nombre_especialidad)
 VALUES
-    ('analisis', 1007986453),
-    ('mantenimiento', 1098465237),
-    ('instalacion', 1085679234),
-    ('analisis', 1057623948),
-    ('mantenimiento', 1079348562),
-    ('instalacion', 1029875463),
-    ('analisis', 1068457329),
-    ('mantenimiento', 1045376298),
-    ('instalacion', 1036485927),
-    ('analisis', 1019286547);
+	('Analisis'),
+    ('Instalacion'),
+    ('Mantenimiento');
+-- Inserción de técnicos
+INSERT INTO Tecnicos (id_especialidad_fk, numeroDocumento)
+VALUES
+    (1, 1007986453),
+    (2, 1098465237),
+    (3, 1085679234),
+    (1, 1057623948),
+    (2, 1079348562),
+    (3, 1029875463),
+    (1, 1068457329),
+    (2, 1045376298),
+    (3, 1036485927),
+    (1, 1019286547);
 
 -- Inserción de estados de envío
 INSERT INTO EstadosEnvios (nombreEstadoEnvio)
@@ -663,24 +669,24 @@ VALUES
 INSERT INTO Cotizaciones_Servicios (idServicio, idCotizacion)
 VALUES
     (1, 1),
-    (1, 2),
-    (1, 3),
+    (2, 2),
+    (3, 3),
     (6, 4),
-    (1, 5),
+    (4, 5),
     (1, 6),
     (8, 7),
-    (1, 8),
-    (1, 9),
+    (5, 8),
+    (5, 9),
     (1, 10),
-    (1, 11),
+    (4, 11),
     (7, 12),
-    (1, 13),
+    (4, 13),
     (1, 14),
-    (1, 15),
-    (1, 16),
+    (4, 15),
+    (2, 16),
     (1, 17),
-    (1, 18),
-    (1, 19),
+    (4, 18),
+    (5, 19),
     (1, 20);
     
 INSERT INTO EstadosCitas (nombreEstadoCita)
@@ -936,7 +942,7 @@ VALUES
         detallesventas.detallesVenta,
         tecnicos.idTecnico AS tecnicoAsignado,
         tecnicos.numeroDocumento,
-        ventas.fechaVenta
+        ventas.fechaVenta,
         ventas.idVenta
     FROM
         envios
