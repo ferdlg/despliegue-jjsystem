@@ -443,18 +443,28 @@ class Servicios(models.Model):
         db_table = 'servicios'
 
 
-class Tecnicos(models.Model):
-    idtecnico = models.AutoField(db_column='idTecnico', primary_key=True)  # Field name made lowercase.
-    especialidad = models.CharField(max_length=50)
-    numerodocumento = models.ForeignKey('Usuarios', models.DO_NOTHING, db_column='numeroDocumento')  # Field name made lowercase.
+class Especialidadtecnicos(models.Model):
+    id_especialidad = models.AutoField(primary_key=True)
+    nombre_especialidad = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.idtecnico
-    
+        return self.nombre_especialidad
+
     class Meta:
         managed = False
-        db_table = 'tecnicos'
+        db_table = 'Especialidad_tecnicos'
 
+class Tecnicos(models.Model):
+    idtecnico = models.AutoField(primary_key=True)
+    id_especialidad_fk = models.ForeignKey('Especialidadtecnicos', models.DO_NOTHING, db_column='id_especialidad_fk')
+    numerodocumento = models.ForeignKey('Usuarios', models.DO_NOTHING, db_column='numeroDocumento')
+
+    def __str__(self):
+        return str(self.idtecnico)
+
+    class Meta:
+        managed = False
+        db_table = 'Tecnicos'
 
 class Tipospqrsf(models.Model):
     idtipopqrsf = models.AutoField(db_column='idTipoPQRSF', primary_key=True)  # Field name made lowercase.
