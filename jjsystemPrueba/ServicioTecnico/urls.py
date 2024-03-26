@@ -26,10 +26,11 @@ router.register(r'clientes', ClientesCRUD)
 
 
 # urls front 
-from .views import index, indexTecnicos
+from .views import index, inicio, indexTecnicos
 
 urlpatterns=[
     path('',include(router.urls)),
+    path('inicio/', inicio, name = 'inicio'),
     path('index/', index , name='index'),
     path('index/tecnicos/', indexTecnicos, name='indexTecnicos'),
     path('index/tecnicos/ver_tecnicos', tecnicosCRUD.as_view({'post':'listar_tecnicos','get':'listar_tecnicos'}), name='verTecnicos'),

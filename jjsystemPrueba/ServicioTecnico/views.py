@@ -9,3 +9,6 @@ def index (request):
 
 def indexTecnicos(request):
     return render(request, 'tecnicos.html')
+
+def inicio(request):
+    return render(request, 'inicio.html')

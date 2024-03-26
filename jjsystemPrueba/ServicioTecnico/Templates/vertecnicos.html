@@ -46,8 +46,8 @@
         <table class="table data-table table-bordered">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
                     <th scope="col">No. Documento</th>
                     <th scope="col">Especialidad</th>
                     <th scope="col">Correo</th>
@@ -59,8 +59,8 @@
             <tbody>
                 {% for tecnico in tecnicos %}
                 <tr>
-                    <td>{{tecnico.idtecnico}}</td>
-                    <td>{{tecnico.numerodocumento.nombre}}{{tecnico.numerodocumento.apellido}}</td>
+                    <td>{{tecnico.numerodocumento.nombre}}</td>
+                    <td>{{tecnico.numerodocumento.apellido}}</td>
                     <td>{{tecnico.numerodocumento.numerodocumento}}</td>
                     <td>{{tecnico.id_especialidad_fk.nombre_especialidad}}</td>
                     <td>{{tecnico.numerodocumento.email}}</td>
@@ -93,7 +93,7 @@
                         <a href="{% url 'eliminar_tecnico' idtecnico=tecnico.idtecnico%}" class="btn btn-danger btn-sw"> Eliminar </a>
                     </td>
                     <td>
-                        <!-- <a href="#" class="btn btn-info btn-sw"> Ver Agenda </a> -->
+                        <a href="#" class="btn btn-info btn-sw"> Ver Agenda </a>
                     </td>
                 </tr>
                 {% endfor %}
