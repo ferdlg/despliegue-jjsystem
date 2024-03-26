@@ -25,7 +25,7 @@ def registerView(request):
             user = form.save(commit=False)
             # Cifrar la contraseña antes de guardarla
             user.password = make_password(form.cleaned_data['password'])
-            user.idrol = Roles.objects.get(idrol=1)  # Asigna el rol de cliente
+            user.idrol = Roles.objects.get(idrol=2)  # Asigna el rol de cliente
             user.idestadosusuarios = Estadosusuarios.objects.get(idestadousuario=1)  # Asigna el estado de usuario activo
             user.save()
             return redirect('login')
@@ -62,7 +62,7 @@ def userLogin(request):
                 login(request, user)
                 # Redirigir según el rol del usuario
                 if user.idrol.idrol == 1:
-                    return redirect('homeEnvios')
+                    return redirect('inicio')
                 elif user.idrol.idrol == 2:
                     # Redireccionar al cliente a una vista especial
                     return redirect('productos')
