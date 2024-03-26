@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from rest_framework import viewsets
 from Account.models import Clientes
-from Account.utilities import actualizar_datos_usuario
+from Account.utilities import actualizar_datos_usuario, validar_password , cambiar_password
 from .serializers import ClientesSerializers
 from django.contrib.auth.hashers import make_password, check_password
 
@@ -16,4 +16,8 @@ class clientesCRUD(viewsets.ModelViewSet):
             return actualizar_datos_usuario(request, 'cliente/ver_perfil')
         else:
             return redirect('mensaje')
+    def validar_contrasena(self,request):
+        return validar_password(request)
 
+    def cambiar_contrasena(self,request):
+        return cambiar_password(request)

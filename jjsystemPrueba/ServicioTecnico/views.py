@@ -22,8 +22,8 @@ def mi_perfil(request):
     else:
         return redirect('mensaje')
     
-def validar_password(request):
+def validar_contrasena(request):
     return validar_password(request)
 
-def cambiar_password(request):
+def cambiar_contrasena(request):
     return cambiar_password(request)

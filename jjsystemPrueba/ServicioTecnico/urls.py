@@ -26,13 +26,15 @@ router.register(r'clientes', ClientesCRUD)
 
 
 # urls front 
-from .views import index, inicio, indexTecnicos, mi_perfil, validar_password, cambiar_password
+from .views import index, inicio, indexTecnicos, mi_perfil, validar_contrasena, cambiar_contrasena
 
 urlpatterns=[
     path('',include(router.urls)),
     path('inicio/', inicio, name = 'inicio'),
     path('index/', index , name='index'),
     path('index/mi_perfil/', mi_perfil, name='mi_perfil'),
+    path('mi_perfil/validar_password/', validar_contrasena, name='index_validar_password'),
+    path('mi_perfil/validar_password/cambiar_password/', cambiar_contrasena, name='index_cambiar_password'),
     path('index/tecnicos/', indexTecnicos, name='indexTecnicos'),
     path('index/tecnicos/ver_tecnicos', tecnicosCRUD.as_view({'post':'listar_tecnicos','get':'listar_tecnicos'}), name='verTecnicos'),
     path('index/tecnicos/editar_datos/<idtecnico>',tecnicosCRUD.as_view({'post':'editar_datos_tecnico', 'get':'editar_datos_tecnico'}), name='editar_datos_tecnico'),

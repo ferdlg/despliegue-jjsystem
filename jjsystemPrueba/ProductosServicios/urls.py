@@ -70,6 +70,6 @@ urlpatterns=[
 
     path('mis_compras/historial/',ventasCRUD.as_view({'get':'historial_compras'}), name='historial_compras'),
     path('mi_perfil/', clientesCRUD.as_view({'get':'actualizar_mis_datos','post':'actualizar_mis_datos'}), name='actualizar_mis_datos'),
-    path('mi_perfil/validar_contraseña/',clientesCRUD.as_view({'post':'validar_password'}), name = 'validar_password'),
-    path('mi_perfil/validar_contraseña/cambiar_contraseña', clientesCRUD.as_view({'post':'cambiar_password'}), name='cambiar_password')
+    path('mi_perfil/validar_password/',clientesCRUD.as_view({'post':'validar_contrasena'}), name = 'validar_password'),
+    path('mi_perfil/validar_password/cambiar_password', clientesCRUD.as_view({'post':'cambiar_contrasena'}), name='cambiar_password')
 ]

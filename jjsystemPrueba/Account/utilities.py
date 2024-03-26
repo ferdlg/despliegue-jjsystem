@@ -22,31 +22,36 @@ def actualizar_datos_usuario(request, redirect_to):
 
     return render(request, redirect_to + '.html', {'usuario': usuario})
 
-def validar_password(self, request):
+def validar_password(request):
     usuario = request.user
-    password = make_password(request.POST.get('password'))
+    password = request.POST.get('password')
+
     if check_password(password, usuario.password):
         password_correct = True
     else:
         password_correct = False
 
     if usuario.idrol.idrol == 1 or usuario.idrol.idrol == 3:
-        return redirect('mi_perfil',{'password_correct':password_correct})
+        return render(request, 'cambiar_password.html', {'password_correct': password_correct})
     elif usuario.idrol.idrol == 2:
-        return redirect('ver_perfil',{'password_correct':password_correct})
+        return render(request, 'cliente/cambiar_password.html', {'password_correct': password_correct})
     else:
-        return redirect('pagina_error',{'password_correct':password_correct})
+        return redirect('pagina_error')
 
-def cambiar_password(self, request):
+def cambiar_password(request):
     usuario = request.user
     new_password = request.POST.get('new_password')
 
     usuario.password = make_password(new_password)
     usuario.save()
 
-    if usuario.idrol.idrol == 1 or usuario.idrol.idrol == 3:
-        return redirect('mi_perfil')
-    elif usuario.idrol.idrol == 2:
-        return redirect('ver_perfil')
+    if usuario.save():
+        if usuario.idrol.idrol == 1 or usuario.idrol.idrol == 3:
+            return redirect('mi_perfil')
+        elif usuario.idrol.idrol == 2:
+            return redirect('ver_perfil')
+        else:
+            return redirect('pagina_error')
     else:
-        return redirect('pagina_error')
+        mensaje = 'Ocurrio un erro al intentar actualizar la contraseña'
+        return render(request, 'mensaje.html',{'mensaje':mensaje})
