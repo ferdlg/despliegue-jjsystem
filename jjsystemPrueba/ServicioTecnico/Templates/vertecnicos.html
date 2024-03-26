@@ -22,22 +22,41 @@
 
     <!-- Modal de registro de técnico -->
     <div class="modal fade" id="registrar-tecnico" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg"> <!-- Añadimos la clase modal-lg para hacer el modal más grande -->
+        <div class="modal-dialog "> <!-- Añadimos la clase modal-lg para hacer el modal más grande -->
             <div class="modal-content" style="color: black;">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Registrar Técnico</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="text-decoration: none;">
-                    <!-- Formulario de registro -->
                     <form method="post" action="{% url 'registrar_tecnico' %}">
                         {% csrf_token %}
-                            {{ form.as_p }} 
+                        <div class="form-group">
+                            <label for="nombre">Nombre:</label>
+                            {{ form.nombre }}
+                        </div>
+                        <div class="form-group">
+                            <label for="apellido">Apellido:</label>
+                            {{ form.apellido }}
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            {{ form.email }}
+                        </div>
+                        <div class="form-group">
+                            <label for="numerocontacto">Numero de contacto:</label>
+                            {{ form.numerocontacto }}
+                        </div>
+                        <div class="form-group">
+                            <label for="numerodocumento">Numero de documento:</label>
+                            {{ form.numerodocumento }}
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="btn btn-primary">Registrar</button>
                         </div>
                     </form>
+                    
                 </div>
             </div>
         </div>
@@ -54,6 +73,7 @@
                     <th></th>
                     <th></th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -65,29 +85,12 @@
                     <td>{{tecnico.id_especialidad_fk.nombre_especialidad}}</td>
                     <td>{{tecnico.numerodocumento.email}}</td>
                     <td> 
-                        <a class="btn btn-primary btn-sw" data-bs-toggle="modal" data-bs-target="#editarTecnicoModal{{ tecnico.idtecnico }}">Editar Datos</a>
-                        <!-- Modal de edición de técnico -->
-                        <div class="modal fade" id="editarTecnicoModal{{ tecnico.idtecnico }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Editar Datos del Técnico</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <!-- Formulario de edición de técnico -->
-                                        <form method="post" action="{% url 'editar_tecnico' idtecnico=tecnico.idtecnico %}">
-                                            {% csrf_token %}
-                                                {{ edit_form.as_p }}
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <a class="btn btn-primary btn-sw" style="background-color: rgba(209, 125, 30, 0.941); border-color:rgba(164, 107, 0, 0.932);"  data-bs-toggle="modal" data-bs-target="#editarTecnicoModal{{ tecnico.idtecnico }}">Editar Especialidad</a>
+                        {% include 'editar_especialidad.html' %}
+                    </td>
+                    <td> 
+                        <a class="btn btn-primary btn-sw" data-bs-toggle="modal" data-bs-target="#editarDatosTecnicoModal{{ tecnico.idtecnico }}">Editar Datos</a>
+                        {% include 'editar_datos_tecnicos.html' %}
                     </td>
                     <td>
                         <a href="{% url 'eliminar_tecnico' idtecnico=tecnico.idtecnico%}" class="btn btn-danger btn-sw"> Eliminar </a>

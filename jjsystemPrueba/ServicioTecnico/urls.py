@@ -8,7 +8,7 @@ from .controllers.cronogramatecnicos import cronogramatecnicosCRUD
 from .controllers.detallesactividades import detallesactividadesCRUD
 from .controllers.disponibilidadcronograma import disponibilidadcronogramaCRUD
 from .controllers.estadocotizaciones import estadocotizacionesCRUD
-from .controllers.tecnicos import tecnicosCRUD
+from .controllers.tecnicos import tecnicosCRUD, tecnico_home, mi_agenda, mis_actividades, mis_citas
 from .controllers.clientes import ClientesCRUD
 
 #urls back 
@@ -34,6 +34,7 @@ urlpatterns=[
     path('index/', index , name='index'),
     path('index/tecnicos/', indexTecnicos, name='indexTecnicos'),
     path('index/tecnicos/ver_tecnicos', tecnicosCRUD.as_view({'post':'listar_tecnicos','get':'listar_tecnicos'}), name='verTecnicos'),
+    path('index/tecnicos/editar_datos/<idtecnico>',tecnicosCRUD.as_view({'post':'editar_datos_tecnico', 'get':'editar_datos_tecnico'}), name='editar_datos_tecnico'),
     path('eliminar-tecnico/<int:idtecnico>/', tecnicosCRUD.as_view({'post': 'eliminar_tecnico','get': 'eliminar_tecnico'}), name='eliminar_tecnico'),
     path('registrar_tecnico/', tecnicosCRUD.as_view({'post': 'registrar_tecnico'}), name='registrar_tecnico'),
     path('index/ver_clientes/',ClientesCRUD.as_view({'get':'listar_clientes'}), name='ver_clientes'),
@@ -55,11 +56,16 @@ urlpatterns=[
     path('crear_cotizaciones/productos_servicios/<int:idcotizacion>/', CotizacionesCRUD.as_view({'post':'asignar_productos_servicios', 'get':'asignar_productos_servicios'}), name='asignar_productos_servicios'),
 
     path('index/tecnicos/ver_tecnicos/registrar_tecnico/', tecnicosCRUD.as_view({'post':'registrar_tecnico'}), name='registrar_tecnico'),
-    path('index/tecnicos/ver_tecnicos/editar_tecnico/<int:idtecnico>', tecnicosCRUD.as_view({'post':'editar_tecnico'}), name='editar_tecnico'),
-
+    path('index/tecnicos/ver_tecnicos/editar_especialidad/<idtecnico>', tecnicosCRUD.as_view({'post':'editar_especialidad'}), name='editar_especialidad'),
     path('crear_cotizaciones/productos_servicios/<int:idcotizacion>/', CotizacionesCRUD.as_view({'post':'asignar_productos_servicios', 'get':'asignar_productos_servicios'}), name='asignar_productos_servicios'),
     path('eliminar_cotizacion/<int:idcotizacion>/', CotizacionesCRUD.as_view({'post': 'eliminar_cotizacion'}), name='eliminar_cotizacion'),
 
+    #Tecnicos
+    path('home_tecnico/', tecnico_home, name='tecnico_home'),
+    path('home_tecnico/mi_agenda/', mi_agenda, name='mi_agenda'),
+    path('home_tecnico/mis_citas/', mis_citas, name='mis_citas'),
+    path('home_tecnico/mis_actividades/', mis_actividades, name='mis_actividades'),
+    path('home_tecnico/mis_datos/', tecnicosCRUD.as_view({'post':'editar_datos_tecnico', 'get':'editar_datos_tecnico'}), name='editar_datos_tecnico')
 
 
 ]
