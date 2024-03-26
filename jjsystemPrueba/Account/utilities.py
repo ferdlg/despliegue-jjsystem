@@ -1,6 +1,8 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.hashers import make_password, check_password
 
+from Account.forms import NewPasswordForm
+
 
 def actualizar_datos_usuario(request, redirect_to):
     usuario = request.user
@@ -39,16 +41,22 @@ def validar_password(request):
         return redirect('pagina_error')
 
 def cambiar_password(request):
-    usuario = request.user
-    new_password = request.POST.get('new_password')
+    if request.method == 'POST':
+        form = NewPasswordForm(request.POST)
+        if form.is_valid():
+            new_password = form.cleaned_data['new_password']
+            usuario = request.user
+            usuario.password = make_password(new_password)
+            usuario.save()
 
-    usuario.password = make_password(new_password)
-    usuario.save()
-
-    if usuario.idrol.idrol == 1 or usuario.idrol.idrol == 3:
-        return redirect('mi_perfil')
-    elif usuario.idrol.idrol == 2:
-        return redirect('actualizar_mis_datos')
+            if usuario.idrol.idrol == 1 or usuario.idrol.idrol == 3:
+                return redirect('mi_perfil')
+            elif usuario.idrol.idrol == 2:
+                return redirect('actualizar_mis_datos')
+            else:
+                mensaje = 'Ocurrió un error al intentar actualizar la contraseña.'
+                return render(request, 'mensaje.html', {'mensaje': mensaje})
     else:
-        mensaje = 'Ocurrio un erro al intentar actualizar la contraseña'
-        return render(request, 'mensaje.html',{'mensaje':mensaje})
+        form = NewPasswordForm()
+
+    return render(request, 'cambiar_password.html', {'form': form})
