@@ -45,13 +45,10 @@ def cambiar_password(request):
     usuario.password = make_password(new_password)
     usuario.save()
 
-    if usuario.save():
-        if usuario.idrol.idrol == 1 or usuario.idrol.idrol == 3:
-            return redirect('mi_perfil')
-        elif usuario.idrol.idrol == 2:
-            return redirect('ver_perfil')
-        else:
-            return redirect('pagina_error')
+    if usuario.idrol.idrol == 1 or usuario.idrol.idrol == 3:
+        return redirect('mi_perfil')
+    elif usuario.idrol.idrol == 2:
+        return redirect('actualizar_mis_datos')
     else:
         mensaje = 'Ocurrio un erro al intentar actualizar la contraseña'
         return render(request, 'mensaje.html',{'mensaje':mensaje})

@@ -15,7 +15,8 @@ class clientesCRUD(viewsets.ModelViewSet):
         if user.idrol.idrol == 2:
             return actualizar_datos_usuario(request, 'cliente/ver_perfil')
         else:
-            return redirect('mensaje')
+            mensaje = 'Ocurrio un error al intentar actualizar tus datos'
+            return render(request, 'mensaje.html',{'mensaje':mensaje})
     def validar_contrasena(self,request):
         return validar_password(request)
 
