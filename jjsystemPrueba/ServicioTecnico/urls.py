@@ -26,12 +26,13 @@ router.register(r'clientes', ClientesCRUD)
 
 
 # urls front 
-from .views import index, inicio, indexTecnicos
+from .views import index, inicio, indexTecnicos, mi_perfil, validar_password, cambiar_password
 
 urlpatterns=[
     path('',include(router.urls)),
     path('inicio/', inicio, name = 'inicio'),
     path('index/', index , name='index'),
+    path('index/mi_perfil/', mi_perfil, name='mi_perfil'),
     path('index/tecnicos/', indexTecnicos, name='indexTecnicos'),
     path('index/tecnicos/ver_tecnicos', tecnicosCRUD.as_view({'post':'listar_tecnicos','get':'listar_tecnicos'}), name='verTecnicos'),
     path('index/tecnicos/editar_datos/<idtecnico>',tecnicosCRUD.as_view({'post':'editar_datos_tecnico', 'get':'editar_datos_tecnico'}), name='editar_datos_tecnico'),
@@ -65,7 +66,6 @@ urlpatterns=[
     path('home_tecnico/mi_agenda/', mi_agenda, name='mi_agenda'),
     path('home_tecnico/mis_citas/', mis_citas, name='mis_citas'),
     path('home_tecnico/mis_actividades/', mis_actividades, name='mis_actividades'),
-    path('home_tecnico/mis_datos/', tecnicosCRUD.as_view({'post':'editar_datos_tecnico', 'get':'editar_datos_tecnico'}), name='editar_datos_tecnico')
 
 
 ]
