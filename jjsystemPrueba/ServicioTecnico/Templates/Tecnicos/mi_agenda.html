@@ -2,21 +2,63 @@
 {% block titulo %} Home {% endblock %}
 {% block contenido %}
 <div class="content">
-    <div id="calendar"></div>
+    <form id="filtro-form" method="get">
+        <div class="form-group">
+            <label for="fecha">Filtrar por fecha:</label>
+            <input type="date" id="fecha" name="fecha" class="form-control">
+        </div>
+        <button type="submit" style="display: none;"></button> <!-- Botón oculto para enviar el formulario -->
+    </form>
+    
+    <h2>Todas las citas</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Citas</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cita in todas_las_citas %}
+            <tr>
+                <td>{{ cita.idcita }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.7.0/main.min.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth'
-          // Aquí puedes añadir más opciones de configuración según necesites
-        });
-        calendar.render();
-      });
-    </script>
+    {% if citas_filtradas %}
+    <h2>Citas filtradas por fecha</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Citas programadas para  {{fecha_obj}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cita in citas_filtradas %}
+            <tr>
+                <td>{{ cita.idcita }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
 </div>
+
+<script>
+    var timeoutId; // Variable para almacenar el ID del temporizador
+
+    // Función para enviar el formulario después de 4 segundos
+    function enviarFormulario() {
+        document.getElementById('filtro-form').submit();
+    }
+
+    // Detectar cambios en el campo de fecha
+    document.getElementById('fecha').addEventListener('input', function() {
+        // Cancelar el temporizador anterior si existe
+        clearTimeout(timeoutId);
+        // Configurar un nuevo temporizador para enviar el formulario después de 4 segundos
+        timeoutId = setTimeout(enviarFormulario, 4000); // 4000 milisegundos = 4 segundos
+    });
+</script>
 {% endblock %}
