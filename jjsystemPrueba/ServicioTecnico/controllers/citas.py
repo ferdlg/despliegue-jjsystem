@@ -30,7 +30,7 @@ class citasCRUD(viewsets.ModelViewSet):
         citas_data = citas_serializer.data
 
         # Devolver la página renderizada con las citas y la paginación
-        return render(request, 'citaAnalisis.html', {'citas': citas_data, 'citas_page': citas_page})
+        return render(request, 'Admin-Citas/citaAnalisis.html', {'citas': citas_data, 'citas_page': citas_page})
     #Metodo para obtener solo las citas de instalacion
     def cita_instalacion(self, request):
         # Obtener datos de la cita
@@ -51,7 +51,7 @@ class citasCRUD(viewsets.ModelViewSet):
         citas_data = citas_serializer.data
 
         # Devolver la página renderizada con las citas y la paginación
-        return render(request, 'citaInstalacion.html', {'citas': citas_data, 'citas_page': citas_page})
+        return render(request, 'Admin-Citas/citaInstalacion.html', {'citas': citas_data, 'citas_page': citas_page})
     
     def cita_mantenimiento(self, request):
         citas_queryset = Citas.objects.filter(idcotizacion__cotizacionesservicios__idservicio__idcategoriaservicio=4)
@@ -69,11 +69,14 @@ class citasCRUD(viewsets.ModelViewSet):
         citas_serializer = CitasSerializer(citas_page, many=True)
         citas_data = citas_serializer.data
 
-        return render(request, 'citaMantenimiento.html', {'citas': citas_data, 'citas_page': citas_page})
+        return render(request, 'Admin-Citas/citaMantenimiento.html', {'citas': citas_data, 'citas_page': citas_page})
     
     def crear_citas(self, request):
+        estados = Estadoscitas.objects.all()
+        tecnico = Tecnicos.objects.all()
         if request.method == 'POST':
             fechacita = request.POST.get('fechacita')
+            horacita = request.POST.get('horacita')
             direccioncita = request.POST.get('direccioncita')
             contactocliente = request.POST.get('contactocliente')
             descripcioncita = request.POST.get('descripcioncita')
@@ -93,6 +96,7 @@ class citasCRUD(viewsets.ModelViewSet):
                 # Crear la instancia de la cita
                 cita = Citas.objects.create(
                     fechacita=fechacita,
+                    horacita = horacita,
                     direccioncita=direccioncita,
                     contactocliente=contactocliente,
                     descripcioncita=descripcioncita,
@@ -109,17 +113,20 @@ class citasCRUD(viewsets.ModelViewSet):
             except Estadoscitas.DoesNotExist:
                 print("Error: No se encontró el estado de la cita.")
 
-        estados = Estadoscitas.objects.all()
-        return render(request, 'citaAnalisis.html', {'estados': estados})
+    
+
+        return render(request, 'Admin-Citas/citaAnalisis.html', {'estados': estados , 'tecnico':tecnico})
         
     
     def editar_citas(request, idcita):
         cita = Citas.objects.get(idcita=idcita)
         estados = Estadoscitas.objects.all()
+        tecnicos = Tecnicos.objects.all()
 
         if request.method == 'POST':
             # Obtener los datos de la petición
             fechacita = request.POST.get('fechacita')
+            horacita = request.POST.get('horacita')
             direccioncita = request.POST.get('direccioncita')
             contactocliente = request.POST.get('contactocliente')
             descripcioncita = request.POST.get('descripcioncita')
@@ -136,6 +143,7 @@ class citasCRUD(viewsets.ModelViewSet):
 
             # Actualizar los campos del objeto cita
             cita.fechacita = fechacita
+            cita.horacita = horacita
             cita.direccioncita = direccioncita
             cita.contactocliente = contactocliente
             cita.descripcioncita = descripcioncita
@@ -147,7 +155,7 @@ class citasCRUD(viewsets.ModelViewSet):
 
             return redirect('index')  
 
-        return render(request,'Templates/EditarCitas.html', {"citas": cita})
+        return render(request,'Templates/Admin-Citas/EditarCitas.html', {"citas": cita , "tecnicos":tecnicos , "estados":estados})
 
     def eliminar_citas(self, request, idcita):
         cita_eliminada = Citas.objects.delete(idcita = idcita)

@@ -38,10 +38,22 @@
                                 <input type="date" class="form-control" id="fechacita" name="fechacita" required>
                             </div>
                             <div class="mb-3">
+                                <label for="horacita" class="form-label" style="color: black;">Hora de la Cita:</label>
+                                <input type="date" class="form-control" id="horacita" name="horacita" required>
+                            </div>
+                            <div class="mb-3">
                                 <label for="direccioncita" class="form-label" style="color: black;">Dirección de la Cita:</label>
                                 <input type="text" class="form-control" id="direccioncita" name="direccioncita" required>
                             </div>
-                            
+                            <div class="mb-3">
+                                <label for="idtecnico" class="form-label" style="color: black;">Asignar Técnico:</label>
+                                <select class="form-select" id="idtecnico" name="idtecnico" required>
+                                    <option value="">Selecciona un técnico</option>
+                                    {% for tecnico in tecnicos %}
+                                        <option value="{{ tecnico.idtecnico }}">{{ tecnico.numerodocumento.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>                            
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="btn btn-primary">Agendar</button>
                         </form>
@@ -57,6 +69,7 @@
                 <tr>
                     <th scope="col">Cita</th>
                     <th scope="col">Fecha</th>
+                    <th scope="col">Hora</th>
                     <th scope="col">Dirección</th>
                     <th scope="col">Contacto</th>
                     <th scope="col">Descripción</th>
@@ -73,6 +86,7 @@
                 <tr>
                     <td>{{ cita.idcita }}</td>
                     <td>{{ cita.fechacita }}</td>
+                    <td>{{ cita.horacita }}</td>
                     <td>{{ cita.direccioncita }}</td>
                     <td>{{ cita.contactocliente }}</td>
                     <td>{{ cita.descripcioncita }}</td>

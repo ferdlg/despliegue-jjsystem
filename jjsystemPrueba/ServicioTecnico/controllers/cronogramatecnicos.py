@@ -35,3 +35,5 @@ class cronogramatecnicosCRUD(viewsets.ModelViewSet):
             citas_filtradas = []
 
         return render(request, 'Tecnicos/mis_citas.html', {'todas_las_citas': todas_las_citas, 'citas_filtradas': citas_filtradas, 'fecha_obj':fecha_obj})
+    
+    
