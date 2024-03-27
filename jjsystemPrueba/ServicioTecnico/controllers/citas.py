@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from rest_framework import viewsets
-from Account.models import Citas , Servicios, Cotizaciones, Categoriasservicios, Tecnicos, Administrador , Estadoscitas
+from Account.models import Citas , Cotizaciones, Tecnicos, Administrador , Estadoscitas, Usuarios
 from .serializers import CitasSerializer
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 
@@ -12,9 +12,6 @@ class citasCRUD(viewsets.ModelViewSet):
 
     #Metodo para obtener solo las citas de analisis
     def cita_analisis(self, request):
-        estados = Estadoscitas.objects.all()
-        tecnicos = Tecnicos.objects.all()
-        cotizaciones = Cotizaciones.objects.all()
         
         # Obtener datos de la cita
         citas_queryset = Citas.objects.filter(idcotizacion__cotizacionesservicios__idservicio__idcategoriaservicio=3)
@@ -34,7 +31,7 @@ class citasCRUD(viewsets.ModelViewSet):
         citas_data = citas_serializer.data
 
         # Devolver la página renderizada con las citas y la paginación
-        return render(request, 'Admin-Citas/citaAnalisis.html', {'citas': citas_data, 'citas_page': citas_page, 'estados': estados, 'tecnicos': tecnicos, 'cotizaciones':cotizaciones})
+        return render(request, 'Admin-Citas/citaAnalisis.html', {'citas': citas_data, 'citas_page': citas_page})
     #Metodo para obtener solo las citas de instalacion
     def cita_instalacion(self, request):
         # Obtener datos de la cita
@@ -76,35 +73,33 @@ class citasCRUD(viewsets.ModelViewSet):
         return render(request, 'Admin-Citas/citaMantenimiento.html', {'citas': citas_data, 'citas_page': citas_page})
     
     def crear_citas(self, request):
-
-        
         if request.method == 'POST':
             fechacita = request.POST.get('fechacita')
             horacita = request.POST.get('horacita')
             direccioncita = request.POST.get('direccioncita')
-            contactocliente = request.POST.get('contactocliente')
             descripcioncita = request.POST.get('descripcioncita')
             idtecnico = request.POST.get('idtecnico')
-            idadministrador = request.POST.get('idadministrador')
             idcotizacion = request.POST.get('idcotizacion')
             idestadocita = request.POST.get('idestadocita')
             
             try:
-                idtecnico = int(idtecnico)
-                idadministrador = int(idadministrador)
-                idcotizacion = int(idcotizacion)
-                idestadocita = int(idestadocita)
-                
+                tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
+                cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
+                numerodocumento = request.user.numerodocumento
+                administrador = Administrador.objects.get(numerodocumento = numerodocumento)
+                estadocita = Estadoscitas.objects.get(idestadocita=idestadocita)
+                contactocliente = cotizacion.idcliente.numerodocumento.numerocontacto
+
                 cita = Citas.objects.create(
                     fechacita=fechacita,
                     horacita=horacita,
                     direccioncita=direccioncita,
                     contactocliente=contactocliente,
                     descripcioncita=descripcioncita,
-                    idtecnico=idtecnico,
-                    idadministrador=idadministrador,
-                    idcotizacion=idcotizacion,
-                    idestadocita=idestadocita
+                    idtecnico=tecnico,
+                    idadministrador = administrador,
+                    idcotizacion=cotizacion,
+                    idestadocita=estadocita
                 )
                 
                 return redirect('cita_analisis')

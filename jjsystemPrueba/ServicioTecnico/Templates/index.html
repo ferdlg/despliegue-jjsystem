@@ -44,6 +44,11 @@
                                         <input type="text" class="form-control" id="direccioncita" name="direccioncita" required>
                                     </div>
                                     <div class="mb-3">
+                                        <label for="descripcioncita" class="form-label" style="color: black;">Descripción:</label>
+                                        <textarea class="form-control" id="descripcioncita" name="descripcioncita" rows="3" required></textarea>
+                                    </div>
+                                    
+                                    <div class="mb-3">
                                         <label for="idestadocita" class="form-label" style="color: black;"> Estado:</label>
                                         <select class="form-select" id="idestadocita" name="idestadocita" required>
                                             <option value="">Selecciona un estado</option>
@@ -53,8 +58,8 @@
                                         </select>
                                     </div> 
                                     <div class="mb-3">
-                                        <label for="idtecnico" class="form-label" style="color: black;">Asociar cotizacion:</label>
-                                        <select class="form-select" id="idtecnico" name="idtecnico" required>
+                                        <label for="idcotizacion" class="form-label" style="color: black;">Asociar cotizacion:</label>
+                                        <select class="form-select" id="idcotizacion" name="idcotizacion" required>
                                             <option value="">Selecciona una cotizacion</option>
                                             {% for cotizacion in cotizaciones %}
                                                 <option value="{{ cotizacion.idcotizacion }}">{{ cotizacion.idcotizacion }} {{ cotizacion.idcotizacion.idcliente.numerodocumento.nombre }}</option>

@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
 from rest_framework import viewsets
-from Account.models import Citas , Tecnicos, Administrador
+from Account.models import Citas , Tecnicos, Administrador, Estadoscitas,Cotizaciones
 from Account.utilities import actualizar_datos_usuario, validar_password, cambiar_password
 from .controllers.serializers import CitasSerializer
 from .controllers.citas import citasCRUD
 
 def index (request):
-    return render(request, 'index.html')
+    estados = Estadoscitas.objects.all()
+    tecnicos = Tecnicos.objects.all()
+    cotizaciones = Cotizaciones.objects.all()
+    return render(request, 'index.html', {'estados': estados, 'tecnicos': tecnicos, 'cotizaciones':cotizaciones})
 
 def indexTecnicos(request):
     return render(request, 'tecnicos.html')

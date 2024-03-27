@@ -693,7 +693,8 @@ INSERT INTO EstadosCitas (nombreEstadoCita)
 VALUES
 	('Confirmada'),
 	('Cancelada'),
-	('Modificada');
+	('Modificada'),
+    ('Programada');
 
 INSERT INTO Citas (fechaCita, direccionCita, contactoCliente, descripcionCita, idTecnico, idAdministrador, idCotizacion, idEstadoCita)
 VALUES
@@ -1133,10 +1134,7 @@ BEGIN
     END IF;
 END;
 //
-DELIMITER ;
-DROP trigger IF exists usuario_tecnico;
 
-DELIMITER //
 DROP trigger IF exists usuario_tecnico;
 
 DELIMITER //
@@ -1150,6 +1148,20 @@ BEGIN
 END;
 //
 DELIMITER ;
+DROP TRIGGER IF EXISTS usuario_administrador;
+
+DELIMITER //
+CREATE TRIGGER usuario_administrador
+AFTER INSERT ON usuarios
+FOR EACH ROW
+BEGIN
+    IF NEW.idRol = 1 THEN
+        INSERT INTO administrador (numeroDocumento) VALUES (NEW.numeroDocumento);
+    END IF;
+END;
+//
+DELIMITER ;
+
 
 DROP PROCEDURE IF EXISTS ObtenerDetallesCotizacion;
 DELIMITER //
