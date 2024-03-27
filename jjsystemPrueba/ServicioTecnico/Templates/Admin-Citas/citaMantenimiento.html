@@ -20,35 +20,6 @@
         </form>
     </section>
     <section>
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agendar-cita">Agendar Cita</button>
-        <!-- Modal para Agendar Cita -->
-        <div class="modal fade" id="agendar-cita" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: black;">Agendar Cita</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{% url 'crear_citas' %}" method="post">
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                <label for="fechacita" class="form-label" style="color: black;">Fecha de la Cita:</label>
-                                <input type="date" class="form-control" id="fechacita" name="fechacita" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="direccioncita" class="form-label" style="color: black;">Dirección de la Cita:</label>
-                                <input type="text" class="form-control" id="direccioncita" name="direccioncita" required>
-                            </div>
-                            
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Agendar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
     <section class="s-data-table">
         <!-- Tabla de citas -->
         <table class="table data-table table-bordered">

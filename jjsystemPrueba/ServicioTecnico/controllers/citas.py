@@ -12,6 +12,10 @@ class citasCRUD(viewsets.ModelViewSet):
 
     #Metodo para obtener solo las citas de analisis
     def cita_analisis(self, request):
+        estados = Estadoscitas.objects.all()
+        tecnicos = Tecnicos.objects.all()
+        cotizaciones = Cotizaciones.objects.all()
+        
         # Obtener datos de la cita
         citas_queryset = Citas.objects.filter(idcotizacion__cotizacionesservicios__idservicio__idcategoriaservicio=3)
         paginator = Paginator(citas_queryset, 5)  # Mostrar 5 citas por página
@@ -30,7 +34,7 @@ class citasCRUD(viewsets.ModelViewSet):
         citas_data = citas_serializer.data
 
         # Devolver la página renderizada con las citas y la paginación
-        return render(request, 'Admin-Citas/citaAnalisis.html', {'citas': citas_data, 'citas_page': citas_page})
+        return render(request, 'Admin-Citas/citaAnalisis.html', {'citas': citas_data, 'citas_page': citas_page, 'estados': estados, 'tecnicos': tecnicos, 'cotizaciones':cotizaciones})
     #Metodo para obtener solo las citas de instalacion
     def cita_instalacion(self, request):
         # Obtener datos de la cita
@@ -72,8 +76,8 @@ class citasCRUD(viewsets.ModelViewSet):
         return render(request, 'Admin-Citas/citaMantenimiento.html', {'citas': citas_data, 'citas_page': citas_page})
     
     def crear_citas(self, request):
-        estados = Estadoscitas.objects.all()
-        tecnico = Tecnicos.objects.all()
+
+        
         if request.method == 'POST':
             fechacita = request.POST.get('fechacita')
             horacita = request.POST.get('horacita')
@@ -84,39 +88,38 @@ class citasCRUD(viewsets.ModelViewSet):
             idadministrador = request.POST.get('idadministrador')
             idcotizacion = request.POST.get('idcotizacion')
             idestadocita = request.POST.get('idestadocita')
+            
             try:
                 idtecnico = int(idtecnico)
-                tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
                 idadministrador = int(idadministrador)
-                administrador = Administrador.objects.get(idadministrador=idadministrador)
                 idcotizacion = int(idcotizacion)
-                cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
                 idestadocita = int(idestadocita)
-                estadocita = Estadoscitas.objects.get(idestadocita=idestadocita)
-                # Crear la instancia de la cita
+                
                 cita = Citas.objects.create(
                     fechacita=fechacita,
-                    horacita = horacita,
+                    horacita=horacita,
                     direccioncita=direccioncita,
                     contactocliente=contactocliente,
                     descripcioncita=descripcioncita,
-                    idtecnico=tecnico,
-                    idadministrador=administrador,
-                    idcotizacion=cotizacion,
-                    idestadocita=estadocita
+                    idtecnico=idtecnico,
+                    idadministrador=idadministrador,
+                    idcotizacion=idcotizacion,
+                    idestadocita=idestadocita
                 )
-
+                
                 return redirect('cita_analisis')
 
             except Tecnicos.DoesNotExist:
-                print("Error: No se encontró el Técnico.")
+                # Mensaje de error para el usuario
+                mensaje = ('No se encontro el tecnico seleccionado')
+                return render( request, 'mensaje.html', {'mensaje':mensaje})
             except Estadoscitas.DoesNotExist:
-                print("Error: No se encontró el estado de la cita.")
+                # Mensaje de error para el usuario
+                mensaje = ('No se encontró el estado de la cita.')
+                return render( request, 'mensaje.html', {'mensaje':mensaje})
 
-    
+        return redirect('cita_analisis')
 
-        return render(request, 'Admin-Citas/citaAnalisis.html', {'estados': estados , 'tecnico':tecnico})
-        
     
     def editar_citas(request, idcita):
         cita = Citas.objects.get(idcita=idcita)
@@ -155,7 +158,7 @@ class citasCRUD(viewsets.ModelViewSet):
 
             return redirect('index')  
 
-        return render(request,'Templates/Admin-Citas/EditarCitas.html', {"citas": cita , "tecnicos":tecnicos , "estados":estados})
+        return redirect('cita_analisis')
 
     def eliminar_citas(self, request, idcita):
         cita_eliminada = Citas.objects.delete(idcita = idcita)
