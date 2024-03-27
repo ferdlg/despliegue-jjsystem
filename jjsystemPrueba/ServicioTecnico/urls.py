@@ -66,10 +66,9 @@ urlpatterns=[
     #Tecnicos
     path('home_tecnico/', tecnico_home, name='tecnico_home'),
     path('home_tecnico/mi_agenda/', mi_agenda, name='mi_agenda'),
-    path('home_tecnico/mis_citas/', mis_citas, name='mis_citas'),
     path('home_tecnico/mis_actividades/', mis_actividades, name='mis_actividades'),
 
     #agendas
-    path('home_tecnico/mi_agenda/citas/',cronogramatecnicosCRUD.as_view({'get': 'citas_tecnico'}), name='ver_citas')
+    path('home_tecnico/mis_citas/',cronogramatecnicosCRUD.as_view({'get': 'citas_tecnico'}), name='mis_citas')
 
 ]

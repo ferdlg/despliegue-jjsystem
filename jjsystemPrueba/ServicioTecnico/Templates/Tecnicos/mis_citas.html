@@ -1,6 +1,85 @@
 {% extends "menu.html" %}
-{% block titulo %} Home {% endblock %}
+{% block titulo %} Citas {% endblock %}
 {% block contenido %}
 <div class="content">
+    <div class="row">
+        <div class="col-md-6">
+            <form id="filtro-form" method="get">
+                <div class="form-group">
+                    <label for="fecha">Filtrar por fecha:</label>
+                    <input type="date" id="fecha" name="fecha" class="form-control">
+                </div>
+                <button type="submit" style="display: none;"></button> <!-- Botón oculto para enviar el formulario -->
+                {% if citas_filtradas %}
+                <table class="table table-striped" style="margin-top: 10px;">
+                    <caption>Citas programadas para {{fecha_obj}}</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">No. Cita</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Dirección</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cita in citas_filtradas %}
+                        <tr>
+                            <td>{{ cita.idcita }}</td>
+                            <td>{{ cita.descripcioncita }}</td>
+                            <td>{{ cita.fechacita }}</td>
+                            <td>{{ cita.direccioncita }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="alert alert-info" role="alert" style="margin-top: 10px;">
+                    No hay citas programadas para la fecha ingresada.
+                </div>
+                {% endif %}
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h5 style="color: black;">Citas Agendadas</h5>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">No. Cita</th>
+                        <th scope="col">Descripcion</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Direccion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cita in todas_las_citas %}
+                    <tr>
+                        <td>{{ cita.idcita }}</td>
+                        <td>{{ cita.descripcioncita }}</td>
+                        <td>{{ cita.fechacita }}</td>
+                        <td>{{ cita.direccioncita }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+<script>
+    var timeoutId; // Variable para almacenar el ID del temporizador
+
+    // Función para enviar el formulario después de 4 segundos
+    function enviarFormulario() {
+        document.getElementById('filtro-form').submit();
+    }
+
+    // Detectar cambios en el campo de fecha
+    document.getElementById('fecha').addEventListener('input', function() {
+        // Cancelar el temporizador anterior si existe
+        clearTimeout(timeoutId);
+        // Configurar un nuevo temporizador para enviar el formulario después de 4 segundos
+        timeoutId = setTimeout(enviarFormulario, 4000); // 4000 milisegundos = 4 segundos
+    });
+</script>
+
 {% endblock %}

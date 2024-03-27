@@ -1,64 +1,28 @@
 {% extends "menu.html" %}
-{% block titulo %} Home {% endblock %}
-{% block contenido %}
-<div class="content">
-    <form id="filtro-form" method="get">
-        <div class="form-group">
-            <label for="fecha">Filtrar por fecha:</label>
-            <input type="date" id="fecha" name="fecha" class="form-control">
-        </div>
-        <button type="submit" style="display: none;"></button> <!-- Botón oculto para enviar el formulario -->
-    </form>
-    
-    <h2>Todas las citas</h2>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Citas</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for cita in todas_las_citas %}
-            <tr>
-                <td>{{ cita.idcita }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+{% block titulo %} Agenda {% endblock %}
 
-    {% if citas_filtradas %}
-    <h2>Citas filtradas por fecha</h2>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Citas programadas para  {{fecha_obj}}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for cita in citas_filtradas %}
-            <tr>
-                <td>{{ cita.idcita }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% endif %}
-</div>
-
+{% block extra %}
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 <script>
-    var timeoutId; // Variable para almacenar el ID del temporizador
-
-    // Función para enviar el formulario después de 4 segundos
-    function enviarFormulario() {
-        document.getElementById('filtro-form').submit();
-    }
-
-    // Detectar cambios en el campo de fecha
-    document.getElementById('fecha').addEventListener('input', function() {
-        // Cancelar el temporizador anterior si existe
-        clearTimeout(timeoutId);
-        // Configurar un nuevo temporizador para enviar el formulario después de 4 segundos
-        timeoutId = setTimeout(enviarFormulario, 4000); // 4000 milisegundos = 4 segundos
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth'
     });
+    calendar.render();
+  });
 </script>
+{% endblock %}
+
+{% block contenido %}
+<div class="content" style="padding-bottom: 60px; margin-bottom: 60px;"> 
+    <div class="card">
+        <div class="card-header">
+          Agenda
+        </div>
+        <div class="card-body">
+          <div id="calendar"></div>
+        </div>
+    </div>
+</div>
 {% endblock %}
