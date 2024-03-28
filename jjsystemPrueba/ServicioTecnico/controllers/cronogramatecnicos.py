@@ -3,12 +3,12 @@ from django.shortcuts import render, redirect
 from rest_framework import viewsets
 from Account.models import Cronogramatecnicos, Tecnicos, Citas
 from .serializers import CronogramatecnicosSerializer
-
+import json
 
 class cronogramatecnicosCRUD(viewsets.ModelViewSet):
     queryset = Cronogramatecnicos.objects.all()
     serializer_class = CronogramatecnicosSerializer
-  
+
     def ver_agenda(request, idtecnico):
         try:
             cronograma = Cronogramatecnicos.objects.get(idtecnico = idtecnico)
@@ -36,4 +36,18 @@ class cronogramatecnicosCRUD(viewsets.ModelViewSet):
 
         return render(request, 'Tecnicos/mis_citas.html', {'todas_las_citas': todas_las_citas, 'citas_filtradas': citas_filtradas, 'fecha_obj':fecha_obj})
     
-    
+    def citas_eventos_tecnicos(self,request):
+        usuario = request.user
+        tecnico = Tecnicos.objects.get(numerodocumento=usuario.numerodocumento)
+        todas_las_citas = Citas.objects.filter(idtecnico=tecnico.idtecnico)
+        eventos = []
+        for cita in todas_las_citas:
+            fecha_hora_inicio = datetime.combine(cita.fechacita, cita.horacita)
+            eventos.append({
+                'title': cita.descripcioncita,
+                'start': fecha_hora_inicio.strftime('%Y-%m-%d %H:%M:%S'),
+            })
+
+        eventos_json = json.dumps(eventos)
+        print(eventos_json)
+        return render(request, 'Tecnicos/mi_agenda.html', {'eventos_json': eventos_json})

@@ -53,7 +53,7 @@
                     <td>{{ cita.idcotizacion.idcotizacion }}</td>
                     <td>{{ cita.idestadocita.nombreestadocita }}</td>
                     <td>
-                        <a href="{{ cita.idcita }}" class="btn btn-primary btn-sw me-2">Editar</a>
+                        <a href="#" class="btn btn-primary btn-sw me-2" data-bs-toggle="modal" data-bs-target="#editarCitasModalLabel{{ cita.idcita }}" data-idcita="{{ cita.idcita }}">Editar</a>
                     </td>
                     <td>
                         <a href="{{ cita.idcita }}" class="btn btn-danger btn-sw">Eliminar</a>

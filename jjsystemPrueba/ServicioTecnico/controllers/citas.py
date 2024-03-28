@@ -116,7 +116,7 @@ class citasCRUD(viewsets.ModelViewSet):
         return redirect('cita_analisis')
 
     
-    def editar_citas(request, idcita):
+    def editar_citas(self, request, idcita):
         cita = Citas.objects.get(idcita=idcita)
         estados = Estadoscitas.objects.all()
         tecnicos = Tecnicos.objects.all()
@@ -126,34 +126,44 @@ class citasCRUD(viewsets.ModelViewSet):
             fechacita = request.POST.get('fechacita')
             horacita = request.POST.get('horacita')
             direccioncita = request.POST.get('direccioncita')
-            contactocliente = request.POST.get('contactocliente')
             descripcioncita = request.POST.get('descripcioncita')
-            idtecnico = int(request.POST.get('idtecnico'))
-            idadministrador = int(request.POST.get('idadministrador'))
-            idcotizacion = int(request.POST.get('idcotizacion'))
-            idestadocita = int(request.POST.get('idestadocita'))
+            idtecnico = request.POST.get('idtecnico')
+            idcotizacion = request.POST.get('idcotizacion')
+            idestadocita = request.POST.get('idestadocita')
 
-            # Obtener las instancias de Tecnicos, Administrador, Cotizaciones y Estadoscitas
-            idtecnico = Tecnicos.objects.get(idtecnico=idtecnico)
-            idadministrador = Administrador.objects.get(idadministrador=idadministrador)
-            idcotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
-            idestadocita = Estadoscitas.objects.get(idestadocita=idestadocita)
+            try:
+                # Obtener las instancias de Tecnicos, Cotizaciones y Estadoscitas
+                tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
+                cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
+                estadocita = Estadoscitas.objects.get(idestadocita=idestadocita)
+                numerodocumento = request.user.numerodocumento
+                administrador = Administrador.objects.get(numerodocumento=numerodocumento)
+                contactocliente = cotizacion.idcliente.numerodocumento.numerocontacto
 
-            # Actualizar los campos del objeto cita
-            cita.fechacita = fechacita
-            cita.horacita = horacita
-            cita.direccioncita = direccioncita
-            cita.contactocliente = contactocliente
-            cita.descripcioncita = descripcioncita
-            cita.idtecnico = idtecnico
-            cita.idadministrador = idadministrador
-            cita.idcotizacion = idcotizacion
-            cita.idestadocita = idestadocita
-            cita.save()
+                # Actualizar los campos del objeto cita
+                cita.fechacita = fechacita
+                cita.horacita = horacita
+                cita.direccioncita = direccioncita
+                cita.contactocliente = contactocliente
+                cita.descripcioncita = descripcioncita
+                cita.idtecnico = tecnico
+                cita.idadministrador = administrador
+                cita.idcotizacion = cotizacion
+                cita.idestadocita = estadocita
+                cita.save()
 
-            return redirect('index')  
+                return redirect('index')
 
-        return redirect('cita_analisis')
+            except Tecnicos.DoesNotExist:
+                # Mensaje de error para el usuario
+                mensaje = 'No se encontró el técnico seleccionado'
+                return render(request, 'mensaje.html', {'mensaje': mensaje})
+            except Estadoscitas.DoesNotExist:
+                # Mensaje de error para el usuario
+                mensaje = 'No se encontró el estado de la cita.'
+                return render(request, 'mensaje.html', {'mensaje': mensaje})
+
+        return render(request, 'editar_citas.html', {'cita': cita, 'estados': estados, 'tecnicos': tecnicos})
 
     def eliminar_citas(self, request, idcita):
         cita_eliminada = Citas.objects.delete(idcita = idcita)

@@ -48,7 +48,7 @@ urlpatterns=[
     path('cita_instalacion/', citasCRUD.as_view({'get':'cita_instalacion'}), name='cita_instalacion'),
     path('cita_mantenimiento/', citasCRUD.as_view({'get':'cita_mantenimiento'}), name='cita_mantenimiento'),
     path('crear_citas/', citasCRUD.as_view({'post':'crear_citas'}), name='crear_citas'),
-    path('editar_citas/<idcita>/', citasCRUD.as_view({'put': 'editar_citas'}), name='editar_citas'),
+    path('editar_citas/<int:idcita>/', citasCRUD.as_view({'put': 'editar_citas'}), name='editar_citas'),
     path('eliminar_citas/<int:idcita>/',citasCRUD.as_view({'delete':'eliminar_citas'}),name='eliminar_citas'),
 
     path('ver_cotizaciones/', CotizacionesCRUD.as_view({'get':'listar_cotizaciones'}), name='ver_cotizaciones'),
@@ -65,7 +65,7 @@ urlpatterns=[
 
     #Tecnicos
     path('home_tecnico/', tecnico_home, name='tecnico_home'),
-    path('home_tecnico/mi_agenda/', mi_agenda, name='mi_agenda'),
+    path('home_tecnico/mi_agenda/', cronogramatecnicosCRUD.as_view({'get': 'citas_eventos_tecnicos'}), name='mi_agenda'),
     path('home_tecnico/mis_actividades/', mis_actividades, name='mis_actividades'),
 
     #agendas
