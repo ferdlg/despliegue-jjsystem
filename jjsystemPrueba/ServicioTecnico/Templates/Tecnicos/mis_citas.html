@@ -41,9 +41,9 @@
         </div>
         <div class="col-md-6">
             <h5 style="color: black;">Citas Agendadas</h5>
-            <table class="table table-striped">
+            <table class="table table-striped" >
                 <thead>
-                    <tr>
+                    <tr class="table-info">
                         <th scope="col">No. Cita</th>
                         <th scope="col">Descripcion</th>
                         <th scope="col">Fecha</th>
@@ -52,7 +52,7 @@
                 </thead>
                 <tbody>
                     {% for cita in todas_las_citas %}
-                    <tr>
+                    <tr class="cita-row" data-cita-id="{{ cita.idcita }}"">
                         <td>{{ cita.idcita }}</td>
                         <td>{{ cita.descripcioncita }}</td>
                         <td>{{ cita.fechacita }}</td>
@@ -61,6 +61,17 @@
                     {% endfor %}
                 </tbody>
             </table>
+            {% for cita_cliente in cliente_cita %}
+            <div class="card" style="max-height: 300px;">
+                <div class="card-body">
+                    <div class="card-title">{{ cita_cliente.cliente.numerodocumento.nombre }} {{ cita_cliente.cliente.numerodocumento.apellido }}</div>
+                    <div class="card-body">
+                        <p >Email: {{ cita_cliente.cliente.numerodocumento.email }}</p>
+                        <p >Número de contacto: {{ cita_cliente.cliente.numerodocumento.numerocontacto }}</p>
+                    </div>
+                </div>
+            </div>            
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -78,8 +89,34 @@
         // Cancelar el temporizador anterior si existe
         clearTimeout(timeoutId);
         // Configurar un nuevo temporizador para enviar el formulario después de 4 segundos
-        timeoutId = setTimeout(enviarFormulario, 4000); // 4000 milisegundos = 4 segundos
+        timeoutId = setTimeout(enviarFormulario, 1000); // 4000 milisegundos = 4 segundos
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var citaRows = document.querySelectorAll('.cita-row');
+
+        citaRows.forEach(function(row) {
+            row.addEventListener('click', function() {
+                // Ocultar todas las tarjetas de cliente
+                var todasLasTarjetas = document.querySelectorAll('.card');
+                todasLasTarjetas.forEach(function(tarjeta) {
+                    tarjeta.style.display = 'none';
+                });
+
+                // Obtener el ID de la cita seleccionada
+                var citaId = row.getAttribute('data-idcita');
+
+                // Mostrar la tarjeta de cliente correspondiente a la cita seleccionada
+                var tarjetaCliente = document.querySelector('.card[data-idcita="' + citaId + '"]');
+                if (tarjetaCliente) {
+                    tarjetaCliente.style.display = 'block';
+                }
+            });
+        });
+    });
+</script>
+
+
 
 {% endblock %}

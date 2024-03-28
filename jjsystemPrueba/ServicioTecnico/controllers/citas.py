@@ -12,7 +12,9 @@ class citasCRUD(viewsets.ModelViewSet):
 
     #Metodo para obtener solo las citas de analisis
     def cita_analisis(self, request):
-        
+        estados = Estadoscitas.objects.all()
+        tecnicos = Tecnicos.objects.all()
+
         # Obtener datos de la cita
         citas_queryset = Citas.objects.filter(idcotizacion__cotizacionesservicios__idservicio__idcategoriaservicio=3)
         paginator = Paginator(citas_queryset, 5)  # Mostrar 5 citas por página
@@ -31,9 +33,13 @@ class citasCRUD(viewsets.ModelViewSet):
         citas_data = citas_serializer.data
 
         # Devolver la página renderizada con las citas y la paginación
-        return render(request, 'Admin-Citas/citaAnalisis.html', {'citas': citas_data, 'citas_page': citas_page})
+        return render(request, 'Admin-Citas/citaAnalisis.html', {'citas': citas_data, 'citas_page': citas_page, 'estados': estados, 'tecnicos': tecnicos})
+    
     #Metodo para obtener solo las citas de instalacion
     def cita_instalacion(self, request):
+        estados = Estadoscitas.objects.all()
+        tecnicos = Tecnicos.objects.all()
+
         # Obtener datos de la cita
         citas_queryset = Citas.objects.filter(idcotizacion__cotizacionesservicios__idservicio__idcategoriaservicio=2)
         paginator = Paginator(citas_queryset, 5)  # Mostrar 5 citas de instalación por página
@@ -52,9 +58,12 @@ class citasCRUD(viewsets.ModelViewSet):
         citas_data = citas_serializer.data
 
         # Devolver la página renderizada con las citas y la paginación
-        return render(request, 'Admin-Citas/citaInstalacion.html', {'citas': citas_data, 'citas_page': citas_page})
+        return render(request, 'Admin-Citas/citaInstalacion.html', {'citas': citas_data, 'citas_page': citas_page, 'estados': estados, 'tecnicos': tecnicos})
     
     def cita_mantenimiento(self, request):
+        estados = Estadoscitas.objects.all()
+        tecnicos = Tecnicos.objects.all()
+
         citas_queryset = Citas.objects.filter(idcotizacion__cotizacionesservicios__idservicio__idcategoriaservicio=4)
         paginator = Paginator(citas_queryset, 5)  # Mostrar 5 citas de mantenimiento por página
 
@@ -70,7 +79,7 @@ class citasCRUD(viewsets.ModelViewSet):
         citas_serializer = CitasSerializer(citas_page, many=True)
         citas_data = citas_serializer.data
 
-        return render(request, 'Admin-Citas/citaMantenimiento.html', {'citas': citas_data, 'citas_page': citas_page})
+        return render(request, 'Admin-Citas/citaMantenimiento.html', {'citas': citas_data, 'citas_page': citas_page, 'estados': estados, 'tecnicos': tecnicos})
     
     def crear_citas(self, request):
         if request.method == 'POST':
@@ -113,14 +122,11 @@ class citasCRUD(viewsets.ModelViewSet):
                 mensaje = ('No se encontró el estado de la cita.')
                 return render( request, 'mensaje.html', {'mensaje':mensaje})
 
-        return redirect('cita_analisis')
+        return redirect('index')
 
     
     def editar_citas(self, request, idcita):
         cita = Citas.objects.get(idcita=idcita)
-        estados = Estadoscitas.objects.all()
-        tecnicos = Tecnicos.objects.all()
-
         if request.method == 'POST':
             # Obtener los datos de la petición
             fechacita = request.POST.get('fechacita')
@@ -151,9 +157,6 @@ class citasCRUD(viewsets.ModelViewSet):
                 cita.idcotizacion = cotizacion
                 cita.idestadocita = estadocita
                 cita.save()
-
-                return redirect('index')
-
             except Tecnicos.DoesNotExist:
                 # Mensaje de error para el usuario
                 mensaje = 'No se encontró el técnico seleccionado'
@@ -163,7 +166,10 @@ class citasCRUD(viewsets.ModelViewSet):
                 mensaje = 'No se encontró el estado de la cita.'
                 return render(request, 'mensaje.html', {'mensaje': mensaje})
 
-        return render(request, 'editar_citas.html', {'cita': cita, 'estados': estados, 'tecnicos': tecnicos})
+        contexto =  {'cita': cita}
+
+            
+        return render(request, 'index.html', contexto)
 
     def eliminar_citas(self, request, idcita):
         cita_eliminada = Citas.objects.delete(idcita = idcita)
