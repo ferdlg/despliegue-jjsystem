@@ -53,10 +53,96 @@
                     <td>{{ cita.idcotizacion.idcotizacion }}</td>
                     <td>{{ cita.idestadocita.nombreestadocita }}</td>
                     <td>
-                        <a href="{{ cita.idcita }}" class="btn btn-primary btn-sw me-2">Editar</a>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editarCitaModal">
+                            Editar
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="editarCitaModal" tabindex="-1" aria-labelledby="editarCitaModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="editarCitaModalLabel">Editar Cita</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                <form method="post" action="{% url 'editar_citas' cita.idcita %}">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                    <label for="fechacita" class="form-label">Fecha de la Cita</label>
+                                    <input type="date" class="form-control" id="fechacita" name="fechacita" value="{{ cita.fechacita|date:"Y-m-d" }}">
+                                    </div>
+                                    <div class="mb-3">
+                                    <label for="horacita" class="form-label">Hora de la Cita</label>
+                                    <input type="time" class="form-control" id="horacita" name="horacita" value="{{ cita.horacita|date:'H:i' }}">
+                                </div>
+                                    <div class="mb-3">
+                                    <label for="direccioncita" class="form-label">Dirección de la Cita</label>
+                                    <input type="text" class="form-control" id="direccioncita" name="direccioncita" value="{{ cita.direccioncita }}">
+                                    </div>
+                                    <div class="mb-3">
+                                    <label for="descripcioncita" class="form-label">Descripción de la Cita</label>
+                                    <textarea class="form-control" id="descripcioncita" name="descripcioncita" rows="3">{{ cita.descripcioncita }}</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                    <label for="idtecnico" class="form-label">Técnico</label>
+                                    <select class="form-select" id="idtecnico" name="idtecnico">
+                                        {% for tecnico in tecnicos %}
+                                        <option value="{{ tecnico.idtecnico }}" {% if tecnico.idtecnico == cita.idtecnico.idtecnico %} selected {% endif %}>
+                                            {{ tecnico.numerodocumento.nombre }} {{ tecnico.numerodocumento.apellido }} {{tecnico.numerodocumento.numerodocumento}}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                    </div>
+                                    <div class="mb-3">
+                                    <label for="idcotizacion" class="form-label">Cotización</label>
+                                    <select class="form-select" id="idcotizacion" name="idcotizacion">
+                                        {% for cotizacion in cotizaciones %}
+                                        <option value="{{ cotizacion.idcotizacion }}" {% if cotizacion.idcotizacion == cita.idcotizacion.idcotizacion %} selected {% endif %}>
+                                            {{ cotizacion.descripcioncotizacion }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                    </div>
+                                    <div class="mb-3">
+                                    <label for="idestadocita" class="form-label">Estado de la Cita</label>
+                                    <select class="form-select" id="idestadocita" name="idestadocita">
+                                        {% for estado in estados %}
+                                        <option value="{{ estado.idestadocita }}" {% if estado.idestadocita == cita.idestadocita.idestadocita %} selected {% endif %}>
+                                            {{ estado.nombreestadocita }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                </form>
+                                </div>
+                            </div>
+                            </div>
                     </td>
                     <td>
-                        <a href="{{ cita.idcita }}" class="btn btn-danger btn-sw">Eliminar</a>
+                        <button type="button" class="btn btn-danger btn-sw" data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal{{ cita.idcita }}">
+                            Eliminar
+                        </button>
+                        <div class="modal fade" id="confirmarEliminarModal{{ cita.idcita }}" tabindex="-1" aria-labelledby="confirmarEliminarModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="confirmarEliminarModalLabel">¿Está seguro de eliminar esta cita?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Esta acción eliminará permanentemente la cita. Y eliminará asignaciones asociadas ¿Está seguro de continuar?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{% url 'eliminar_citas' cita.idcita %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        </form>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 {% endfor %}

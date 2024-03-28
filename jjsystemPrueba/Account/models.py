@@ -181,8 +181,8 @@ class CotizacionesServicios(models.Model):
 
 class Cronogramatecnicos(models.Model):
     idcronogramatecnico = models.AutoField(db_column='idCronogramaTecnico', primary_key=True)  # Field name made lowercase.
-    idtecnico = models.ForeignKey('Tecnicos', models.DO_NOTHING, db_column='idTecnico', blank=True, null=True)  # Field name made lowercase.
-    idcita = models.ForeignKey(Citas, models.DO_NOTHING, db_column='idCita', blank=True, null=True)  # Field name made lowercase.
+    idtecnico = models.ForeignKey('Tecnicos', models.CASCADE, db_column='idTecnico', blank=True, null=True)  # Field name made lowercase.
+    idcita = models.ForeignKey(Citas, models.CASCADE, db_column='idCita', blank=True, null=True)  # Field name made lowercase.
     iddisponibilidadcronograma = models.ForeignKey('Disponibilidadcronogramas', models.DO_NOTHING, db_column='idDisponibilidadCronograma', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:

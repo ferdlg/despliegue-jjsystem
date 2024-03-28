@@ -11,13 +11,14 @@
                 </div>
                 <button type="submit" style="display: none;"></button> <!-- Botón oculto para enviar el formulario -->
                 {% if citas_filtradas %}
-                <table class="table table-striped" style="margin-top: 10px;">
+                <table class="table  table-striped" style="margin-top: 10px; background-color: rgba(0, 128, 0, 0.5) !important;">
                     <caption>Citas programadas para {{fecha_obj}}</caption>
                     <thead>
                         <tr>
                             <th scope="col">No. Cita</th>
                             <th scope="col">Descripción</th>
                             <th scope="col">Fecha</th>
+                            <th scope="col">Hora</th>
                             <th scope="col">Dirección</th>
                         </tr>
                     </thead>
@@ -27,6 +28,7 @@
                             <td>{{ cita.idcita }}</td>
                             <td>{{ cita.descripcioncita }}</td>
                             <td>{{ cita.fechacita }}</td>
+                            <td>{{ cita.horacita }}</td>
                             <td>{{ cita.direccioncita }}</td>
                         </tr>
                         {% endfor %}
@@ -39,40 +41,50 @@
                 {% endif %}
             </form>
         </div>
-        <div class="col-md-6">
-            <h5 style="color: black;">Citas Agendadas</h5>
-            <table class="table table-striped" >
-                <thead>
-                    <tr class="table-info">
-                        <th scope="col">No. Cita</th>
-                        <th scope="col">Descripcion</th>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Direccion</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for cita in todas_las_citas %}
-                    <tr class="cita-row" data-cita-id="{{ cita.idcita }}"">
-                        <td>{{ cita.idcita }}</td>
-                        <td>{{ cita.descripcioncita }}</td>
-                        <td>{{ cita.fechacita }}</td>
-                        <td>{{ cita.direccioncita }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% for cita_cliente in cliente_cita %}
-            <div class="card" style="max-height: 300px;">
-                <div class="card-body">
+        <h5 style="color: black;">Citas Agendadas</h5>
+        <table class="table table-striped" >
+            <thead>
+                <tr class="table-info">
+                    <th scope="col">No. Cita</th>
+                    <th scope="col">Descripcion</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Hora</th>
+                    <th scope="col">Direccion</th>
+                    <th scope="col">Cliente</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cita in todas_las_citas %}
+                <tr class="cita-row" data-cita-id="{{ cita.idcita }}"">
+                    <td>{{ cita.idcita }}</td>
+                    <td>{{ cita.descripcioncita }}</td>
+                    <td>{{ cita.fechacita }}</td>
+                    <td>{{ cita.horacita }}</td>
+                    <td>{{ cita.direccioncita }}</td>
+                    <td>{{ cita.idcotizacion.idcliente.numerodocumento.nombre }} {{ cita.idcotizacion.idcliente.numerodocumento.apellido }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <h4 style="color: black;">Datos de contacto </h4>
+    </div>
+    <div class="col-md-12" style="display: flex; flex-wrap: wrap; margin-right: 10px;">
+        {% for cita_cliente in cliente_cita %}
+        <div class="col-lg-4 col-md-6 col-sm-12" style="margin-bottom: 10px;">
+            <div class="card" style="max-height: 200px;">
+                <div class="card-body" style="padding: 10px; background-color: rgba(0, 128, 0, 0.123);">
                     <div class="card-title">{{ cita_cliente.cliente.numerodocumento.nombre }} {{ cita_cliente.cliente.numerodocumento.apellido }}</div>
-                    <div class="card-body">
-                        <p >Email: {{ cita_cliente.cliente.numerodocumento.email }}</p>
-                        <p >Número de contacto: {{ cita_cliente.cliente.numerodocumento.numerocontacto }}</p>
-                    </div>
+                    <p>Email: {{ cita_cliente.cliente.numerodocumento.email }}</p>
+                    <p>Número de contacto: {{ cita_cliente.cliente.numerodocumento.numerocontacto }}</p>
                 </div>
-            </div>            
-            {% endfor %}
+            </div>
         </div>
+        {% endfor %}
+    </div>
+    
+    <div class="col-md-12">
     </div>
 </div>
 
@@ -92,31 +104,4 @@
         timeoutId = setTimeout(enviarFormulario, 1000); // 4000 milisegundos = 4 segundos
     });
 </script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var citaRows = document.querySelectorAll('.cita-row');
-
-        citaRows.forEach(function(row) {
-            row.addEventListener('click', function() {
-                // Ocultar todas las tarjetas de cliente
-                var todasLasTarjetas = document.querySelectorAll('.card');
-                todasLasTarjetas.forEach(function(tarjeta) {
-                    tarjeta.style.display = 'none';
-                });
-
-                // Obtener el ID de la cita seleccionada
-                var citaId = row.getAttribute('data-idcita');
-
-                // Mostrar la tarjeta de cliente correspondiente a la cita seleccionada
-                var tarjetaCliente = document.querySelector('.card[data-idcita="' + citaId + '"]');
-                if (tarjetaCliente) {
-                    tarjetaCliente.style.display = 'block';
-                }
-            });
-        });
-    });
-</script>
-
-
-
 {% endblock %}
