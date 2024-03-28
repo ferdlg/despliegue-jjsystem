@@ -1,4 +1,4 @@
-{% extends "landing/menuLanding.html" %}
+{% extends "menu.html" %}
 {% block titulo %} Mi perfil {% endblock %}
 {% load static %} 
 {% block contenido %}
@@ -18,7 +18,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             {% endif %}
-                <form id="perfil-form" method="POST" action="{% url 'actualizar_mis_datos' %}">
+                <form id="perfil-form" method="POST" action="{% url 'mi_perfil' %}">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombres </label>
@@ -57,7 +57,7 @@
                         </div>
                         <div class="modal-body">
                             <p>Ingresa tu contraseña actual</p>
-                            <form method="post" action="{% url 'validar_password'  %}">
+                            <form method="post" action="{% url 'index_validar_password'  %}">
                                 {% csrf_token %}
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Contraseña</label>

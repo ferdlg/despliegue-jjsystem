@@ -108,7 +108,8 @@ class Categoriasservicios(models.Model):
 
 class Citas(models.Model):
     idcita = models.AutoField(db_column='idCita', primary_key=True)  # Field name made lowercase.
-    fechacita = models.DateField(db_column='fechaCita')  # Field name made lowercase.
+    fechacita = models.DateField(db_column='fechaCita') 
+    horacita = models.TimeField(db_column='horaCita')
     direccioncita = models.CharField(db_column='direccionCita', max_length=50)  # Field name made lowercase.
     contactocliente = models.BigIntegerField(db_column='contactoCliente')  # Field name made lowercase.
     descripcioncita = models.TextField(db_column='descripcionCita')  # Field name made lowercase.

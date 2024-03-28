@@ -12,9 +12,10 @@
     <link rel="stylesheet" href="{% static 'css/citas.css' %}">
     <link rel="stylesheet" href="{% static 'css/IndexProductosServicios.css' %}">
     <link rel="stylesheet" href="{% static 'css/EditarProductosServicios.css' %}">
-    <link href="/static/node_modules/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    {%block extra%}{% endblock%}
     <title>{% block titulo %}{% endblock %}</title>
 </head>
+
 <body>
   <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
@@ -27,7 +28,7 @@
           <img src="{% static 'images/fotoperfil.png' %}" class="img-fluid rounded-circle avatar mr-2" alt="Foto de perfil">
         </a>
         <div class="dropdown-menu dropdown-menu-dark">
-          <a class="dropdown-item" href="#">Mi perfil</a>
+          <a class="dropdown-item" href="{% url 'mi_perfil' %}">Mi perfil</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>        
         </div>
@@ -63,16 +64,16 @@
           {% if user.is_authenticated and user.idrol.idrol == 3 %}
           <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{% url 'inicio' %}">Mi agenda</a>
+              <a class="nav-link" aria-current="page" href="{% url 'mi_agenda' %}">Mi agenda</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'home' %}">Mis actividades</a>
+              <a class="nav-link" href="{% url 'mis_actividades' %}">Mis actividades</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'index' %}">Mis envios</a>
+              <a class="nav-link" href="#">Mis envios</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'homeEnvios' %}">Mis citas</a>
+              <a class="nav-link" href="{% url 'mis_citas' %}">Mis citas</a>
             </li>
           </ul>
           {% endif %}
@@ -91,6 +92,5 @@
     </div>
   </footer>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="/static/node_modules/bootstrap-icons/bootstrap-icons.js"></script>
 </body>
 </html>

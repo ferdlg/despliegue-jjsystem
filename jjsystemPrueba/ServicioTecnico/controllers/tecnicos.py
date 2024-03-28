@@ -3,7 +3,7 @@ from rest_framework import viewsets, status
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
 from Account.forms import RegisterForm
-from Account.models import Estadosusuarios, Roles, Tecnicos
+from Account.models import Estadosusuarios, Roles, Tecnicos, Especialidadtecnicos, Usuarios
 from .serializers import TecnicosSerializer
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 from ServicioTecnico.forms import  RegisterForm, EditTecnicosForm
@@ -29,7 +29,7 @@ class tecnicosCRUD(viewsets.ModelViewSet):
             tecnico = paginator.page(paginator.num_pages)
         return render(request, 'vertecnicos.html', {'tecnicos': tecnico,'form': form, 'edit_form': edit_form })
     
-    
+    @classmethod
     def registrar_tecnico(cls, request):
         if request.method == 'POST':
             form = RegisterForm(request.POST)
@@ -48,7 +48,7 @@ class tecnicosCRUD(viewsets.ModelViewSet):
 
         return render(request, 'vertecnicos.html', {'form': form})
     @classmethod
-    def editar_tecnico(cls, request, idtecnico):
+    def editar_especialidad(cls, request, idtecnico):
         tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
         if request.method == 'POST':
             edit_form = EditTecnicosForm(request.POST, instance=tecnico)
@@ -58,8 +58,29 @@ class tecnicosCRUD(viewsets.ModelViewSet):
         else:
             form = EditTecnicosForm(instance=tecnico)
         
-        return render(request, 'verTecnicos.html', {'edit_form': edit_form, 'idtecnico': idtecnico})
+        return render(request, 'verTecnicos.html', {'edit_form': edit_form, 'tecnico':tecnico,'idtecnico': idtecnico})
+    @classmethod
+    def editar_datos_tecnico(cls, request, idtecnico):
+        tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
+        usuario = Usuarios.objects.get(numerodocumento=tecnico.numerodocumento.numerodocumento)
+
+        if request.method == 'POST':
+            # Obtener los datos del formulario
+            nombre = request.POST.get('nombre')
+            apellido = request.POST.get('apellido')
+            email = request.POST.get('email')
+
+            # Actualizar los datos del usuario
+            usuario.nombre = nombre
+            usuario.apellido = apellido
+            usuario.email = email
+            usuario.save()
+
+            return redirect('verTecnicos')
+        else:
+            return render(request, 'verTecnicos.html', {'tecnico': tecnico, 'idtecnico': idtecnico})
     
+    @classmethod
     def eliminar_tecnico(self, request, idtecnico):
             tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
             tecnico.delete()
@@ -73,3 +94,12 @@ class tecnicosCRUD(viewsets.ModelViewSet):
     #actualizar datos de tecnicos
     #eliminar tecnicos
     #que la contraseña inicialmente sea el numero de documento 
+
+def tecnico_home(request):
+    return render(request, 'Tecnicos/home.html')
+def mi_agenda(request):
+    return render(request, 'Tecnicos/mi_agenda.html')
+def mis_citas(request):
+    return render(request, 'Tecnicos/mis_citas.html')
+def mis_actividades(request):
+    return render(request, 'Tecnicos/mis_actividades.html')

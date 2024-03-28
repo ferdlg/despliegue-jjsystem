@@ -14,12 +14,12 @@
 <body>
     <nav class="navbar-landing">
         <div class="container-fluid">
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and user.idrol.idrol == 2 %}
             <a class="navbar-brand" href="{% url 'productos' %}" style="text-decoration: none; color: #263465;">JJSYSTEM</a>
             {% else %}
             <a class="navbar-brand" href="{% url 'landing' %}" style="text-decoration: none; color: #263465;">JJSYSTEM</a>
             {% endif %} 
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and user.idrol.idrol == 2 %}
                 <a style="text-decoration: none; color: black;">{{user.nombre}} {{user.apellido}}</a>
             {% else %} 
             <button ><a href="{% url 'login' %}">Iniciar sesión </a></button>
@@ -49,7 +49,7 @@
             </form>            
             <button class="btn btn-info"><a class="navbar-brand" href="{% url 'productos' %}">Productos</a></button>
             <button class="btn btn-info"><a class="navbar-brand" href="{% url 'servicios' %}">Servicios</a></button>
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and user.idrol.idrol == 2 %}
             <button class="btn btn-info"><a class="navbar-brand" href="{% url 'historial_compras' %}">Mis compras</a></button>
             <button class="btn btn-info"><a class="navbar-brand" href="{% url 'vista_cliente' %}">Mis envios</a></button>
             {% else %}
@@ -57,7 +57,7 @@
             <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Acerca de nosotros</button>
             {% endif %} 
             <button class="btn btn-info"><a class="navbar-brand" href="#">PQRSF</a></button>
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and user.idrol.idrol == 2 %}
                 <a class="navbar-brand" href="{% url 'ir_a_cotizaciones' %}"> Cotizar
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
                         <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4z"/>

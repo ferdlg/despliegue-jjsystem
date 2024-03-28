@@ -42,7 +42,7 @@ def userLogin(request):
         elif request.user.idrol.idrol == 2:
             return redirect('productos')
         elif request.user.idrol.idrol == 3:
-            return redirect('homeTecnicosEnvios')
+            return redirect('tecnico_home')
         else:
             return redirect('Ingrese con un rol valido')
 
@@ -67,7 +67,7 @@ def userLogin(request):
                     # Redireccionar al cliente a una vista especial
                     return redirect('productos')
                 elif user.idrol.idrol == 3:
-                    return redirect('homeTecnicosEnvios')
+                    return redirect('tecnico_home')
                 else:
                     return redirect('vista_por_defecto')
             else:
