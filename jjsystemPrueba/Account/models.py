@@ -12,7 +12,7 @@ class Actividadescronogramatecnicos(models.Model):
 
 class Administrador(models.Model):
     idadministrador = models.AutoField(db_column='idAdministrador', primary_key=True)  # Field name made lowercase.
-    numerodocumento = models.ForeignKey('Usuarios', models.DO_NOTHING, db_column='numeroDocumento')  # Field name made lowercase.
+    numerodocumento = models.ForeignKey('Usuarios', models.CASCADE, db_column='numeroDocumento')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -126,7 +126,7 @@ class Citas(models.Model):
 class Clientes(models.Model):
     idcliente = models.AutoField(db_column='idCliente', primary_key=True)  # Field name made lowercase.
     direccioncliente = models.CharField(db_column='direccionCliente', max_length=50)  # Field name made lowercase.
-    numerodocumento = models.ForeignKey('Usuarios', models.DO_NOTHING, db_column='numeroDocumento')  # Field name made lowercase.
+    numerodocumento = models.ForeignKey('Usuarios', models.CASCADE, db_column='numeroDocumento')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -458,7 +458,7 @@ class Especialidadtecnicos(models.Model):
 class Tecnicos(models.Model):
     idtecnico = models.AutoField(primary_key=True)
     id_especialidad_fk = models.ForeignKey('Especialidadtecnicos', models.DO_NOTHING, db_column='id_especialidad_fk')
-    numerodocumento = models.ForeignKey('Usuarios', models.DO_NOTHING, db_column='numeroDocumento')
+    numerodocumento = models.ForeignKey('Usuarios', models.CASCADE, db_column='numeroDocumento')
 
     def __str__(self):
         return str(self.idtecnico)

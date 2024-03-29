@@ -43,8 +43,8 @@
                 {% for cita in citas_page %}
                 <tr>
                     <td>{{ cita.idcita }}</td>
-                    <td>{{ cita.fechacita }}</td>
-                    <td>{{ cita.horacita }}</td>
+                    <td>{{ cita.fechacita|date:"Y-m-d" }}</td>
+                    <td>{{ cita.horacita|time:"g:i A" }}</td>
                     <td>{{ cita.direccioncita }}</td>
                     <td>{{ cita.contactocliente }}</td>
                     <td>{{ cita.descripcioncita }}</td>
