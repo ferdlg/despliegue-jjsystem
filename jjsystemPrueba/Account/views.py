@@ -17,22 +17,45 @@ from django.contrib.auth.models import User
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from django.contrib import messages
+
 
 def registerView(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            # Cifrar la contraseña antes de guardarla
-            user.password = make_password(form.cleaned_data['password'])
-            user.idrol = Roles.objects.get(idrol=2)  # Asigna el rol de cliente
-            user.idestadosusuarios = Estadosusuarios.objects.get(idestadousuario=1)  # Asigna el estado de usuario activo
-            user.save()
-            return redirect('login')
+            email = form.cleaned_data['email']
+            # Verificar si el correo electrónico ya está registrado
+            if Usuarios.objects.filter(email=email).exists():
+                messages.error(request, 'Este correo electrónico ya está registrado.')
+            else:
+                # Verificar la complejidad de la contraseña
+                password = form.cleaned_data['password']
+                if len(password) < 8:
+                    messages.error(request, 'La contraseña debe tener al menos 8 caracteres.')
+                elif not any(char.isupper() for char in password):
+                    messages.error(request, 'La contraseña debe contener al menos una letra mayúscula.')
+                elif not any(char.islower() for char in password):
+                    messages.error(request, 'La contraseña debe contener al menos una letra minúscula.')
+                elif not any(char.isdigit() for char in password):
+                    messages.error(request, 'La contraseña debe contener al menos un número.')
+                elif not any(char in '!@#$%^&*()_+=-{}[]:;\'\"|<>,.?/~`' for char in password):
+                    messages.error(request, 'La contraseña debe contener al menos un caracter especial.')
+                else:
+                    # Si pasa todas las validaciones, guarda el usuario
+                    user = form.save(commit=False)
+                    user.password = make_password(password)
+                    user.idrol = Roles.objects.get(idrol=2)  # Asigna el rol de cliente
+                    user.idestadosusuarios = Estadosusuarios.objects.get(idestadousuario=1)  # Asigna el estado de usuario activo
+                    user.save()
+                    return redirect('login')
+        else:
+            messages.error(request, 'Por favor, corrija los errores.')
     else:
         form = RegisterForm()
 
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'Register.html', {'form': form})
+
 
 def userLogin(request):
     if request.user.is_authenticated:

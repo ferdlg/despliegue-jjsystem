@@ -135,14 +135,14 @@ def enviosCliente(request):
 
     # Obtener todas las ventas del cliente autenticado que tienen un envío asociado
     ventas_con_envio = Ventas.objects.filter(idcotizacion__idcliente__numerodocumento=numerodocumento, idenvio__isnull=False)
-
+    detallesEnvio = DetalleEnviosVentas.objects.all()
     # Obtener los ids de envío asociados a estas ventas
     ids_envios = ventas_con_envio.values_list('idenvio', flat=True)
 
     # Obtener los objetos de envío correspondientes a los ids de envío obtenidos
     envios = Envios.objects.filter(idenvio__in=ids_envios)
 
-    return render(request, 'cliente/EnviosCliente.html', {'envios': envios})
+    return render(request, 'cliente/EnviosCliente.html', {'envios': envios, "detallesEnvio": detallesEnvio})
 
     
 def historialEnviosCliente(request):
@@ -151,7 +151,7 @@ def historialEnviosCliente(request):
 
     # Obtener todas las ventas del cliente autenticado que tienen un envío asociado
     ventas_con_envio = Ventas.objects.filter(idcotizacion__idcliente__numerodocumento=numerodocumento, idenvio__isnull=False)
-
+    detallesEnvio = DetalleEnviosVentas.objects.all()
     # Obtener los ids de envío asociados a estas ventas
     ids_envios = ventas_con_envio.values_list('idenvio', flat=True)
 
@@ -161,7 +161,7 @@ def historialEnviosCliente(request):
     # Filtrar solo los envíos con estado "Entregado"
     envios_entregados = envios.filter(idestadoenvio__nombreestadoenvio="Entregado")
 
-    return render(request, 'cliente/HistorialEnviosCliente.html', {'envios': envios_entregados})
+    return render(request, 'cliente/HistorialEnviosCliente.html', {'envios': envios_entregados, "detallesEnvio": detallesEnvio})
 
 #PDF
 
