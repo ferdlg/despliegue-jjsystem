@@ -60,6 +60,7 @@ urlpatterns=[
 
     path('index/tecnicos/ver_tecnicos/registrar_tecnico/', tecnicosCRUD.as_view({'post':'registrar_tecnico'}), name='registrar_tecnico'),
     path('index/tecnicos/ver_tecnicos/editar_especialidad/<idtecnico>', tecnicosCRUD.as_view({'post':'editar_especialidad'}), name='editar_especialidad'),
+    path('index/tecnicos/ver_tecnicos/ver_agenda/<idtecnico>', cronogramatecnicosCRUD.as_view({'post':'admin_ver_agenda_tecnico', 'get':'admin_ver_agenda_tecnico'}), name='admin_ver_agenda_tecnico'),
     path('crear_cotizaciones/productos_servicios/<int:idcotizacion>/', CotizacionesCRUD.as_view({'post':'asignar_productos_servicios', 'get':'asignar_productos_servicios'}), name='asignar_productos_servicios'),
     path('eliminar_cotizacion/<int:idcotizacion>/', CotizacionesCRUD.as_view({'post': 'eliminar_cotizacion'}), name='eliminar_cotizacion'),
 

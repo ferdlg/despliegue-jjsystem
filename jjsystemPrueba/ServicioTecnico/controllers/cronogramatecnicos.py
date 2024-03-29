@@ -9,11 +9,9 @@ class cronogramatecnicosCRUD(viewsets.ModelViewSet):
     queryset = Cronogramatecnicos.objects.all()
     serializer_class = CronogramatecnicosSerializer
 
-    def ver_agenda(request, idtecnico):
+    def ver_agenda(request):
         try:
-            cronograma = Cronogramatecnicos.objects.get(idtecnico = idtecnico)
-
-            return render(request, 'mi_agenda.html',{'agenda':cronograma})
+            return render(request, 'mi_agenda.html')
         except Cronogramatecnicos.DoesNotExist:
             return render(request, 'mi_agenda.html',{'agenda':'Aun no tienes agenda'})
         
@@ -56,3 +54,46 @@ class cronogramatecnicosCRUD(viewsets.ModelViewSet):
         eventos_json = json.dumps(eventos)
         print(eventos_json)
         return render(request, 'Tecnicos/mi_agenda.html', {'eventos_json': eventos_json})
+    
+    #vista Administrador ve agenda del tecnico 
+    def admin_ver_agenda_tecnico(self, request, idtecnico):
+        try:
+            tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
+            todas_las_citas = Citas.objects.filter(idtecnico=idtecnico)
+            eventos = []
+            for cita in todas_las_citas:
+                fecha_hora_inicio = datetime.combine(cita.fechacita, cita.horacita)
+                eventos.append({
+                'title': cita.descripcioncita,
+                'start': fecha_hora_inicio.strftime('%Y-%m-%d %H:%M:%S'),
+                })
+
+            eventos_json = json.dumps(eventos)
+            print(eventos_json)
+            cliente_cita = []
+            for cita in todas_las_citas:
+                cliente = Clientes.objects.get(numerodocumento=cita.idcotizacion.idcliente.numerodocumento)
+                cliente_cita.append({'cita': cita, 'cliente': cliente})
+
+            fecha_obj = None
+            fecha_filtro = request.GET.get('fechacita')
+            if fecha_filtro:
+                try:
+                    fecha_obj = datetime.strptime(fecha_filtro, '%Y-%m-%d').date()
+                    citas_filtradas = todas_las_citas.filter(fechacita=fecha_obj)
+                except ValueError:
+                    mensaje = 'Formato de fecha inválido. Utilice el formato AAAA-MM-DD.'
+                    return render(request, 'mensaje.html', {'mensaje': mensaje})
+            else:
+                citas_filtradas = []
+
+            return render(request, 'Admin-Agendas/tecnico_agenda.html', {
+                'todas_las_citas': todas_las_citas,
+                'citas_filtradas': citas_filtradas,
+                'fecha_obj': fecha_obj,
+                'cliente_cita': cliente_cita,
+                'tecnico':tecnico,
+                'eventos_json': eventos_json})
+        except Tecnicos.DoesNotExist:
+            return render(request, 'Admin-Agendas/tecnico_agenda.html', {'mensaje': 'El técnico especificado no existe'})
+        

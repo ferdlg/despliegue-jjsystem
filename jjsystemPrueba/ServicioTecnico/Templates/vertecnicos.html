@@ -96,7 +96,7 @@
                         <a href="{% url 'eliminar_tecnico' idtecnico=tecnico.idtecnico%}" class="btn btn-danger btn-sw"> Eliminar </a>
                     </td>
                     <td>
-                        <a href="#" class="btn btn-info btn-sw"> Ver Agenda </a>
+                        <a href="{% url 'admin_ver_agenda_tecnico' idtecnico=tecnico.idtecnico %}" class="btn btn-info btn-sw"> Ver Agenda </a>
                     </td>
                 </tr>
                 {% endfor %}
