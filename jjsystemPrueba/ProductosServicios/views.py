@@ -50,7 +50,3 @@ def buscar_productos_servicios(request):
         return render(request, 'landing/resultados_busqueda.html', {'productos': productos, 'servicios': servicios})
     else:
         return render(request, 'landing/index.html')
-
-
-def agregar_producto_cotizacion(request):
-    return

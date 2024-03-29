@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from Account.models import Categoriasproductos
 from .serializers import CategoriasProductosSerializers
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
-
+from django.contrib import messages
 
 #definimos la clase 
 class categoriaproductosCRUD(viewsets.ModelViewSet):
@@ -38,6 +38,7 @@ def createCategoriaProductoView(request):
         categoria = Categoriasproductos.objects.create(
                 nombrecategoria = nombrecategoria
             )
+        messages.success(request, 'Categoria creada correctamente')
         return redirect('categoriaProductos')
 
     return render(request, "crudAdmin/categoriasProductos.html", {"categoria": categoria})
@@ -51,6 +52,7 @@ def editarCategoriaProductoView(request, idCategoriaProducto):
         categoria.nombrecategoria = nombrecategoria
         categoria.save()
 
+        messages.success(request, 'Categoria modificada correctamente')
         return redirect('categoriaProductos')
 
     return render(request, "crudAdmin/categoriasProductos.html", {"categoria": categoria})
@@ -58,5 +60,5 @@ def editarCategoriaProductoView(request, idCategoriaProducto):
 def eliminarCategoriaProductoView(request, idCategoriaProducto):
     categoria = Categoriasproductos.objects.get(idcategoriaproducto = idCategoriaProducto)
     categoria.delete()
-
+    messages.success(request, 'Categoria eliminada correctamente')
     return redirect('categoriaProductos')

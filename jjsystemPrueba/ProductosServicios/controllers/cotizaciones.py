@@ -4,6 +4,8 @@ from requests import request
 from ServicioTecnico.controllers.cotizaciones import CotizacionesCRUD as BaseCotizacionesCRUD
 from Account.models import *
 from django.db import connection
+from django.contrib import messages
+
 
 class CotizacionesCRUD(BaseCotizacionesCRUD):
     # Métodos heredados de la clase base
@@ -31,6 +33,7 @@ class CotizacionesCRUD(BaseCotizacionesCRUD):
             # Redirigir a la vista para agregar productos a la cotización recién creada
             return redirect('asignar_productos_servicios_cliente', id_cotizacion=nueva_cotizacion.idcotizacion)
         # Renderizar el formulario de creación de cotización
+
         return render(request, 'cliente/crear_cotizacion.html')
     
     def asignar_productos_servicios_cliente(self,request, id_cotizacion):
@@ -50,7 +53,8 @@ class CotizacionesCRUD(BaseCotizacionesCRUD):
                         cantidad=cantidad
                     )
                 else:
-                    print("No se ha ingresado una cantidad para el producto", idproducto)
+                    messages.error(request, 'No se ha ingresado la cantidad')
+
 
             for idservicio in servicios_seleccionados:
                 servicio = Servicios.objects.get(idservicio=idservicio)
@@ -62,9 +66,9 @@ class CotizacionesCRUD(BaseCotizacionesCRUD):
             productos = Productos.objects.all()
             servicios = Servicios.objects.all()
 
+            messages.success(request, 'Se ha creado tu cotizacion correctamente')
             return redirect('ver_cotizacion_cliente', id_cotizacion=id_cotizacion )
             
-
         else:
             productos = Productos.objects.all()
             servicios = Servicios.objects.all()

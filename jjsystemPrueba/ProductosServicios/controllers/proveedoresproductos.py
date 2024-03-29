@@ -4,6 +4,7 @@ from .serializers import ProveedoresProductosSerializer
 from django.shortcuts import redirect, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from Account.models import Proveedoresproductos
+from django.contrib import messages
 
 
 class proveedoresCRUD(viewsets.ModelViewSet):
@@ -30,6 +31,7 @@ def createProveedorProductoView(request):
         proveedor = Proveedoresproductos.objects.create(
             nombreproveedor=nombreproveedor
         )
+        messages.success(request, 'Proveedor creado correctamente')
         return redirect('proveedorProductos')
 
     return render(request, "crudAdmin/proveedoresProductos.html")
@@ -40,6 +42,7 @@ def editarProveedorProductoView(request, idProveedorProducto):
         nombreproveedor = request.POST.get('nombreProveedor')
         proveedor.nombreproveedor = nombreproveedor
         proveedor.save()
+        messages.success(request, 'Proveedor modificado correctamente')
         return redirect('proveedorProductos')
 
     return render(request, "crudAdmin/proveedoresProductos.html", {"proveedor": proveedor})
@@ -47,4 +50,5 @@ def editarProveedorProductoView(request, idProveedorProducto):
 def eliminarProveedorProductoView(request, idProveedorProducto):
     proveedor = Proveedoresproductos.objects.get(idproveedorproducto=idProveedorProducto)
     proveedor.delete()
+    messages.success(request, 'Proveedor eliminado correctamente')
     return redirect('proveedorProductos')

@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from Account.models import Categoriasservicios
 from .serializers import CategoriasServiciosSerializers
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
+from django.contrib import messages
 
 
 class categoriaserviciosCRUD(viewsets.ModelViewSet):
@@ -35,6 +36,7 @@ def createCategoriaServicioView(request):
         categoria = Categoriasservicios.objects.create(
                 nombrecategoria = nombrecategoria
             )
+        messages.success(request, 'Categoria creada correctamente')
         return redirect('categoriaServicios')
 
     return render(request, "crudAdmin/categoriasServicios.html")
@@ -47,7 +49,7 @@ def editarCategoriaServicioView(request, idCategoriaServicio):
         # Actualizar los campos del objeto categoría de servicio
         categoria.nombrecategoria = nombrecategoria
         categoria.save()
-
+        messages.success(request, 'Categoria modificada correctamente')
         return redirect('categoriaServicios')
 
     return render(request, "crudAdmin/categoriasServicios.html", {"categoria": categoria})
@@ -56,4 +58,5 @@ def eliminarCategoriaServicioView(request, idCategoriaServicio):
     categoria = Categoriasservicios.objects.get(idcategoriaservicio=idCategoriaServicio)
     categoria.delete()
 
+    messages.success(request, 'Categoria eliminada correctamente')
     return redirect('categoriaServicios')

@@ -38,9 +38,9 @@
                 <label for="categoria" class="col-sm-2 col-form-label">Categoria Servicio:</label>
                 <div class="col-sm-5">
                     <select name="categoria" id="categoria" class="form-select" required>
-                        <option value="">Seleccione la categoria: </option>
+                        <option>Seleccione la categoria: </option>
                         {% for categoria in categorias %}
-                        <option value="{{ categoria.idcategoriasservicio }}">{{ categoria.nombrecategoria }}</option>
+                        <option value="{{ categoria.idcategoriaservicio }}">{{ categoria.nombrecategoria }}</option>
                         {% endfor %}
                     </select>
                 </div>

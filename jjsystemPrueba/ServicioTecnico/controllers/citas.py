@@ -113,8 +113,8 @@ class citasCRUD(viewsets.ModelViewSet):
                     idcotizacion=cotizacion,
                     idestadocita=estadocita
                 )
-                
-                return redirect('cita_analisis')
+                mensaje = ('Se ha registrado exitosamente')
+                return render(request, 'menu.html', {'mensaje':mensaje})
 
             except Tecnicos.DoesNotExist:
                 # Mensaje de error para el usuario
@@ -124,8 +124,10 @@ class citasCRUD(viewsets.ModelViewSet):
                 # Mensaje de error para el usuario
                 mensaje = ('No se encontró el estado de la cita.')
                 return render( request, 'mensaje.html', {'mensaje':mensaje})
+        else:
+            mensaje = ('Ocurrio un error al intentar registrar la cita, intentalo de nuevo.')
+            return render( request, 'mensaje.html', {'mensaje':mensaje})
 
-        return redirect('index')
 
     
     def editar_citas(self, request, idcita):

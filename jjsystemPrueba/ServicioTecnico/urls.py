@@ -1,7 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from .controllers.actividadesCrogTec import actividadesCrogTecCRUD
 from .controllers.citas import citasCRUD
 from .controllers.cotizaciones import CotizacionesCRUD, generar_pdf
 from .controllers.cronogramatecnicos import cronogramatecnicosCRUD
@@ -14,7 +13,6 @@ from .controllers.clientes import ClientesCRUD
 #urls back 
 
 router = DefaultRouter()
-router.register(r'actividades_cronograma', actividadesCrogTecCRUD)
 router.register(r'citas',citasCRUD)
 router.register(r'cotizaciones', CotizacionesCRUD)
 router.register(r'cronograma_tecnicos', cronogramatecnicosCRUD)
