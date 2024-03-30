@@ -29,9 +29,8 @@ class ventasCRUD(viewsets.ModelViewSet):
         if compras:
             return render(request, 'cliente/compras.html', {"compras": compras})
         else:
-            mensaje = 'Aún no tienes compras.'
-            return render(request, 'mensaje.html', {'mensaje': mensaje})
-
+            messages.warning(request, 'Aun no tienes compras para mostrar')
+            return render(request, 'cliente/compras.html')
 # Ventas en dashboard admin
 def home_ventas(request):
     idventa = request.GET.get('idventa')

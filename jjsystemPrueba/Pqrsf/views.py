@@ -4,7 +4,7 @@ from Account.models import Estadospqrsf
 from Account.models import Tipospqrsf
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 
-# Create your views here
+# Admin
 def home_pqrsf(request):
     # Obtener los tipos de PQRSF para el filtro
     tipos = Tipospqrsf.objects.all()
@@ -24,47 +24,13 @@ def home_pqrsf(request):
     except EmptyPage:
         pqrsf_item = paginator.page(paginator.num_pages)
     
-    return render(request, "pqrsf.html", {"pqrsf": pqrsf_item, 'tipos': tipos})
+    return render(request, "admin/pqrsf.html", {"pqrsf": pqrsf_item, 'tipos': tipos})
 
     
 
 def indexPqrsf(request):
-    return render(request, 'indexPqrsf.html')
+    return render(request, 'admin/indexPqrsf.html')
 
-def editPqrsf(request):
-    return render(request, 'editPqrsf.html')
-
-def createPqrsf(request):
-    return render(request, 'createPqrsf.html')  
-
-
-def createPqrsfView(request):
-    if request.method == 'POST':
-        fechapqrsf = request.POST.get('fecha')
-        informacionpqrsf = request.POST.get('informacion')
-        estadopqrsf = request.POST.get('estado')
-        tipopqrsf = request.POST.get('tipo')
-
-        # Obtener la instancia de EstadosPqrsf
-        estado = Estadospqrsf.objects.get(idestadopqrsf=estadopqrsf)
-
-        # Obtener la instancia de TiposPqrsf
-        tipo = Tipospqrsf.objects.get(idtipopqrsf=tipopqrsf)
-
-        # Crear la instancia de Pqrsf
-        pqrsf = Pqrsf.objects.create(
-            fechapqrsf=fechapqrsf,
-            informacionpqrsf=informacionpqrsf,
-            estadopqrsf=estadopqrsf,
-            tipopqrsf=tipopqrsf
-        )
-
-        return redirect('indexPqrsf')
-
-
-    estados = Estadospqrsf.objects.all()
-    tipos = Tipospqrsf.objects.all()
-    return render(request, "createPqrsf.html", {"estados": estados, "tipos": tipos})    
 
 def editarPqrsf(request, idPqrsf):
     pqrsf_item = Pqrsf.objects.get(idpqrsf=idPqrsf)

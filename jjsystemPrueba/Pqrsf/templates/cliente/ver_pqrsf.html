@@ -23,18 +23,10 @@
                                 
                                 <label for="idtipopqrsf">Tipo PQRSF:</label>
                                 <select class="form-control" id="idtipopqrsf" name="idtipopqrsf" style="color: black;" required>
-                                    {% for tipo_pqrsf in tipos_pqrsf %}
-                                        <option value="{{ tipo_pqrsf.idtipopqrsf }}">{{ tipo_pqrsf.nombretipopqrsf }}</option>
+                                    {% for tipo in tipos %}
+                                        <option value="{{ tipo.idtipopqrsf }}">{{ tipo.nombretipopqrsf }}</option>
                                     {% endfor %}
                                 </select>
-                    
-                                <label for="idestadopqrsf">Estado PQRSF:</label>
-                                <select class="form-control" id="idestadopqrsf" name="idestadopqrsf" style="color: black;" required>
-                                    {% for estado_pqrsf in estados_pqrsf %}
-                                        <option value="{{ estado_pqrsf.idestadopqrsf }}">{{ estado_pqrsf.nombreestadopqrsf }}</option>
-                                    {% endfor %}
-                                </select>
-                                
                                 <label for="informacionpqrsf">Descripción:</label>
                                 <textarea class="form-control" id="informacionpqrsf" name="informacionpqrsf" rows="3" required></textarea>
                             </div>
