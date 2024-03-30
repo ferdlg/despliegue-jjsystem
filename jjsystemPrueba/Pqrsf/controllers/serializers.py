@@ -15,3 +15,8 @@ class TiposPqrsfSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Tipospqrsf
         fields = '__all__'
+
+class RespuestaPqrsfSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Respuestas
+        fields = '__all__'

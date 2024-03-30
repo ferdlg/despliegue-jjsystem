@@ -21,16 +21,6 @@ class CronogramatecnicosSerializer(serializers.ModelSerializer):
         model = Cronogramatecnicos
         fields = '__all__'
 
-class ActividadescronogramatecnicosSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Actividadescronogramatecnicos
-        fields = '__all__'
-
-class DetallesactividadcronogramaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Detallesactividadcronograma
-        fields = '__all__'
-
 class DisponibilidadcronogramasSerializer(serializers.ModelSerializer):
     class Meta:
         model = Disponibilidadcronogramas

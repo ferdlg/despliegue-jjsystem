@@ -1,14 +1,6 @@
 from django.db import models
 
 
-class Actividadescronogramatecnicos(models.Model):
-    idactividadcronogramatecnico = models.AutoField(db_column='idActividadCronogramaTecnico', primary_key=True)  # Field name made lowercase.
-    nombreactividad = models.CharField(db_column='nombreActividad', max_length=30)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'actividadescronogramatecnicos'
-
 
 class Administrador(models.Model):
     idadministrador = models.AutoField(db_column='idAdministrador', primary_key=True)  # Field name made lowercase.
@@ -203,18 +195,6 @@ class DetalleEnviosVentas(models.Model):
     class Meta:
         managed = False
         db_table = 'detalle_envios_y_ventas'
-
-
-class Detallesactividadcronograma(models.Model):
-    iddetalleactividad = models.AutoField(db_column='idDetalleActividad', primary_key=True)  # Field name made lowercase.
-    idcronogramatecnico = models.ForeignKey(Cronogramatecnicos, models.DO_NOTHING, db_column='idCronogramaTecnico', blank=True, null=True)  # Field name made lowercase.
-    idactividadcronogramatecnico = models.ForeignKey(Actividadescronogramatecnicos, models.DO_NOTHING, db_column='idActividadCronogramaTecnico', blank=True, null=True)  # Field name made lowercase.
-    fechaactividadcronograma = models.DateTimeField(db_column='fechaActividadCronograma')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'detallesactividadcronograma'
-
 
 class Detallesventas(models.Model):
     iddetalleventa = models.AutoField(db_column='idDetalleVenta', primary_key=True)  # Field name made lowercase.
