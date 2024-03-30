@@ -17,10 +17,7 @@
                                 <label for="cliente">Cliente:</label>
                                 <input type="number" class="form-control" id="cliente" name="idcliente" readonly value="{{ request.user.numerodocumento }}" required>
                                 <input type="text" class="form-control" id="nombres" name="nombres" readonly style="margin-top: 5px;" placeholder="{{ request.user.nombre }} {{ request.user.apellido }}" required>
-                                
-                                <label for="fechapqrsf">Fecha PQRSF:</label>
-                                <input type="date" class="form-control" id="fechapqrsf" name="fechapqrsf" required>
-                                
+                            
                                 <label for="idtipopqrsf">Tipo PQRSF:</label>
                                 <select class="form-control" id="idtipopqrsf" name="idtipopqrsf" style="color: black;" required>
                                     {% for tipo in tipos %}
@@ -46,14 +43,17 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
+                                    <th scope="col">PQRSF</th>
                                     <th scope="col">Fecha</th>
                                     <th scope="col">Informacion</th>
+                                    <th scope="col">Respuesta</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for pqrsf in pqrsfs %}
                                 <tr>
                                     <td>{{ pqrsf.idpqrsf }}</td>
+                                    <td>{{ pqrsf.idtipopqrsf.nombretipopqrsf }}</td>
                                     <td>{{ pqrsf.fechapqrsf }}</td>
                                     <td>{{ pqrsf.informacionpqrsf }}</td>
                                 </tr>

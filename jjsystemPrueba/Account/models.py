@@ -383,7 +383,7 @@ class Permisos(models.Model):
 
 class Pqrsf(models.Model):
     idpqrsf = models.AutoField(db_column='idPQRSF', primary_key=True)  # Field name made lowercase.
-    fechapqrsf = models.DateField(db_column='fechaPQRSF')  # Field name made lowercase.
+    fechapqrsf = models.DateField(db_column='fechaPQRSF',  auto_now_add=True)  # Field name made lowercase.
     informacionpqrsf = models.TextField(db_column='informacionPQRSF')  # Field name made lowercase.
     idcliente = models.ForeignKey(Clientes, models.DO_NOTHING, db_column='idCliente')  # Field name made lowercase.
     idtipopqrsf = models.ForeignKey('Tipospqrsf', models.DO_NOTHING, db_column='idTipoPQRSF')  # Field name made lowercase.

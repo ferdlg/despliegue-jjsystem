@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import viewsets
 from Account.models import *
 from .serializers import PqrsfSerializer
@@ -19,26 +20,31 @@ class pqrsfCRUD(viewsets.ModelViewSet):
 
         return render(request, 'cliente/ver_pqrsf.html', {'estados':estados,'tipos':tipos, 'pqrsfs':pqrsfs})
     
-    def crear_pqrsf( self, request):
-        if request.method == 'POST':
-            numerodocumento = request.user.numerodocumento
-            cliente = Clientes.objects.get(numerodocumento = numerodocumento)
-            fechapqrsf = request.POST.get('fechapqrsf')
-            informacionpqrsf = request.POST.get('informacionpqrsf')
-            tipo = request.POST.get('idtipopqrsf')
+    def crear_pqrsf(self, request):
+        try:
+            if request.method == 'POST':
+                numerodocumento = request.user.numerodocumento
+                cliente = Clientes.objects.get(numerodocumento=numerodocumento)
+                fechapqrsf = timezone.now().date()
+                informacionpqrsf = request.POST.get('informacionpqrsf')
+                tipo = request.POST.get('idtipopqrsf')
 
-            # Obtener la instancia de EstadosPqrsf
-            estadopqrsf = Estadospqrsf.objects.get(nombreestadopqrsf = 'Solicitada')
-            # Obtener la instancia de TiposPqrsf
-            tipopqrsf = Tipospqrsf.objects.get(idtipopqrsf=tipo)
+                estadopqrsf = Estadospqrsf.objects.get(nombreestadopqrsf='Solicitada')
+                tipopqrsf = Tipospqrsf.objects.get(idtipopqrsf=tipo)
 
-            # Crear la instancia de Pqrsf
-            pqrsf = Pqrsf.objects.create(
-                idcliente = cliente,
-                fechapqrsf=fechapqrsf,
-                informacionpqrsf=informacionpqrsf,
-                idestadopqrsf=estadopqrsf,
-                idtipopqrsf=tipopqrsf
-            )
-            messages.success(request,'Cotización registrada correctamente')
-        return redirect('ir_a_pqrsf')  
+                pqrsf = Pqrsf.objects.create(
+                    idcliente=cliente,
+                    fechapqrsf=fechapqrsf,
+                    informacionpqrsf=informacionpqrsf,
+                    idestadopqrsf=estadopqrsf,
+                    idtipopqrsf=tipopqrsf
+                )
+                messages.success(request, 'Cotización registrada correctamente')
+        except Clientes.DoesNotExist:
+            messages.error(request, 'Cliente no encontrado')
+        except Estadospqrsf.DoesNotExist:
+            messages.error(request, 'Estado de PQRSF no encontrado')
+        except Tipospqrsf.DoesNotExist:
+            messages.error(request, 'Tipo de PQRSF no encontrado')
+        
+        return redirect('ir_a_pqrsf') 
