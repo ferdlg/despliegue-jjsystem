@@ -4,6 +4,8 @@ from Account.models import Citas , Tecnicos, Administrador, Estadoscitas,Cotizac
 from Account.utilities import actualizar_datos_usuario, validar_password, cambiar_password
 from .controllers.serializers import CitasSerializer
 from .controllers.citas import citasCRUD
+from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 
 def index (request):
     estados = Estadoscitas.objects.all()
@@ -23,7 +25,7 @@ def mi_perfil(request):
     if user.idrol.idrol == 1 or user.idrol.idrol == 3:
         return actualizar_datos_usuario(request, 'mi_perfil')
     else:
-        return redirect('mensaje')
+        messages.error(request, 'Debes acceder con un usuario valido')
     
 def validar_contrasena(request):
     return validar_password(request)

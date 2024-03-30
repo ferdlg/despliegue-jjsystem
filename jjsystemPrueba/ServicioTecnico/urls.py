@@ -4,7 +4,6 @@ from rest_framework.routers import DefaultRouter
 from .controllers.citas import citasCRUD
 from .controllers.cotizaciones import CotizacionesCRUD, generar_pdf
 from .controllers.cronogramatecnicos import cronogramatecnicosCRUD
-from .controllers.detallesactividades import detallesactividadesCRUD
 from .controllers.disponibilidadcronograma import disponibilidadcronogramaCRUD
 from .controllers.estadocotizaciones import estadocotizacionesCRUD
 from .controllers.tecnicos import tecnicosCRUD, tecnico_home, mi_agenda, mis_actividades, mis_citas
@@ -16,7 +15,6 @@ router = DefaultRouter()
 router.register(r'citas',citasCRUD)
 router.register(r'cotizaciones', CotizacionesCRUD)
 router.register(r'cronograma_tecnicos', cronogramatecnicosCRUD)
-router.register(r'detalles_actividades',detallesactividadesCRUD)
 router.register(r'disponibilidad_cronograma', disponibilidadcronogramaCRUD)
 router.register(r'estado_cotizaciones',estadocotizacionesCRUD)
 router.register(r'tecnicos', tecnicosCRUD)
