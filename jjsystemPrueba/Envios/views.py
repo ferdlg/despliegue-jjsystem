@@ -11,7 +11,8 @@ from django.template.loader import get_template
 from django.template import Context
 from Account.models import *
 from django.db import connection
-# Create your views here.
+from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 
 def homeEnvios(request):
     search_query = request.GET.get('search', '')
@@ -47,28 +48,24 @@ def createEnvioView(request):
         idestadoenvio = request.POST.get('estado')
 
         try:
-            # Convertir idtecnico a entero
             idtecnico = int(idtecnico)
-            
-            # Obtener la instancia de Tecnicos
             idtecnico = Tecnicos.objects.get(idtecnico=idtecnico)
-
-            # Obtener la instancia de Estadosenvios
             estado = Estadosenvios.objects.get(idestadoenvio=idestadoenvio)
 
-            # Crear la instancia de Envios
             envio = Envios.objects.create(
                 direccionenvio=direccion,
                 idtecnico=idtecnico,
                 idestadoenvio=estado
             )
-
+            messages.success(request, 'Envío programado con éxito')
             return redirect('homeEnvios')
 
         except Tecnicos.DoesNotExist:
-            print("Error: No se encontró el Técnico.")
+            messages.error(request, 'Error: No se encontró el Técnico.')
+            return redirect('homeEnvios')
         except Estadosenvios.DoesNotExist:
-            print("Error: No se encontró el Estado de Envío.")
+            messages.error(request, 'Error: No se encontró el Estado de Envío.')
+            return redirect('homeEnvios')
 
     estados = Estadosenvios.objects.all()
     return render(request, "crudAdmin/Create.html", {"estados": estados})
@@ -76,37 +73,52 @@ def createEnvioView(request):
 #@login_required
 #@role_required(1)
 def editarEnvio(request, idEnvio):
-    envio = Envios.objects.get(idenvio=idEnvio)
-    estados = Estadosenvios.objects.all()
-
-    if request.method == 'POST':
-        # Obtener los datos de la petición
-        direccion = request.POST.get('direccion')
-        idtecnico = int(request.POST.get('idtecnico'))
-        idestadoenvio = int(request.POST.get('estado'))
-
-        # Obtener las instancias de Tecnicos y Estadosenvios
-        idtecnico = Tecnicos.objects.get(idtecnico=idtecnico)
-        idestadoenvio = Estadosenvios.objects.get(idestadoenvio=idestadoenvio)
-
-        # Actualizar los campos del objeto envio
-        envio.direccionenvio = direccion
-        envio.idtecnico = idtecnico
-        envio.idestadoenvio = idestadoenvio
-        envio.save()
-
+    try:
+        envio = Envios.objects.get(idenvio=idEnvio)
+        estados = Estadosenvios.objects.all()
+    except ObjectDoesNotExist:
+        messages.error(request, 'No se pudo encontrar el envío solicitado.')
         return redirect('homeEnvios')
 
-    return render(request, "crudAdmin/Editar.html", {"envio": envio, "estados": estados})
+    if request.method == 'POST':
+        try:
+            # Obtener los datos de la petición
+            direccion = request.POST.get('direccion')
+            idtecnico = int(request.POST.get('idtecnico'))
+            idestadoenvio = int(request.POST.get('estado'))
 
+            # Obtener las instancias de Tecnicos y Estadosenvios
+            idtecnico = Tecnicos.objects.get(idtecnico=idtecnico)
+            idestadoenvio = Estadosenvios.objects.get(idestadoenvio=idestadoenvio)
+
+            # Actualizar los campos del objeto envio
+            envio.direccionenvio = direccion
+            envio.idtecnico = idtecnico
+            envio.idestadoenvio = idestadoenvio
+            envio.save()
+            messages.success(request, 'Envío modificado con éxito')
+            return redirect('homeEnvios')
+        except Exception as e:
+            messages.error(request, f'Ocurrió un error al editar el envío: {str(e)}')
+            return redirect('homeEnvios')
+
+    return render(request, "crudAdmin/Editar.html", {"envio": envio, "estados": estados})
 #@login_required
 #@role_required(1)
 def eliminarEnvio(request, idEnvio):
-    envio = Envios.objects.get(idenvio = idEnvio)
-    envio.delete()
+    try:
+        envio = Envios.objects.get(idenvio=idEnvio)
+    except ObjectDoesNotExist:
+        messages.error(request, 'El envío que intenta eliminar no existe.')
+        return redirect('homeEnvios')
+
+    try:
+        envio.delete()
+        messages.success(request, 'Envío eliminado con éxito')
+    except Exception as e:
+        messages.error(request, f'Ocurrió un error al eliminar el envío: {str(e)}')
 
     return redirect('homeEnvios')
-
 def detallesView(request, idEnvio):
     detallesEnvio = DetalleEnviosVentas.objects.get(idenvio=idEnvio)
     return render(request, 'crudAdmin/Detalles.html', {'detallesEnvio': detallesEnvio})
