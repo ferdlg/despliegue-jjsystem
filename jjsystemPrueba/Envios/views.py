@@ -132,10 +132,8 @@ def detallesView(request, idEnvio):
 def homeEnviosTecnico(request):
     # Obtener el número de documento del técnico autenticado
     numerodocumento = request.user.numerodocumento
-
     # Obtener todos los envíos asignados al técnico autenticado
     envios_tecnico = Envios.objects.filter(idtecnico__numerodocumento=numerodocumento)
-
     return render(request, 'tecnico/IndexTecnico.html', {'envios': envios_tecnico})
 
 
