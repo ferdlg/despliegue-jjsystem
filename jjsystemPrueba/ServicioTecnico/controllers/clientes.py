@@ -3,7 +3,8 @@ from rest_framework import viewsets
 from Account.models import Clientes, Usuarios
 from .serializers import ClientesSerializer
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
-
+from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class ClientesCRUD(viewsets.ModelViewSet):
@@ -22,22 +23,30 @@ class ClientesCRUD(viewsets.ModelViewSet):
             clientes = paginator.page(paginator.num_pages)
         return render(request, 'clientes.html', {'clientes': clientes})
     
-    def actualizar_datos(self, request, idcliente):
-        cliente = Clientes.objects.get(idcliente = idcliente)
-        usuario = Usuarios.objects.get(numerodocumento = cliente.numerodocumento.numerodocumento)
+    def actualizar_datos(self,request, idcliente):
+        try:
+            cliente = Clientes.objects.get(idcliente=idcliente)
+            usuario = Usuarios.objects.get(numerodocumento=cliente.numerodocumento.numerodocumento)
+        except ObjectDoesNotExist:
+            messages.error(request, 'No se pudo encontrar el cliente.')
+            return redirect('ver_clientes')
 
         if request.method == 'POST':
-            nombre = request.POST.get('nombre')
-            apellido = request.POST.get('apellido')
-            email = request.POST.get('email')
+            try:
+                nombre = request.POST.get('nombre')
+                apellido = request.POST.get('apellido')
+                email = request.POST.get('email')
 
-        # Actualizar los datos del cliente
-            usuario.nombre = nombre
-            usuario.apellido = apellido
-            usuario.email = email
-            usuario.save()
-            
-            return redirect('ver_clientes')
+                usuario.nombre = nombre
+                usuario.apellido = apellido
+                usuario.email = email
+                usuario.save()
+                
+                messages.success(request, 'Datos actualizados correctamente')
+            except Exception as e:
+                messages.error(request, f'Ocurrió un error al actualizar los datos: {str(e)}')
+        else:
+            messages.error(request, 'Ocurrió un error al actualizar los datos')
 
         return redirect('ver_clientes')
 

@@ -12,6 +12,8 @@ from io import BytesIO
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from reportlab.lib.styles import getSampleStyleSheet
+from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 
 class CotizacionesCRUD(viewsets.ModelViewSet):
     queryset = Cotizaciones.objects.all()
@@ -49,7 +51,6 @@ class CotizacionesCRUD(viewsets.ModelViewSet):
             cliente = Clientes.objects.get(idcliente=idcliente)
             estado = Estadoscotizaciones.objects.get(idestadocotizacion=idestadocotizacion)
 
-            # Crear la cotización con los datos recibidos
             cotizacion = Cotizaciones.objects.create(
                 totalcotizacion=totalcotizacion,
                 descripcioncotizacion=descripcioncotizacion,
@@ -62,92 +63,103 @@ class CotizacionesCRUD(viewsets.ModelViewSet):
 
         return render(request, 'cotizaciones.html', {'productos':productos, 'servicios':servicios})
 
-    def asignar_productos_servicios(self,request, idcotizacion):
+    def asignar_productos_servicios(self, request, idcotizacion):
+        try:
+            cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
+        except ObjectDoesNotExist:
+            messages.error(request, 'No se encontró la cotización asociada.')
+            return redirect('ver_cotizaciones')
+
         if request.method == 'POST':
             productos_seleccionados = request.POST.getlist('producto[]')
             servicios_seleccionados = request.POST.getlist('servicio[]')
 
-            cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
-
             for idproducto in productos_seleccionados:
                 cantidad = request.POST.get('cantidad_' + idproducto)
-                if cantidad:  # Verifica si se ingresó una cantidad
-                    producto = Productos.objects.get(idproducto=idproducto)
-                    producto_cotizacion = CotizacionesProductos.objects.create(
-                        idcotizacion=cotizacion,
-                        idproducto=producto,
-                        cantidad=cantidad
-                    )
+                if cantidad: 
+                    try:
+                        producto = Productos.objects.get(idproducto=idproducto)
+                        producto_cotizacion = CotizacionesProductos.objects.create(
+                            idcotizacion=cotizacion,
+                            idproducto=producto,
+                            cantidad=cantidad
+                        )
+                    except ObjectDoesNotExist:
+                        messages.warning(request, f'No se encontró el producto asociado con el ID {idproducto}.')
                 else:
-                    print("No se ha ingresado una cantidad para el producto", idproducto)
+                    messages.warning(request, f'No se ha ingresado una cantidad para el producto con ID {idproducto}.')
 
             for idservicio in servicios_seleccionados:
-                servicio = Servicios.objects.get(idservicio=idservicio)
-                servicio_cotizacion = CotizacionesServicios.objects.create(
-                    idcotizacion=cotizacion,
-                    idservicio=servicio
-                )
+                try:
+                    servicio = Servicios.objects.get(idservicio=idservicio)
+                    servicio_cotizacion = CotizacionesServicios.objects.create(
+                        idcotizacion=cotizacion,
+                        idservicio=servicio
+                    )
+                except ObjectDoesNotExist:
+                    messages.warning(request, f'No se encontró el servicio asociado con el ID {idservicio}.')
 
-            productos = Productos.objects.all()
-            servicios = Servicios.objects.all()
-
+            messages.success(request, 'Cotización creada exitosamente')
             return redirect('ver_cotizaciones')
-            
 
         else:
             productos = Productos.objects.all()
             servicios = Servicios.objects.all()
             return render(request, 'asignarProductosServicios.html', {'productos': productos, 'servicios': servicios, 'idcotizacion': idcotizacion})
+        
+    
+    
+    def editar_cotizacion(request, idcotizacion):
+        try:
+            cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
 
-    def editar_cotizacion(self, request, idcotizacion):
-        cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
+            if request.method == 'POST':
+                totalcotizacion = request.POST.get('totalCotizacion')
+                descripcioncotizacion = request.POST.get('descripcionCotizacion')
+                idcliente = request.POST.get('cliente')
+                idestadocotizacion = request.POST.get('estado')
 
-        if request.method == 'POST':
-            # Obtener los datos modificados del formulario
-            totalcotizacion = request.POST.get('totalCotizacion')
-            descripcioncotizacion = request.POST.get('descripcionCotizacion')
-            idcliente = request.POST.get('cliente')  # Obtiene el ID del cliente como cadena
+                cliente = Clientes.objects.get(idcliente=idcliente)
+                estado = Estadoscotizaciones.objects.get(idestadocotizacion=idestadocotizacion)
 
-            # Obtener la instancia del cliente correspondiente al ID
-            cliente = Clientes.objects.get(idcliente=idcliente)
+                cotizacion.totalcotizacion = totalcotizacion
+                cotizacion.descripcioncotizacion = descripcioncotizacion
+                cotizacion.idcliente = cliente
+                cotizacion.idestadocotizacion = estado
+                cotizacion.save()
 
-            idestadocotizacion = request.POST.get('estado')  # Obtiene el ID del estado como cadena
+                messages.success(request, 'Cotización editada correctamente')
+                return redirect('ver_cotizaciones')
 
-            # Obtener la instancia del estado de cotización correspondiente al ID
-            estado = Estadoscotizaciones.objects.get(idestadocotizacion=idestadocotizacion)
+            clientes = Clientes.objects.all()
+            estados = Estadoscotizaciones.objects.all()
 
-            # Actualizar la cotización con los nuevos datos
-            cotizacion.totalcotizacion = totalcotizacion
-            cotizacion.descripcioncotizacion = descripcioncotizacion
-            cotizacion.idcliente = cliente  # Asigna la instancia del cliente
-            cotizacion.idestadocotizacion = estado  # Asigna la instancia del estado
-            cotizacion.save()
-
-            # Redirigir a la página de listar cotizaciones después de la edición
-            return redirect('ver_cotizaciones')
-
-        # Obtener los clientes y estados para el formulario de edición
-        clientes = Clientes.objects.all()
-        estados = Estadoscotizaciones.objects.all()
-
-        return render(request, 'EditarCotizacion.html', {'cotizacion': cotizacion, 'clientes': clientes, 'estados': estados})
-
+            return render(request, 'EditarCotizacion.html', {'cotizacion': cotizacion, 'clientes': clientes, 'estados': estados})
+        except ObjectDoesNotExist:
+            messages.error(request, 'La cotización especificada no existe.')
+        except Exception as e:
+                messages.error(request, f'Ocurrió un error al intentar editar la cita: {str(e)}')
+        return redirect('ver_cotizaciones')
+        
     def eliminar_cotizacion(self, request, idcotizacion):
-        cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
-
-        if request.method == 'POST':
-            # Eliminar los registros relacionados en las tablas de productos y servicios
-            CotizacionesProductos.objects.filter(idcotizacion=cotizacion).delete()
-            CotizacionesServicios.objects.filter(idcotizacion=cotizacion).delete()
-
-            # Ahora puedes eliminar la cotización
-            cotizacion.delete()
-
-            # Redirigir a la página de listar cotizaciones después de la eliminación
+        try:
+            cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
+        except ObjectDoesNotExist:
+            messages.error(request, 'No se pudo encontrar la cotización.')
             return redirect('ver_cotizaciones')
 
-        return render(request, 'ConfirmarEliminarCotizacion.html', {'cotizacion': cotizacion})
+        if request.method == 'POST':
+            try:
+                CotizacionesProductos.objects.filter(idcotizacion=cotizacion).delete()
+                CotizacionesServicios.objects.filter(idcotizacion=cotizacion).delete()
+                cotizacion.delete()
+                messages.success(request, 'Cotización eliminada correctamente')
+            except Exception as e:
+                messages.error(request, f'Ocurrió un error al eliminar la cotización: {str(e)}')
+        else:
+            return render(request, 'ConfirmarEliminarCotizacion.html', {'cotizacion': cotizacion})
 
+        return redirect('ver_cotizaciones')
 
 def generar_pdf(request, idcotizacion):
     # Obtener la cotización específica

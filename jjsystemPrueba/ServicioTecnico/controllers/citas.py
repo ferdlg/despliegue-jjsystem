@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from Account.models import Citas , Cotizaciones, Tecnicos, Administrador , Estadoscitas, Usuarios
 from .serializers import CitasSerializer
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
-
+from django.contrib import messages
 
 
 class citasCRUD(viewsets.ModelViewSet):
@@ -113,21 +113,17 @@ class citasCRUD(viewsets.ModelViewSet):
                     idcotizacion=cotizacion,
                     idestadocita=estadocita
                 )
-                mensaje = ('Se ha registrado exitosamente')
-                return render(request, 'menu.html', {'mensaje':mensaje})
-
+                messages.succes (request,'Se ha registrado exitosamente')
+                return redirect('index')
             except Tecnicos.DoesNotExist:
-                # Mensaje de error para el usuario
-                mensaje = ('No se encontro el tecnico seleccionado')
-                return render( request, 'mensaje.html', {'mensaje':mensaje})
+                messages.error (request,'No se encontro el tecnico seleccionado')
             except Estadoscitas.DoesNotExist:
-                # Mensaje de error para el usuario
-                mensaje = ('No se encontró el estado de la cita.')
-                return render( request, 'mensaje.html', {'mensaje':mensaje})
+                messages.error (request,'No se encontró el estado de la cita.')
+            except Exception as e:
+                messages.error(request, f'Error al intentar crear la cita: {str(e)}')
         else:
-            mensaje = ('Ocurrio un error al intentar registrar la cita, intentalo de nuevo.')
-            return render( request, 'mensaje.html', {'mensaje':mensaje})
-
+            messages.error(request,'Ocurrio un error al intentar registrar la cita, intentalo de nuevo.')
+        return('index')
 
     
     def editar_citas(self, request, idcita):
@@ -162,24 +158,22 @@ class citasCRUD(viewsets.ModelViewSet):
                 cita.idcotizacion = cotizacion
                 cita.idestadocita = estadocita
                 cita.save()
+                messages.success(request,'Cita editada correctamente')
             except Tecnicos.DoesNotExist:
-                # Mensaje de error para el usuario
-                mensaje = 'No se encontró el técnico seleccionado'
-                return render(request, 'mensaje.html', {'mensaje': mensaje})
+                messages.error(request,'No se encontró el técnico seleccionado')
             except Estadoscitas.DoesNotExist:
-                # Mensaje de error para el usuario
-                mensaje = 'No se encontró el estado de la cita.'
-                return render(request, 'mensaje.html', {'mensaje': mensaje})
-
+                messages.error(request,'No se encontró el estado de la cita.')
+            except Exception as e:
+                messages.error(request, f'Error al intentar editar la cita: {str(e)}')
+        
         contexto =  {'cita': cita}
-
-            
         return render(request, 'index.html', contexto)
 
     def eliminar_citas(self, request, idcita):
         try:
             cita_a_eliminar = Citas.objects.get(idcita=idcita)
             cita_a_eliminar.delete()
-            return redirect('index')
-        except Citas.DoesNotExist:
-            return render(request, 'mensaje.html', {'mensaje': 'La cita que intentas eliminar no existe.'})
+            messages.success(request,'Cita eliminada correctamente')
+        except Exception as e:
+            messages.error(request, f'Error al intentar eliminar la cita: {str(e)}')
+        return redirect('index')
