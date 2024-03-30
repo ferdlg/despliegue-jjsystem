@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from rest_framework import viewsets
 from Account.models import Citas , Cotizaciones, Tecnicos, Administrador , Estadoscitas, Usuarios
+from ..correos import correo_cita_agendada
 from .serializers import CitasSerializer
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 from django.contrib import messages
@@ -113,7 +114,10 @@ class citasCRUD(viewsets.ModelViewSet):
                     idcotizacion=cotizacion,
                     idestadocita=estadocita
                 )
+                
                 messages.succes (request,'Se ha registrado exitosamente')
+                correo_cita_agendada(request, cotizacion.idcliente.idcliente, cita.idtecnico)
+
                 return redirect('index')
             except Tecnicos.DoesNotExist:
                 messages.error (request,'No se encontro el tecnico seleccionado')
