@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/correo_asignacion_cita.css' %}">
+    <title>Confirmación de Cita Agendada</title>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado -->
+        <div class="header">
+            <h1>Confirmación de Cita Agendada</h1>
+        </div>
+        <!-- Imagen de portada -->
+        <div class="portada">
+            <img src="https://img.freepik.com/foto-gratis/electricista-masculino-trabaja-centralita-cable-conexion-electrica_169016-15089.jpg?w=360&t=st=1711832654~exp=1711833254~hmac=cd08970f853f7eb009bdd5c578e9dc34e63e4406d340832a297e467ffb19fdbe" alt="Imagen de Portada" style="width: 100%;">
+        </div>
+        <!-- Saludo  -->
+        <div class="saludo">
+            {% if destinatario == 'Cliente' %}
+                <p>Hola {{ cliente.numerodocumento.nombre }},</p>
+                <p>¡Te confirmamos la agendación de tu cita!</p>
+            {% elif destinatario == 'Tecnico' %}
+                <p>Hola {{ tecnico.numerodocumento.nombre }},</p>
+                <p>¡Tienes una nueva cita asignada!</p>
+            {% endif %}
+        </div>
+        <!-- Detalle de la cita -->
+        <div class="detalle">
+            <p><strong>Descripcion:</strong>{{cita.descripcioncita}}</p>
+            <p><strong>Fecha:</strong> {{ cita.fechacita }} </p>
+            <p><strong>Hora:</strong> {{cita.horacita}} </p>
+            <p><strong>Direccion:</strong> {{ cita.direccioncita }}</p>            <!-- Agrega más detalles según sea necesario -->
+        </div>
+        <div class="detalle" style="background-color: #f9f9f9;">
+            {% if destinatario == 'Cliente' %}
+                <p>Datos del tecnico</p>
+                <p><strong>Nombre:</strong> {{ tecnico.numerodocumento.nombre }} {{ tecnico.numerodocumento.apellido }}</p>
+                <p><strong>Contacto:</strong> {{ tecnico.numerodocumento.numerocontacto }}</p>
+            {% elif destinatario == 'Tecnico' %}
+                <p>Datos del cliente</p>
+                <p><strong>Nombre:</strong> {{ cliente.numerodocumento.nombre }} {{ tecnico.numerodocumento.apellido }}</p>
+                <p><strong>Contacto:</strong> {{ cliente.numerodocumento.numerocontacto }}</p>
+            {% endif %}
+        </div>
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2024 Todos los derechos reservados. JJSystemProject .</p>
+        </div>
+    </div>
+</body>
+</html>

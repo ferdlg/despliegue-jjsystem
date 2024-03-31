@@ -115,8 +115,8 @@ class citasCRUD(viewsets.ModelViewSet):
                     idestadocita=estadocita
                 )
                 
-                messages.succes (request,'Se ha registrado exitosamente')
-                correo_cita_agendada(request, cotizacion.idcliente.idcliente, cita.idtecnico)
+                messages.success (request,'Se ha registrado exitosamente')
+                correo_cita_agendada(request, idcliente=cotizacion.idcliente.idcliente, idtecnico=idtecnico, idcita=cita.idcita)
 
                 return redirect('index')
             except Tecnicos.DoesNotExist:
@@ -127,7 +127,7 @@ class citasCRUD(viewsets.ModelViewSet):
                 messages.error(request, f'Error al intentar crear la cita: {str(e)}')
         else:
             messages.error(request,'Ocurrio un error al intentar registrar la cita, intentalo de nuevo.')
-        return('index')
+        return redirect('index')
 
     
     def editar_citas(self, request, idcita):
