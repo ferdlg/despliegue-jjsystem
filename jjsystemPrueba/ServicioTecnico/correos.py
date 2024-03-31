@@ -6,7 +6,8 @@ from Account.models import Clientes, Tecnicos, Citas
 from django.conf import settings
 from django.contrib import messages
 
-def correo_bienvenida_tecnico():
+def correo_bienvenida_tecnico(request,idtecnico):
+    tecnico = Tecnicos.objects.get(idtecnico)
     return
 
 def correo_cotizacion_registrada():
