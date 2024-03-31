@@ -7,8 +7,15 @@ from django.conf import settings
 from django.contrib import messages
 
 def correo_bienvenida_tecnico(request,idtecnico):
-    tecnico = Tecnicos.objects.get(idtecnico)
-    return
+        tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
+        email = tecnico.numerodocumento.email
+        password = tecnico.numerodocumento  
+
+        asunto = 'Bienvenido a JJSystemProject'
+        html_message_tecnico = render_to_string('correo_bienvenida_tecnico.html', {'tecnico': tecnico, 'password': password})
+        correo_origen = settings.EMAIL_HOST_USER
+        send_mail(asunto, '', correo_origen, [email], html_message=html_message_tecnico)
+        return None
 
 def correo_cotizacion_registrada():
     return

@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
 from Account.forms import RegisterForm
 from Account.models import Estadosusuarios, Roles, Tecnicos, Especialidadtecnicos, Usuarios
+from ..correos import correo_bienvenida_tecnico
 from .serializers import TecnicosSerializer
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 from ServicioTecnico.forms import  RegisterForm, EditTecnicosForm
@@ -44,6 +45,12 @@ class tecnicosCRUD(viewsets.ModelViewSet):
                     user.save()
 
                     messages.success(request, 'Técnico registrado correctamente')
+                    tecnico = Tecnicos.objects.get(numerodocumento = user.numerodocumento)
+                    idtecnico = tecnico.idtecnico
+                    correo_bienvenida_tecnico(request, idtecnico = idtecnico)
+                    return redirect('verTecnicos')
+                else:
+                    messages.error(request,'El formulario de edición no es válido. Por favor, revise que haya llenado los campos correctamente y que el email no se haya registrado anteriormente')
                     return redirect('verTecnicos')
             else:
                 form = RegisterForm()
