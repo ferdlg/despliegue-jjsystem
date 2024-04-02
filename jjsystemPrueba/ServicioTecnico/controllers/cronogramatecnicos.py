@@ -4,6 +4,7 @@ from rest_framework import viewsets
 from Account.models import Clientes, Cronogramatecnicos, Tecnicos, Citas
 from .serializers import CronogramatecnicosSerializer
 import json
+from django.contrib import messages
 
 class cronogramatecnicosCRUD(viewsets.ModelViewSet):
     queryset = Cronogramatecnicos.objects.all()
@@ -82,8 +83,7 @@ class cronogramatecnicosCRUD(viewsets.ModelViewSet):
                     fecha_obj = datetime.strptime(fecha_filtro, '%Y-%m-%d').date()
                     citas_filtradas = todas_las_citas.filter(fechacita=fecha_obj)
                 except ValueError:
-                    mensaje = 'Formato de fecha inválido. Utilice el formato AAAA-MM-DD.'
-                    return render(request, 'mensaje.html', {'mensaje': mensaje})
+                    messages.error(request,'Formato de fecha inválido. Utilice el formato AAAA-MM-DD.')
             else:
                 citas_filtradas = []
 

@@ -35,8 +35,8 @@
         </div>
     </div>
     <h5 style="color: black;">Citas Agendadas</h5>
-    {% if citas %}
-        <table class="table table-striped" >
+    {% if todas_las_citas %}
+        <table class="table table-striped" style="margin-bottom: 10%;">
             <thead>
                 <tr class="table-info">
                     <th scope="col">No. Cita</th>
@@ -49,7 +49,7 @@
             </thead>
             <tbody>
                 {% for cita in todas_las_citas %}
-                <tr class="cita-row" data-cita-id="{{ cita.idcita }}"">
+                <tr class="cita-row" data-cita-id="{{ cita.idcita }}">
                     <td>{{ cita.idcita }}</td>
                     <td>{{ cita.descripcioncita }}</td>
                     <td>{{ cita.fechacita }}</td>
@@ -60,10 +60,11 @@
                 {% endfor %}
             </tbody>
         </table>
-    {%else%}
+    {% else %}
     <div class="alert alert-warning" role="alert" style="margin-top: 10px;">
-       Aun no hay citas asignadas.
+    Aun no hay citas asignadas.
     </div>
     {% endif %}
+
 </div>
 {% endblock %}
