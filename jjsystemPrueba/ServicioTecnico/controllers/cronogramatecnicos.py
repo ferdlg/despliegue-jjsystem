@@ -70,7 +70,6 @@ class cronogramatecnicosCRUD(viewsets.ModelViewSet):
                 })
 
             eventos_json = json.dumps(eventos)
-            print(eventos_json)
             cliente_cita = []
             for cita in todas_las_citas:
                 cliente = Clientes.objects.get(numerodocumento=cita.idcotizacion.idcliente.numerodocumento)
