@@ -53,7 +53,6 @@ class cronogramatecnicosCRUD(viewsets.ModelViewSet):
             })
 
         eventos_json = json.dumps(eventos)
-        print(eventos_json)
         return render(request, 'Tecnicos/mi_agenda.html', {'eventos_json': eventos_json})
     
     #vista Administrador ve agenda del tecnico 
