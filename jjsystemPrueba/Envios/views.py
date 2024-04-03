@@ -9,12 +9,13 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from io import BytesIO
 from django.template.loader import get_template
+from django.core.exceptions import ObjectDoesNotExist
 from django.template import Context
 from Account.models import *
 from django.db import connection
 import smtplib
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from .envio_correo import enviar_correo
@@ -263,26 +264,26 @@ def generar_pdf(request, templateName):
 
 #Enviar correo
 
-def enviar_correo(destinatario, asunto, mensaje):
-    load_dotenv()
+# def enviar_correo(destinatario, asunto, mensaje):
+#     load_dotenv()
 
-    remitente = os.getenv('USER')
-    password = os.getenv('PASS')
+#     remitente = os.getenv('USER')
+#     password = os.getenv('PASS')
 
-    msg = MIMEMultipart()
-    msg['From'] = remitente
-    msg['To'] = destinatario
-    msg['Subject'] = asunto
+#     msg = MIMEMultipart()
+#     msg['From'] = remitente
+#     msg['To'] = destinatario
+#     msg['Subject'] = asunto
 
-    body = mensaje
-    msg.attach(MIMEText(body, 'plain'))
+#     body = mensaje
+#     msg.attach(MIMEText(body, 'plain'))
 
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(remitente, password)
-    text = msg.as_string()
-    server.sendmail(remitente, destinatario, text)
-    server.quit()
+#     server = smtplib.SMTP('smtp.gmail.com', 587)
+#     server.starttls()
+#     server.login(remitente, password)
+#     text = msg.as_string()
+#     server.sendmail(remitente, destinatario, text)
+#     server.quit()
 
 
 

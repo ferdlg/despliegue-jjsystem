@@ -62,7 +62,7 @@ def convertir_pqrsf_pdf(request, idpqrsf):
     pqrsf = Pqrsf.objects.get(idpqrsf=idpqrsf)
 
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="{pqrsf.idtipopqrsf.nombretipopqrsf}_{idpqrsf}.pdf"'
+    response['Content-Disposition'] = f'attachment; filename="{pqrsf.idtipopqrsf.nombretipopqrsf}_{pqrsf.idpqrsf}_{pqrsf.fechapqrsf}.pdf"'
 
     margenes = (50, 50, 50, 50)  
     espacio_entre_tablas = 0.2 * inch 

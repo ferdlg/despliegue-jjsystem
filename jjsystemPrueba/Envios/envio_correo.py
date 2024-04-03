@@ -1,11 +1,11 @@
 import smtplib
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 def enviar_correo(destinatario, asunto, estado):
-    load_dotenv()
+    # load_dotenv()
 
     remitente = os.getenv('USER')
     password = os.getenv('PASS')

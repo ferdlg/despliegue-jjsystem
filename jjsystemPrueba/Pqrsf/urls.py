@@ -19,7 +19,7 @@ urlpatterns=[
     path('editarPqrsf/<int:idPqrsf>', views.editarPqrsf, name='editarPqrsf'),
     path('indexPqrsf/', views.indexPqrsf, name='indexPqrsf'),
     path('indexPqrsf/pqrsf', views.home_pqrsf, name='homePqrsf'),
-    path('indexPqrsf/pqrsf/pdf/<idpqrsf>', convertir_pqrsf_pdf,  name='convertir_pqrsf_pdf'),
+    path('indexPqrsf/pqrsf/pdf/<int:idpqrsf>', convertir_pqrsf_pdf,  name='convertir_pqrsf_pdf'),
 
 #cliente
     path('pqrsf/ver_pqrsf', pqrsfCRUD.as_view({'get': 'ir_a_pqrsf'}),  name='ir_a_pqrsf'),
