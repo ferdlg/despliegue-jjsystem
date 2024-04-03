@@ -1,3 +1,4 @@
+from pyexpat.errors import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from Account.models import *
@@ -11,8 +12,13 @@ from django.template.loader import get_template
 from django.template import Context
 from Account.models import *
 from django.db import connection
-from django.contrib import messages
-from django.core.exceptions import ObjectDoesNotExist
+import smtplib
+import os
+from dotenv import load_dotenv
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from .envio_correo import enviar_correo
+# Create your views here.
 
 def homeEnvios(request):
     search_query = request.GET.get('search', '')
@@ -57,8 +63,26 @@ def createEnvioView(request):
                 idtecnico=idtecnico,
                 idestadoenvio=estado
             )
-            messages.success(request, 'Envío programado con éxito')
-            return redirect('homeEnvios')
+            # Aquí obtienes el idEnvio que se acaba de crear
+            idEnvioCreado = envio.id
+            
+            # Obtener el email del usuario correspondiente al envío creado
+            envio_usuario = EnviosUsuarios.objects.filter(idEnvio=idEnvioCreado).first()
+            if envio_usuario:
+                email_cliente = envio_usuario.emailCliente
+
+                # Enviar correo al cliente
+                enviar_correo(
+                    'Nuevo envío creado',
+                    'Se ha creado un nuevo envío para usted.',
+                    [email_cliente],
+                    fail_silently=False,
+                )
+
+                return redirect('homeEnvios')
+            else:
+                # Manejar el caso donde no se encuentra un registro en EnviosUsuarios para el idEnvio creado
+                print("Error: No se encontró un registro en EnviosUsuarios para el idEnvio creado.")
 
         except Tecnicos.DoesNotExist:
             messages.error(request, 'Error: No se encontró el Técnico.')
@@ -96,13 +120,31 @@ def editarEnvio(request, idEnvio):
             envio.idtecnico = idtecnico
             envio.idestadoenvio = idestadoenvio
             envio.save()
-            messages.success(request, 'Envío modificado con éxito')
+
+            # Obtener el correo electrónico del cliente asociado al envío
+            try:
+                envio_usuario = EnviosUsuarios.objects.get(idEnvio=idEnvio)
+                email_cliente = envio_usuario.emailCliente
+            except EnviosUsuarios.DoesNotExist:
+                messages.error(request, 'No se pudo encontrar el cliente asociado al envío.')
+                return redirect('homeEnvios')
+
+            # Envío de correo electrónico al usuario con el estado actualizado
+            estado_actualizado = idestadoenvio.nombreestadoenvio
+            enviar_correo(
+                email_cliente,
+                'Actualización del estado de envío',
+                estado_actualizado  # Envía el estado actualizado como mensaje
+            )
+
+            print("Correo electrónico enviado correctamente a:", email_cliente)  # Imprimir mensaje en la consola del servidor
+
             return redirect('homeEnvios')
         except Exception as e:
-            messages.error(request, f'Ocurrió un error al editar el envío: {str(e)}')
             return redirect('homeEnvios')
 
     return render(request, "crudAdmin/Editar.html", {"envio": envio, "estados": estados})
+
 #@login_required
 #@role_required(1)
 def eliminarEnvio(request, idEnvio):
@@ -218,6 +260,29 @@ def generar_pdf(request, templateName):
     response['Content-Disposition'] = 'attachment; filename="envios.pdf"'
     response.write(pdf)
     return response
+
+#Enviar correo
+
+def enviar_correo(destinatario, asunto, mensaje):
+    load_dotenv()
+
+    remitente = os.getenv('USER')
+    password = os.getenv('PASS')
+
+    msg = MIMEMultipart()
+    msg['From'] = remitente
+    msg['To'] = destinatario
+    msg['Subject'] = asunto
+
+    body = mensaje
+    msg.attach(MIMEText(body, 'plain'))
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(remitente, password)
+    text = msg.as_string()
+    server.sendmail(remitente, destinatario, text)
+    server.quit()
 
 
 

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estado de Envío</title>
+    <!-- Agrega aquí tus estilos CSS si los necesitas -->
+</head>
+<body>
+    <h2>Estado de Envío Actualizado</h2>
+    <p>El estado de su envío ha sido actualizado correctamente.</p>
+    <p>Nuevo estado: {{ estado }}</p>
+    {% if estado == 'En bodega' %}
+        <img src="{% static 'bodega.png' %}" alt="En bodega">
+    {% elif estado == 'Llegando' %}
+        <img src="{% static 'camion.png' %}" alt="En camino">
+    {% elif estado == 'Entregado' %}
+        <img src="{% static 'caja.png' %}" alt="En camino">
+    {% endif %}
+</body>
+</html>
