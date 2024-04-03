@@ -116,7 +116,7 @@ class citasCRUD(viewsets.ModelViewSet):
                 )
                 
                 messages.success (request,'Se ha registrado exitosamente')
-                correo_cita_agendada(request, idcliente=cotizacion.idcliente.idcliente, idtecnico=idtecnico, idcita=cita.idcita)
+                correo_cita_agendada(request, idcliente=cotizacion.idcliente.idcliente, idtecnico=cita.idtecnico, idcita=cita.idcita)
 
                 return redirect('index')
             except Tecnicos.DoesNotExist:

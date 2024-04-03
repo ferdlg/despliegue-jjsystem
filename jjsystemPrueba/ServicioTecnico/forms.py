@@ -13,6 +13,11 @@ class RegisterForm(forms.ModelForm):
     class Meta:
         model = Usuarios
         exclude = ['password','idrol', 'idestadosusuarios', 'last_login']
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if Usuarios.objects.filter(email=email).exists():
+            raise forms.ValidationError("Ya existe un usuario con este correo electrónico. Por favor, utiliza otro correo electrónico.")
+        return email
 
 class EditTecnicosForm(forms.ModelForm):
     id_especialidad_fk = forms.ModelChoiceField(queryset=Especialidadtecnicos.objects.all(), label='Especialidad', widget=forms.Select(attrs={'class': 'form-control', 'required': True}))

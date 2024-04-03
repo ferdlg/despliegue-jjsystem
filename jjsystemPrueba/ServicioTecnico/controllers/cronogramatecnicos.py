@@ -4,6 +4,7 @@ from rest_framework import viewsets
 from Account.models import Clientes, Cronogramatecnicos, Tecnicos, Citas
 from .serializers import CronogramatecnicosSerializer
 import json
+from django.contrib import messages
 
 class cronogramatecnicosCRUD(viewsets.ModelViewSet):
     queryset = Cronogramatecnicos.objects.all()
@@ -52,7 +53,6 @@ class cronogramatecnicosCRUD(viewsets.ModelViewSet):
             })
 
         eventos_json = json.dumps(eventos)
-        print(eventos_json)
         return render(request, 'Tecnicos/mi_agenda.html', {'eventos_json': eventos_json})
     
     #vista Administrador ve agenda del tecnico 
@@ -69,7 +69,6 @@ class cronogramatecnicosCRUD(viewsets.ModelViewSet):
                 })
 
             eventos_json = json.dumps(eventos)
-            print(eventos_json)
             cliente_cita = []
             for cita in todas_las_citas:
                 cliente = Clientes.objects.get(numerodocumento=cita.idcotizacion.idcliente.numerodocumento)
@@ -82,8 +81,7 @@ class cronogramatecnicosCRUD(viewsets.ModelViewSet):
                     fecha_obj = datetime.strptime(fecha_filtro, '%Y-%m-%d').date()
                     citas_filtradas = todas_las_citas.filter(fechacita=fecha_obj)
                 except ValueError:
-                    mensaje = 'Formato de fecha inválido. Utilice el formato AAAA-MM-DD.'
-                    return render(request, 'mensaje.html', {'mensaje': mensaje})
+                    messages.error(request,'Formato de fecha inválido. Utilice el formato AAAA-MM-DD.')
             else:
                 citas_filtradas = []
 
