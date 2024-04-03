@@ -28,7 +28,7 @@ def correo_confirmacion_pqrsf_cliente_admin(request, idpqrsf):
     email_admin = admin.numerodocumento.email
 
     asunto_cliente = (f'Confirmacion: Se ha enviado con exito tu {pqrsf.idtipopqrsf.nombretipopqrsf}')
-    asunto_admin = (f'Se ha registrado un/a nuevo/a {pqrsf.idtipopqrsf.nombretipopqrsf}')
+    asunto_admin = (f'Se ha registrado un(a) nuevo(a) {pqrsf.idtipopqrsf.nombretipopqrsf}')
 
     html_message_cliente = render_to_string('correo_confirmacion_pqrsf_cliente_admin.html', {'cliente': cliente, 'pqrsf': pqrsf, 'destinatario': 'Cliente'})
     html_message_admin = render_to_string('correo_confirmacion_pqrsf_cliente_admin.html', {'cliente': cliente, 'pqrsf': pqrsf, 'destinatario': 'Administrador'})
@@ -40,7 +40,6 @@ def correo_confirmacion_pqrsf_cliente_admin(request, idpqrsf):
     send_mail(asunto_admin, '', correo_origen, [email_admin], html_message=html_message_admin)
 
     return None
-    return
 
 
 
