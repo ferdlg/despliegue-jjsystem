@@ -970,6 +970,27 @@ VALUES
         jjsystem_db.envios e
     JOIN jjsystem_db.clientes c ON e.direccionEnvio = c.direccionCliente;
 
+    DROP VIEW IF EXISTS EnviosUsuarios;
+
+    CREATE VIEW EnviosUsuarios AS
+    SELECT 
+        usuarios.email AS emailCliente,
+        usuarios.nombre AS nombreCliente,
+        usuarios.apellido AS apellidoCliente,
+        usuarios.numeroDocumento AS numeroDocumentoCliente,
+        envios.idEnvio,
+        envios.direccionEnvio
+    FROM 
+        Ventas AS ventas
+    JOIN 
+        Cotizaciones AS cotizaciones ON ventas.idCotizacion = cotizaciones.idCotizacion
+    JOIN 
+        Clientes AS clientes ON cotizaciones.idCliente = clientes.idCliente
+    JOIN 
+        Envios AS envios ON ventas.idEnvio = envios.idEnvio
+    JOIN 
+        Usuarios AS usuarios ON clientes.numeroDocumento = usuarios.numeroDocumento;
+
 
 /*Procedimiento*/
 

@@ -504,3 +504,14 @@ class EnviosClientes(models.Model):
         managed = False  
         db_table = 'vistaenviosclientes'
 
+class EnviosUsuarios(models.Model):
+    emailCliente = models.EmailField(max_length=120)
+    nombreCliente = models.CharField(max_length=50)
+    apellidoCliente = models.CharField(max_length=50)
+    numeroDocumentoCliente = models.BigIntegerField(primary_key=True)
+    idEnvio = models.IntegerField()
+    direccionEnvio = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False  
+        db_table = 'EnviosUsuarios'

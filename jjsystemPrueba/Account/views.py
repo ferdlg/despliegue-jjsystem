@@ -43,16 +43,25 @@ def registerView(request):
                 elif not any(char in '!@#$%^&*()_+=-{}[]:;\'\"|<>,.?/~`' for char in password):
                     messages.error(request, 'La contraseña debe contener al menos un caracter especial.')
                 else:
-                    # Si pasa todas las validaciones, guarda el usuario
-                    user = form.save(commit=False)
-                    user.password = make_password(password)
-                    user.idrol = Roles.objects.get(idrol=2)  # Asigna el rol de cliente
-                    user.idestadosusuarios = Estadosusuarios.objects.get(idestadousuario=1)  # Asigna el estado de usuario activo
-                    user.save()
-                    messages.success(request, 'Se ha registrado correctamente')
-                    return redirect('login')
+                    # Validar longitud de número de documento y número de contacto
+                    numerodocumento = form.cleaned_data['numerodocumento']
+                    if len(str(numerodocumento)) != 10:
+                        messages.error(request, 'El número de documento debe tener exactamente 10 dígitos.')
+                    else:
+                        numerocontacto = form.cleaned_data['numerocontacto']
+                        if len(str(numerocontacto)) != 10:
+                            messages.error(request, 'El número de contacto debe tener exactamente 10 dígitos.')
+                        else:
+                            # Si pasa todas las validaciones, guarda el usuario
+                            user = form.save(commit=False)
+                            user.password = make_password(password)
+                            user.idrol = Roles.objects.get(idrol=2)  # Asigna el rol de cliente
+                            user.idestadosusuarios = Estadosusuarios.objects.get(idestadousuario=1)  # Asigna el estado de usuario activo
+                            user.save()
+                            messages.success(request, 'Se ha registrado correctamente')
+                            return redirect('login')
         else:
-            messages.error(request, 'Por favor, verifica tus datos e intentalo de nuevo.')
+            messages.error(request, 'Por favor, verifica tus datos e inténtalo de nuevo.')
     else:
         form = RegisterForm()
 
