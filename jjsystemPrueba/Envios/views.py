@@ -1,4 +1,5 @@
 from pyexpat.errors import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -37,6 +38,17 @@ def homeEnvios(request):
     if estado_filter:
         envios = envios.filter(idestadoenvio=estado_filter)
 
+    paginator = Paginator(envios, 5)  # Dividir los resultados en páginas, 5 por página
+    page_number = request.GET.get('page')  # Obtener el número de página de la URL
+    try:
+        envios = paginator.page(page_number)
+    except PageNotAnInteger:
+        # Si el número de página no es un número entero, mostrar la primera página
+        envios = paginator.page(1)
+    except EmptyPage:
+        # Si el número de página está fuera de rango (por encima de la última página), mostrar la última página de resultados
+        envios = paginator.page(paginator.num_pages)
+    
     # Obtener todos los detalles de envío
     detallesEnvio = DetalleEnviosVentas.objects.all()
 
@@ -44,7 +56,6 @@ def homeEnvios(request):
     estados = Estadosenvios.objects.all()
 
     return render(request, "crudAdmin/Index.html", {"envios": envios, "search_query": search_query, "detallesEnvio": detallesEnvio, "estados": estados})
-
 
 
 
@@ -79,7 +90,8 @@ def createEnvioView(request):
             return redirect('homeEnvios')
 
     estados = Estadosenvios.objects.all()
-    return render(request, "crudAdmin/Create.html", {"estados": estados})
+    tecnicos = Tecnicos.objects.all()  # Obtener todos los técnicos
+    return render(request, "crudAdmin/Create.html", {"estados": estados, "tecnicos": tecnicos})
 
 #@login_required
 #@role_required(1)
@@ -90,6 +102,7 @@ def editarEnvio(request, idEnvio):
     try:
         envio = Envios.objects.get(idenvio=idEnvio)
         estados = Estadosenvios.objects.all()
+        tecnicos = Tecnicos.objects.all()
     except ObjectDoesNotExist:
         messages.error(request, 'No se pudo encontrar el envío solicitado.')
         return redirect('homeEnvios')
@@ -137,7 +150,7 @@ def editarEnvio(request, idEnvio):
             print("Error al enviar el correo electrónico:", str(e))
             return redirect('homeEnvios')
 
-    return render(request, "crudAdmin/Editar.html", {"envio": envio, "estados": estados})
+    return render(request, "crudAdmin/Editar.html", {"envio": envio, "estados": estados, "tecnicos": tecnicos})
 
 #@login_required
 #@role_required(1)
@@ -250,28 +263,6 @@ def generar_pdf(request, templateName):
     response.write(pdf)
     return response
 
-#Enviar correo
-
-def enviar_correo(destinatario, asunto, mensaje):
-    load_dotenv()
-
-    remitente = os.getenv('USER')
-    password = os.getenv('PASS')
-
-    msg = MIMEMultipart()
-    msg['From'] = remitente
-    msg['To'] = destinatario
-    msg['Subject'] = asunto
-
-    body = mensaje
-    msg.attach(MIMEText(body, 'plain'))
-
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(remitente, password)
-    text = msg.as_string()
-    server.sendmail(remitente, destinatario, text)
-    server.quit()
 
 
 

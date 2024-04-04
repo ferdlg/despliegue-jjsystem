@@ -91,9 +91,21 @@
                     </td>
                 </tr>
                 {% endfor %}
-            </tbody>
-            
+            </tbody>       
         </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% if envios.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ envios.previous_page_number }}">&laquo;</a></li>
+                {% endif %}
+                {% for i in envios.paginator.page_range %}
+                <li class="page-item {% if envios.number == i %}active{% endif %}"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endfor %}
+                {% if envios.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ envios.next_page_number }}">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </nav>
     </section>
     <div class="d-flex justify-content-start" style="margin-bottom: 70px;">
         <a href="{% url 'generar_pdf_envios' envios%}" class="btn btn-success btn">Exportar</a>

@@ -42,9 +42,14 @@
             </div>
 
             <div class="mb-3 row">
-                <label for="idtecnico" class="col-sm-2 col-form-label">ID Técnico:</label>
+                <label for="idtecnico" class="col-sm-2 col-form-label">Técnico:</label>
                 <div class="col-sm-5">
-                    <input type="text" class="form-control" name="idtecnico" id="idtecnico" value="{{ form.idtecnico.value }}" required>
+                    <select name="idtecnico" id="idtecnico" class="form-select" required>
+                        <option value="" selected>Seleccione el técnico</option>
+                        {% for tecnico in tecnicos %}
+                            <option value="{{ tecnico.idtecnico }}">{{ tecnico.numerodocumento.nombre }} {{ tecnico.numerodocumento.apellido }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
 
