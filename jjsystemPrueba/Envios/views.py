@@ -90,7 +90,8 @@ def createEnvioView(request):
             return redirect('homeEnvios')
 
     estados = Estadosenvios.objects.all()
-    return render(request, "crudAdmin/Create.html", {"estados": estados})
+    tecnicos = Tecnicos.objects.all()  # Obtener todos los técnicos
+    return render(request, "crudAdmin/Create.html", {"estados": estados, "tecnicos": tecnicos})
 
 #@login_required
 #@role_required(1)
@@ -101,6 +102,7 @@ def editarEnvio(request, idEnvio):
     try:
         envio = Envios.objects.get(idenvio=idEnvio)
         estados = Estadosenvios.objects.all()
+        tecnicos = Tecnicos.objects.all()
     except ObjectDoesNotExist:
         messages.error(request, 'No se pudo encontrar el envío solicitado.')
         return redirect('homeEnvios')
@@ -148,7 +150,7 @@ def editarEnvio(request, idEnvio):
             print("Error al enviar el correo electrónico:", str(e))
             return redirect('homeEnvios')
 
-    return render(request, "crudAdmin/Editar.html", {"envio": envio, "estados": estados})
+    return render(request, "crudAdmin/Editar.html", {"envio": envio, "estados": estados, "tecnicos": tecnicos})
 
 #@login_required
 #@role_required(1)
