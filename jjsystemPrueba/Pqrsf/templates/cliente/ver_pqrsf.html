@@ -15,7 +15,7 @@
                             {% csrf_token %}
                             <div class="form-group" style="color: black;">
                                 <label for="cliente">Cliente:</label>
-                                <input type="number" class="form-control" id="cliente" name="idcliente" readonly value="{{ request.user.numerodocumento }}" required>
+                                <input type="number" class="form-control" id="cliente" name="cliente" readonly value="{{ request.user.numerodocumento }}" required>
                                 <input type="text" class="form-control" id="nombres" name="nombres" readonly style="margin-top: 5px;" placeholder="{{ request.user.nombre }} {{ request.user.apellido }}" required>
                             
                                 <label for="idtipopqrsf">Tipo PQRSF:</label>

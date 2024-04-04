@@ -1,6 +1,4 @@
-from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from requests import request
 from ServicioTecnico.controllers.cotizaciones import CotizacionesCRUD as BaseCotizacionesCRUD
 from Account.models import *
 from django.db import connection
@@ -33,7 +31,7 @@ class CotizacionesCRUD(BaseCotizacionesCRUD):
             # Redirigir a la vista para agregar productos a la cotización recién creada
             return redirect('asignar_productos_servicios_cliente', id_cotizacion=nueva_cotizacion.idcotizacion)
         # Renderizar el formulario de creación de cotización
-
+        messages.error(request,'Error al crear la cotizacion')
         return render(request, 'cliente/crear_cotizacion.html')
     
     def asignar_productos_servicios_cliente(self,request, id_cotizacion):
