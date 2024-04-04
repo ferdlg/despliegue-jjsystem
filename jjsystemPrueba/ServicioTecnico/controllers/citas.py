@@ -132,7 +132,6 @@ class citasCRUD(viewsets.ModelViewSet):
                     idestadocita=estadocita
                 )
                 cliente = cita.idcotizacion.idcliente.idcliente
-                print(cliente)
                 messages.success (request,'Se ha registrado exitosamente')
                 correo_cita_agendada(request, idcliente=cliente, idtecnico=cita.idtecnico.idtecnico, idcita=cita.idcita)
 
