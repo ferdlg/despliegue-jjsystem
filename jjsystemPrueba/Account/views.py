@@ -19,6 +19,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.contrib import messages
 from django.core.exceptions import ValidationError
+from Account.envio_correo import enviar_correo_registro
 
 
 def registerView(request):
@@ -58,6 +59,10 @@ def registerView(request):
                             user.idrol = Roles.objects.get(idrol=2)  # Asigna el rol de cliente
                             user.idestadosusuarios = Estadosusuarios.objects.get(idestadousuario=1)  # Asigna el estado de usuario activo
                             user.save()
+                            
+                            # Enviar correo de agradecimiento
+                            enviar_correo_registro(email)
+
                             messages.success(request, 'Se ha registrado correctamente')
                             return redirect('login')
         else:

@@ -250,28 +250,6 @@ def generar_pdf(request, templateName):
     response.write(pdf)
     return response
 
-#Enviar correo
-
-def enviar_correo(destinatario, asunto, mensaje):
-    load_dotenv()
-
-    remitente = os.getenv('USER')
-    password = os.getenv('PASS')
-
-    msg = MIMEMultipart()
-    msg['From'] = remitente
-    msg['To'] = destinatario
-    msg['Subject'] = asunto
-
-    body = mensaje
-    msg.attach(MIMEText(body, 'plain'))
-
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(remitente, password)
-    text = msg.as_string()
-    server.sendmail(remitente, destinatario, text)
-    server.quit()
 
 
 
