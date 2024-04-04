@@ -1,4 +1,5 @@
 from pyexpat.errors import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -37,6 +38,17 @@ def homeEnvios(request):
     if estado_filter:
         envios = envios.filter(idestadoenvio=estado_filter)
 
+    paginator = Paginator(envios, 5)  # Dividir los resultados en páginas, 5 por página
+    page_number = request.GET.get('page')  # Obtener el número de página de la URL
+    try:
+        envios = paginator.page(page_number)
+    except PageNotAnInteger:
+        # Si el número de página no es un número entero, mostrar la primera página
+        envios = paginator.page(1)
+    except EmptyPage:
+        # Si el número de página está fuera de rango (por encima de la última página), mostrar la última página de resultados
+        envios = paginator.page(paginator.num_pages)
+    
     # Obtener todos los detalles de envío
     detallesEnvio = DetalleEnviosVentas.objects.all()
 
@@ -44,7 +56,6 @@ def homeEnvios(request):
     estados = Estadosenvios.objects.all()
 
     return render(request, "crudAdmin/Index.html", {"envios": envios, "search_query": search_query, "detallesEnvio": detallesEnvio, "estados": estados})
-
 
 
 
