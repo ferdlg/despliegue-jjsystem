@@ -46,6 +46,7 @@
                                     <th scope="col">PQRSF</th>
                                     <th scope="col">Fecha</th>
                                     <th scope="col">Informacion</th>
+                                    <th scope="col">Descargar</th>
                                     <th scope="col">Respuesta</th>
                                 </tr>
                             </thead>
@@ -56,6 +57,9 @@
                                     <td>{{ pqrsf.idtipopqrsf.nombretipopqrsf }}</td>
                                     <td>{{ pqrsf.fechapqrsf }}</td>
                                     <td>{{ pqrsf.informacionpqrsf }}</td>
+                                    <td> 
+                                        <a href="{% url 'convertir_pqrsf_pdf' idpqrsf=pqrsf.idpqrsf %}" class="btn btn-outline-dark btn-sw">PDF</a>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
