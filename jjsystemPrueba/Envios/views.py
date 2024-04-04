@@ -1,9 +1,10 @@
 from pyexpat.errors import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from Account.models import *
 from Account.views import role_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
@@ -57,34 +58,18 @@ def createEnvioView(request):
 
         try:
             idtecnico = int(idtecnico)
-            idtecnico = Tecnicos.objects.get(idtecnico=idtecnico)
+            tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
             estado = Estadosenvios.objects.get(idestadoenvio=idestadoenvio)
 
+            # Crear el envío
             envio = Envios.objects.create(
                 direccionenvio=direccion,
-                idtecnico=idtecnico,
+                idtecnico=tecnico,
                 idestadoenvio=estado
             )
-            # Aquí obtienes el idEnvio que se acaba de crear
-            idEnvioCreado = envio.id
-            
-            # Obtener el email del usuario correspondiente al envío creado
-            envio_usuario = EnviosUsuarios.objects.filter(idEnvio=idEnvioCreado).first()
-            if envio_usuario:
-                email_cliente = envio_usuario.emailCliente
 
-                # Enviar correo al cliente
-                enviar_correo(
-                    'Nuevo envío creado',
-                    'Se ha creado un nuevo envío para usted.',
-                    [email_cliente],
-                    fail_silently=False,
-                )
-
-                return redirect('homeEnvios')
-            else:
-                # Manejar el caso donde no se encuentra un registro en EnviosUsuarios para el idEnvio creado
-                print("Error: No se encontró un registro en EnviosUsuarios para el idEnvio creado.")
+            # Redireccionar después de crear el envío
+            return redirect('homeEnvios')
 
         except Tecnicos.DoesNotExist:
             messages.error(request, 'Error: No se encontró el Técnico.')
@@ -160,22 +145,16 @@ def eliminarEnvio(request, idEnvio):
     try:
         envio = Envios.objects.get(idenvio=idEnvio)
     except ObjectDoesNotExist:
-        messages.error(request, 'El envío que intenta eliminar no existe.')
+        messages['error'] = 'El envío que intenta eliminar no existe.'
         return redirect('homeEnvios')
 
     try:
         envio.delete()
-        messages.success(request, 'Envío eliminado con éxito')
+        messages['success'] = 'Envío eliminado con éxito'
     except Exception as e:
-        messages.error(request, f'Ocurrió un error al eliminar el envío: {str(e)}')
+        messages['error'] = f'Ocurrió un error al eliminar el envío: {str(e)}'
 
     return redirect('homeEnvios')
-def detallesView(request, idEnvio):
-    detallesEnvio = DetalleEnviosVentas.objects.get(idenvio=idEnvio)
-    return render(request, 'crudAdmin/Detalles.html', {'detallesEnvio': detallesEnvio})
-
-
-
 #Views del tecnico
 
 #@login_required
@@ -270,6 +249,29 @@ def generar_pdf(request, templateName):
     response['Content-Disposition'] = 'attachment; filename="envios.pdf"'
     response.write(pdf)
     return response
+
+#Enviar correo
+
+def enviar_correo(destinatario, asunto, mensaje):
+    load_dotenv()
+
+    remitente = os.getenv('USER')
+    password = os.getenv('PASS')
+
+    msg = MIMEMultipart()
+    msg['From'] = remitente
+    msg['To'] = destinatario
+    msg['Subject'] = asunto
+
+    body = mensaje
+    msg.attach(MIMEText(body, 'plain'))
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(remitente, password)
+    text = msg.as_string()
+    server.sendmail(remitente, destinatario, text)
+    server.quit()
 
 
 
