@@ -95,6 +95,13 @@ class citasCRUD(viewsets.ModelViewSet):
             idtecnico = request.POST.get('idtecnico')
             idcotizacion = request.POST.get('idcotizacion')
             idestadocita = request.POST.get('idestadocita')
+
+            tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
+            cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
+            numerodocumento = request.user.numerodocumento
+            administrador = Administrador.objects.get(numerodocumento = numerodocumento)
+            estadocita = Estadoscitas.objects.get(idestadocita=idestadocita)
+            contactocliente = cotizacion.idcliente.numerodocumento.numerocontacto
             
             fechacita = datetime.datetime.strptime(fechacita, '%Y-%m-%d').date()
             horacita = datetime.datetime.strptime(horacita, '%H:%M').time()
@@ -113,13 +120,6 @@ class citasCRUD(viewsets.ModelViewSet):
                 return redirect('index')
 
             try:
-                tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
-                cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
-                numerodocumento = request.user.numerodocumento
-                administrador = Administrador.objects.get(numerodocumento = numerodocumento)
-                estadocita = Estadoscitas.objects.get(idestadocita=idestadocita)
-                contactocliente = cotizacion.idcliente.numerodocumento.numerocontacto
-
                 cita = Citas.objects.create(
                     fechacita=fechacita,
                     horacita=horacita,
@@ -133,7 +133,7 @@ class citasCRUD(viewsets.ModelViewSet):
                 )
                 
                 messages.success (request,'Se ha registrado exitosamente')
-                correo_cita_agendada(request, idcliente=cotizacion.idcliente.idcliente, idtecnico=cita.idtecnico, idcita=cita.idcita)
+                # correo_cita_agendada(request, idcliente=cotizacion.idcliente.idcliente, idtecnico=cita.idtecnico, idcita=cita.idcita)
 
                 return redirect('index')
             except Tecnicos.DoesNotExist:
