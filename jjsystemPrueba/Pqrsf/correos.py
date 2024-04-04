@@ -22,33 +22,22 @@ def correo_respuesta_cliente(request, idpqrsf):
 
 def correo_confirmacion_pqrsf_cliente_admin(request, idpqrsf):
     pqrsf = Pqrsf.objects.get(idpqrsf=idpqrsf)
-    cliente = Clientes.objects.get(idcliente=pqrsf.idcliente)
-    admin = Administrador.objects.get(idadministrador=3)
+    cliente = Clientes.objects.get(idcliente=pqrsf.idcliente.idcliente)
+    admin = Administrador.objects.get(numerodocumento=9878465545)
 
     email_cliente = cliente.numerodocumento.email
     email_admin = admin.numerodocumento.email
+    correo_origen = settings.EMAIL_HOST_USER
 
     asunto_cliente = f'Confirmación: Se ha enviado con éxito tu {pqrsf.idtipopqrsf.nombretipopqrsf}'
     asunto_admin = f'Se ha registrado un(a) nuevo(a) {pqrsf.idtipopqrsf.nombretipopqrsf}'
 
-    pdf_content = convertir_pqrsf_pdf(request, idpqrsf=idpqrsf)
-    pdf_filename = f'{pqrsf.idtipopqrsf.nombretipopqrsf}_{idpqrsf}.pdf'
+    html_message_cliente = render_to_string('correos/correo_confirmacion_pqrsf_cliente_admin.html',{'pqrsf':pqrsf, 'cliente':cliente, 'destinatario':'Cliente'})
+    html_message_administrador = render_to_string('correos/correo_confirmacion_pqrsf_cliente_admin.html',{'pqrsf':pqrsf, 'administrador':admin, 'destinatario':'Administrador'})
 
-    correo_cliente = EmailMultiAlternatives(asunto_cliente, '', settings.EMAIL_HOST_USER, [email_cliente])
-    correo_admin = EmailMultiAlternatives(asunto_admin, '', settings.EMAIL_HOST_USER, [email_admin])
+    send_mail(asunto_cliente, '', correo_origen, [email_cliente], html_message=html_message_cliente)
+    send_mail(asunto_admin, '', correo_origen, [email_admin], html_message=html_message_administrador)
 
-    correo_cliente.attach(pdf_filename, pdf_content, 'application/pdf')
-    correo_admin.attach(pdf_filename, pdf_content, 'application/pdf')
-
-    html_message_cliente = render_to_string('correo_confirmacion_pqrsf_cliente_admin.html', {'cliente': cliente, 'pqrsf': pqrsf, 'destinatario': 'Cliente'})
-    html_message_admin = render_to_string('correo_confirmacion_pqrsf_cliente_admin.html', {'cliente': cliente, 'pqrsf': pqrsf, 'destinatario': 'Administrador'})
-
-    correo_cliente.attach_alternative(html_message_cliente, 'text/html')
-    correo_admin.attach_alternative(html_message_admin, 'text/html')
-
-    send_mail(correo_cliente)
-    send_mail(correo_admin)
     return None
-
 
 
