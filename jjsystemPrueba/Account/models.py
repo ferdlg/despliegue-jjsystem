@@ -365,7 +365,7 @@ class Pqrsf(models.Model):
     idpqrsf = models.AutoField(db_column='idPQRSF', primary_key=True)
     fechapqrsf = models.DateField(db_column='fechaPQRSF', auto_now_add=True)
     informacionpqrsf = models.TextField(db_column='informacionPQRSF')
-    idcliente = models.ForeignKey(Clientes, models.CASCADE, db_column='idCliente')
+    idcliente = models.ForeignKey('Clientes', models.CASCADE, db_column='idCliente')
     idtipopqrsf = models.ForeignKey('TiposPQRSF', models.CASCADE, db_column='idTipoPQRSF')
     idestadopqrsf = models.ForeignKey(Estadospqrsf, models.CASCADE, db_column='idEstadoPQRSF')
 

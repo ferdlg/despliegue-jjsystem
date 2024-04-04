@@ -21,11 +21,11 @@ class pqrsfCRUD(viewsets.ModelViewSet):
         return render(request, 'cliente/ver_pqrsf.html', {'estados':estados,'tipos':tipos, 'pqrsfs':pqrsfs, 'cliente':cliente})
     
 
-    def crear_pqrsf(self,request):
+    def crear_pqrsf(self, request):
         if request.method == 'POST':
             numerodocumento = request.user.numerodocumento
             cliente = get_object_or_404(Clientes, numerodocumento=numerodocumento)
-            idcliente = cliente.idcliente
+            idcliente = cliente.idcliente if cliente else None
             fechapqrsf = timezone.now().date()
             informacionpqrsf = request.POST.get('informacionpqrsf')
             tipo = request.POST.get('idtipopqrsf')
@@ -36,7 +36,7 @@ class pqrsfCRUD(viewsets.ModelViewSet):
 
             # Crear la instancia de PQRSF
             pqrsf = Pqrsf.objects.create(
-                idcliente = cliente,
+                idcliente=cliente,
                 fechapqrsf=fechapqrsf,
                 informacionpqrsf=informacionpqrsf,
                 idestadopqrsf=estadopqrsf,
@@ -44,8 +44,7 @@ class pqrsfCRUD(viewsets.ModelViewSet):
             )
             # Mostrar un mensaje de éxito y redireccionar
             messages.success(request, 'PQRSF registrada correctamente')
-            correo_confirmacion_pqrsf_cliente_admin(request, idpqrsf=pqrsf.idpqrsf)
+            #correo_confirmacion_pqrsf_cliente_admin(request, idpqrsf=pqrsf.idpqrsf)
             return redirect('ir_a_pqrsf')
-        
         return redirect('ir_a_pqrsf')
         
