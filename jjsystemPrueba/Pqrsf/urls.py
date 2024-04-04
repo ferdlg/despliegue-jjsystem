@@ -4,7 +4,8 @@ from . import views
 
 from .controllers.estadospqrsf import estadospqrsfCRUD
 from .controllers.tipospqrsf import tipospqrsfCRUD
-from .controllers.pqrsf import pqrsfCRUD, convertir_pqrsf_pdf
+from .controllers.pqrsf import pqrsfCRUD
+from .controllers.pdf import convertir_pqrsf_pdf
 from .controllers.respuesta import respuestaCRUD
 
 router = DefaultRouter()
