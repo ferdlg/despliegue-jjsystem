@@ -5,7 +5,8 @@ from ..correos import correo_cita_agendada
 from .serializers import CitasSerializer
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 from django.contrib import messages
-
+import datetime
+import pytz
 
 class citasCRUD(viewsets.ModelViewSet):
     queryset = Citas.objects.all()
@@ -95,6 +96,22 @@ class citasCRUD(viewsets.ModelViewSet):
             idcotizacion = request.POST.get('idcotizacion')
             idestadocita = request.POST.get('idestadocita')
             
+            fechacita = datetime.datetime.strptime(fechacita, '%Y-%m-%d').date()
+            horacita = datetime.datetime.strptime(horacita, '%H:%M').time()
+
+            fecha_actual = datetime.datetime.now().date()
+            hora_actual = datetime.datetime.now().time()
+
+            if fechacita.weekday() >= 5 or fechacita <= fecha_actual:
+                messages.error(request, 'No se pueden programar citas para fines de semana, fechas anteriores, o el mismo dia')
+                return redirect('index')
+
+            hora_inicio = datetime.time(7, 0)  # 7:00 am
+            hora_fin = datetime.time(17, 0)    # 5:00 pm
+            if horacita < hora_inicio or horacita > hora_fin:
+                messages.error(request, 'La cita debe programarse entre las 7:00 am y las 5:00 pm.')
+                return redirect('index')
+
             try:
                 tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
                 cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)

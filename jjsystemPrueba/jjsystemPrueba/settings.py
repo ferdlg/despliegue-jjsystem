@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 import dj_database_url
+import warnings
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -195,5 +197,7 @@ MEDIA_ROOT = [os.path.join(BASE_DIR, 'ServicioTecnico'),
 MEDIA_URL = 'images/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
+# Suprimir todas las advertencias relacionadas con la asignación de números a instancias
+warnings.filterwarnings('ignore', message="Field 'idcliente' expected a number but got.*")
+warnings.filterwarnings('ignore', message="Field 'idtecnico' expected a number but got.*")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
