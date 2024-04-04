@@ -1,9 +1,10 @@
 from pyexpat.errors import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from Account.models import *
 from Account.views import role_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
@@ -18,7 +19,8 @@ import os
 # from dotenv import load_dotenv
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from .envio_correo import enviar_correo
+from jjsystemPrueba import settings
+from .envio_correo import enviar_correo_estado_envio
 # Create your views here.
 
 def homeEnvios(request):
@@ -56,34 +58,18 @@ def createEnvioView(request):
 
         try:
             idtecnico = int(idtecnico)
-            idtecnico = Tecnicos.objects.get(idtecnico=idtecnico)
+            tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
             estado = Estadosenvios.objects.get(idestadoenvio=idestadoenvio)
 
+            # Crear el envío
             envio = Envios.objects.create(
                 direccionenvio=direccion,
-                idtecnico=idtecnico,
+                idtecnico=tecnico,
                 idestadoenvio=estado
             )
-            # Aquí obtienes el idEnvio que se acaba de crear
-            idEnvioCreado = envio.id
-            
-            # Obtener el email del usuario correspondiente al envío creado
-            envio_usuario = EnviosUsuarios.objects.filter(idEnvio=idEnvioCreado).first()
-            if envio_usuario:
-                email_cliente = envio_usuario.emailCliente
 
-                # Enviar correo al cliente
-                enviar_correo(
-                    'Nuevo envío creado',
-                    'Se ha creado un nuevo envío para usted.',
-                    [email_cliente],
-                    fail_silently=False,
-                )
-
-                return redirect('homeEnvios')
-            else:
-                # Manejar el caso donde no se encuentra un registro en EnviosUsuarios para el idEnvio creado
-                print("Error: No se encontró un registro en EnviosUsuarios para el idEnvio creado.")
+            # Redireccionar después de crear el envío
+            return redirect('homeEnvios')
 
         except Tecnicos.DoesNotExist:
             messages.error(request, 'Error: No se encontró el Técnico.')
@@ -97,7 +83,10 @@ def createEnvioView(request):
 
 #@login_required
 #@role_required(1)
+
 def editarEnvio(request, idEnvio):
+    idenvio = None  # Asignar un valor por defecto
+
     try:
         envio = Envios.objects.get(idenvio=idEnvio)
         estados = Estadosenvios.objects.all()
@@ -113,13 +102,13 @@ def editarEnvio(request, idEnvio):
             idestadoenvio = int(request.POST.get('estado'))
 
             # Obtener las instancias de Tecnicos y Estadosenvios
-            idtecnico = Tecnicos.objects.get(idtecnico=idtecnico)
-            idestadoenvio = Estadosenvios.objects.get(idestadoenvio=idestadoenvio)
+            tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
+            estado_envio = Estadosenvios.objects.get(idestadoenvio=idestadoenvio)
 
             # Actualizar los campos del objeto envio
             envio.direccionenvio = direccion
-            envio.idtecnico = idtecnico
-            envio.idestadoenvio = idestadoenvio
+            envio.idtecnico = tecnico
+            envio.idestadoenvio = estado_envio
             envio.save()
 
             # Obtener el correo electrónico del cliente asociado al envío
@@ -130,18 +119,22 @@ def editarEnvio(request, idEnvio):
                 messages.error(request, 'No se pudo encontrar el cliente asociado al envío.')
                 return redirect('homeEnvios')
 
-            # Envío de correo electrónico al usuario con el estado actualizado
-            estado_actualizado = idestadoenvio.nombreestadoenvio
-            enviar_correo(
-                email_cliente,
-                'Actualización del estado de envío',
-                estado_actualizado  # Envía el estado actualizado como mensaje
-            )
+            # Envío de correo electrónico al cliente con el estado actualizado
+            detalles_envio = DetalleEnviosVentas.objects.get(idenvio=idEnvio)  # <-- Usar idenvio
+            idenvio = detalles_envio.idenvio
 
-            print("Correo electrónico enviado correctamente a:", email_cliente)  # Imprimir mensaje en la consola del servidor
+            # Agregar impresión para verificar los parámetros
+            print("Parámetros de la función enviar_correo_estado_envio:", email_cliente,idenvio)
+
+            # Llamar a la función enviar_correo_estado_envio
+            enviar_correo_estado_envio(request, email_cliente,idenvio)
+
+            print("Correo electrónico enviado correctamente a:", email_cliente)
 
             return redirect('homeEnvios')
         except Exception as e:
+            # Agregar impresión para verificar errores
+            print("Error al enviar el correo electrónico:", str(e))
             return redirect('homeEnvios')
 
     return render(request, "crudAdmin/Editar.html", {"envio": envio, "estados": estados})
@@ -152,22 +145,16 @@ def eliminarEnvio(request, idEnvio):
     try:
         envio = Envios.objects.get(idenvio=idEnvio)
     except ObjectDoesNotExist:
-        messages.error(request, 'El envío que intenta eliminar no existe.')
+        messages['error'] = 'El envío que intenta eliminar no existe.'
         return redirect('homeEnvios')
 
     try:
         envio.delete()
-        messages.success(request, 'Envío eliminado con éxito')
+        messages['success'] = 'Envío eliminado con éxito'
     except Exception as e:
-        messages.error(request, f'Ocurrió un error al eliminar el envío: {str(e)}')
+        messages['error'] = f'Ocurrió un error al eliminar el envío: {str(e)}'
 
     return redirect('homeEnvios')
-def detallesView(request, idEnvio):
-    detallesEnvio = DetalleEnviosVentas.objects.get(idenvio=idEnvio)
-    return render(request, 'crudAdmin/Detalles.html', {'detallesEnvio': detallesEnvio})
-
-
-
 #Views del tecnico
 
 #@login_required
@@ -236,6 +223,7 @@ def generar_pdf(request, templateName):
 
     tabla = Table(tabla_datos)
 
+    logo_path = os.path.join(settings.STATICFILES_DIRS[3], 'images/logo.png')
     # Aplicar estilos a la tabla
     estilo_tabla = TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
                                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
@@ -264,26 +252,26 @@ def generar_pdf(request, templateName):
 
 #Enviar correo
 
-# def enviar_correo(destinatario, asunto, mensaje):
-#     load_dotenv()
+def enviar_correo(destinatario, asunto, mensaje):
+    load_dotenv()
 
-#     remitente = os.getenv('USER')
-#     password = os.getenv('PASS')
+    remitente = os.getenv('USER')
+    password = os.getenv('PASS')
 
-#     msg = MIMEMultipart()
-#     msg['From'] = remitente
-#     msg['To'] = destinatario
-#     msg['Subject'] = asunto
+    msg = MIMEMultipart()
+    msg['From'] = remitente
+    msg['To'] = destinatario
+    msg['Subject'] = asunto
 
-#     body = mensaje
-#     msg.attach(MIMEText(body, 'plain'))
+    body = mensaje
+    msg.attach(MIMEText(body, 'plain'))
 
-#     server = smtplib.SMTP('smtp.gmail.com', 587)
-#     server.starttls()
-#     server.login(remitente, password)
-#     text = msg.as_string()
-#     server.sendmail(remitente, destinatario, text)
-#     server.quit()
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(remitente, password)
+    text = msg.as_string()
+    server.sendmail(remitente, destinatario, text)
+    server.quit()
 
 
 

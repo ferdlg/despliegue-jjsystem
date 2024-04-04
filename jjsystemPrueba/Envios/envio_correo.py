@@ -1,34 +1,18 @@
-import smtplib
-import os
-# from dotenv import load_dotenv
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.template.loader import render_to_string
+from Account.models import *
+from django.conf import settings
+from django.contrib import messages
 
-def enviar_correo(destinatario, asunto, estado):
-    # load_dotenv()
+def enviar_correo_estado_envio(request, email_cliente, idenvio):
+    detalles_envio = DetalleEnviosVentas.objects.get(idenvio = idenvio)
+    envio = Envios.objects.get(idenvio = idenvio)
 
-    remitente = os.getenv('USER')
-    password = os.getenv('PASS')
+    html_message_cliente = render_to_string('estado_envio.html', {'detalles_envio': detalles_envio, 'envio':envio})
+    asunto = 'Actualización del estado de envío'
 
-    msg = MIMEMultipart()
-    msg['From'] = remitente
-    msg['To'] = destinatario
-    msg['Subject'] = asunto
+    send_mail(asunto, '', settings.EMAIL_HOST_USER, [email_cliente], html_message=html_message_cliente)
 
-    # Lee el contenido del template HTML
-    with open('templates/estado_envio.html', 'r') as archivo:
-        template_html = archivo.read()
-
-    # Renderiza el template con el estado actualizado
-    mensaje = template_html.replace('{{ estado }}', estado)
-
-    # Adjunta el mensaje al correo
-    msg.attach(MIMEText(mensaje, 'html'))
-
-    # Establece la conexión SMTP y envía el correo
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(remitente, password)
-    text = msg.as_string()
-    server.sendmail(remitente, destinatario, text)
-    server.quit()
+    return None
