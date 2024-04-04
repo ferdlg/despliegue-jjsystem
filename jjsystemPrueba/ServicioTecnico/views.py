@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render, redirect
 from rest_framework import viewsets
 from Account.models import Citas , Tecnicos, Administrador, Estadoscitas,Cotizaciones
@@ -11,7 +12,9 @@ def index (request):
     estados = Estadoscitas.objects.all()
     tecnicos = Tecnicos.objects.all()
     cotizaciones = Cotizaciones.objects.all()
-    return render(request, 'index.html', {'estados': estados, 'tecnicos': tecnicos, 'cotizaciones':cotizaciones})
+    fecha_actual = datetime.datetime.now().date()
+
+    return render(request, 'index.html', {'estados': estados, 'tecnicos': tecnicos, 'cotizaciones':cotizaciones, 'fecha_actual':fecha_actual})
 
 def indexTecnicos(request):
     return render(request, 'tecnicos.html')

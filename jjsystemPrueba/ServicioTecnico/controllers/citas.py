@@ -5,7 +5,8 @@ from ..correos import correo_cita_agendada
 from .serializers import CitasSerializer
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 from django.contrib import messages
-
+import datetime
+import pytz
 
 class citasCRUD(viewsets.ModelViewSet):
     queryset = Citas.objects.all()
@@ -94,15 +95,31 @@ class citasCRUD(viewsets.ModelViewSet):
             idtecnico = request.POST.get('idtecnico')
             idcotizacion = request.POST.get('idcotizacion')
             idestadocita = request.POST.get('idestadocita')
-            
-            try:
-                tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
-                cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
-                numerodocumento = request.user.numerodocumento
-                administrador = Administrador.objects.get(numerodocumento = numerodocumento)
-                estadocita = Estadoscitas.objects.get(idestadocita=idestadocita)
-                contactocliente = cotizacion.idcliente.numerodocumento.numerocontacto
 
+            tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
+            cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
+            numerodocumento = request.user.numerodocumento
+            administrador = Administrador.objects.get(numerodocumento = numerodocumento)
+            estadocita = Estadoscitas.objects.get(idestadocita=idestadocita)
+            contactocliente = cotizacion.idcliente.numerodocumento.numerocontacto
+            
+            fechacita = datetime.datetime.strptime(fechacita, '%Y-%m-%d').date()
+            horacita = datetime.datetime.strptime(horacita, '%H:%M').time()
+
+            fecha_actual = datetime.datetime.now().date()
+            hora_actual = datetime.datetime.now().time()
+
+            if fechacita.weekday() >= 5 or fechacita <= fecha_actual:
+                messages.error(request, 'No se pueden programar citas para fines de semana, fechas anteriores, o el mismo dia')
+                return redirect('index')
+
+            hora_inicio = datetime.time(7, 0)  # 7:00 am
+            hora_fin = datetime.time(17, 0)    # 5:00 pm
+            if horacita < hora_inicio or horacita > hora_fin:
+                messages.error(request, 'La cita debe programarse entre las 7:00 am y las 5:00 pm.')
+                return redirect('index')
+
+            try:
                 cita = Citas.objects.create(
                     fechacita=fechacita,
                     horacita=horacita,
@@ -114,9 +131,9 @@ class citasCRUD(viewsets.ModelViewSet):
                     idcotizacion=cotizacion,
                     idestadocita=estadocita
                 )
-                
+                cliente = cita.idcotizacion.idcliente.idcliente
                 messages.success (request,'Se ha registrado exitosamente')
-                correo_cita_agendada(request, idcliente=cotizacion.idcliente.idcliente, idtecnico=cita.idtecnico, idcita=cita.idcita)
+                correo_cita_agendada(request, idcliente=cliente, idtecnico=cita.idtecnico.idtecnico, idcita=cita.idcita)
 
                 return redirect('index')
             except Tecnicos.DoesNotExist:

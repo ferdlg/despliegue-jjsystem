@@ -173,6 +173,7 @@ CREATE TABLE IF NOT EXISTS EstadosCitas(
 CREATE TABLE IF NOT EXISTS Citas(
     idCita INT NOT NULL AUTO_INCREMENT,
     fechaCita DATE NOT NULL,
+    horaCita TIME NOT NULL,
     direccionCita VARCHAR(50) NOT NULL,
     contactoCliente BIGINT NOT NULL,
     descripcionCita TEXT(200) NOT NULL,

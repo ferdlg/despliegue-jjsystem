@@ -21,8 +21,8 @@ class AuthGroup(models.Model):
 
 class AuthGroupPermissions(models.Model):
     id = models.BigAutoField(primary_key=True)
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
+    group = models.ForeignKey(AuthGroup, models.CASCADE)
+    permission = models.ForeignKey('AuthPermission', models.CASCADE)
 
     class Meta:
         managed = False
@@ -32,7 +32,7 @@ class AuthGroupPermissions(models.Model):
 
 class AuthPermission(models.Model):
     name = models.CharField(max_length=255)
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
+    content_type = models.ForeignKey('DjangoContentType', models.CASCADE)
     codename = models.CharField(max_length=100)
 
     class Meta:
@@ -60,8 +60,8 @@ class AuthUser(models.Model):
 
 class AuthUserGroups(models.Model):
     id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
+    user = models.ForeignKey(AuthUser, models.CASCADE)
+    group = models.ForeignKey(AuthGroup, models.CASCADE)
 
     class Meta:
         managed = False
@@ -71,8 +71,8 @@ class AuthUserGroups(models.Model):
 
 class AuthUserUserPermissions(models.Model):
     id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
+    user = models.ForeignKey(AuthUser, models.CASCADE)
+    permission = models.ForeignKey(AuthPermission, models.CASCADE)
 
     class Meta:
         managed = False
@@ -100,15 +100,15 @@ class Categoriasservicios(models.Model):
 
 class Citas(models.Model):
     idcita = models.AutoField(db_column='idCita', primary_key=True)  # Field name made lowercase.
-    fechacita = models.DateField(db_column='fechaCita') 
-    horacita = models.TimeField(db_column='horaCita')
+    fechacita = models.DateField(db_column='fechaCita')  # Field name made lowercase.
     direccioncita = models.CharField(db_column='direccionCita', max_length=50)  # Field name made lowercase.
     contactocliente = models.BigIntegerField(db_column='contactoCliente')  # Field name made lowercase.
     descripcioncita = models.TextField(db_column='descripcionCita')  # Field name made lowercase.
-    idtecnico = models.ForeignKey('Tecnicos', models.DO_NOTHING, db_column='idTecnico')  # Field name made lowercase.
-    idadministrador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='idAdministrador')  # Field name made lowercase.
-    idcotizacion = models.ForeignKey('Cotizaciones', models.DO_NOTHING, db_column='idCotizacion')  # Field name made lowercase.
-    idestadocita = models.ForeignKey('Estadoscitas', models.DO_NOTHING, db_column='idEstadoCita')  # Field name made lowercase.
+    idtecnico = models.ForeignKey('Tecnicos',models.CASCADE, db_column='idTecnico')  # Field name made lowercase.
+    idadministrador = models.ForeignKey(Administrador,models.CASCADE, db_column='idAdministrador')  # Field name made lowercase.
+    idcotizacion = models.ForeignKey('Cotizaciones',models.CASCADE, db_column='idCotizacion')  # Field name made lowercase.
+    idestadocita = models.ForeignKey('Estadoscitas',models.CASCADE, db_column='idEstadoCita')  # Field name made lowercase.
+    horacita = models.TimeField(db_column='horaCita')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -130,8 +130,8 @@ class Cotizaciones(models.Model):
     fechacotizacion = models.DateField(db_column='fechaCotizacion', auto_now_add=True)
     totalcotizacion = models.FloatField(db_column='totalCotizacion')  # Field name made lowercase.
     descripcioncotizacion = models.TextField(db_column='descripcionCotizacion')  # Field name made lowercase.
-    idcliente = models.ForeignKey(Clientes, models.DO_NOTHING, db_column='idCliente')  # Field name made lowercase.
-    idestadocotizacion = models.ForeignKey('Estadoscotizaciones', models.DO_NOTHING, db_column='idEstadoCotizacion')  # Field name made lowercase.
+    idcliente = models.ForeignKey(Clientes, models.CASCADE, db_column='idCliente')  # Field name made lowercase.
+    idestadocotizacion = models.ForeignKey('Estadoscotizaciones', models.CASCADE, db_column='idEstadoCotizacion')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -144,17 +144,17 @@ class Productos(models.Model):
     precioproducto = models.FloatField(db_column='precioProducto')  # Field name made lowercase.
     cantidad = models.IntegerField()
     imagen = models.BinaryField(blank=True, null=True)
-    idadministrador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='idAdministrador', blank=True, null=True)  # Field name made lowercase.
-    idcategoriaproducto = models.ForeignKey(Categoriasproductos, models.DO_NOTHING, db_column='idCategoriaProducto', blank=True, null=True)  # Field name made lowercase.
-    idproveedorproducto = models.ForeignKey('Proveedoresproductos', models.DO_NOTHING, db_column='idProveedorProducto', blank=True, null=True)  # Field name made lowercase.
+    idadministrador = models.ForeignKey(Administrador, models.CASCADE, db_column='idAdministrador', blank=True, null=True)  # Field name made lowercase.
+    idcategoriaproducto = models.ForeignKey(Categoriasproductos, models.CASCADE, db_column='idCategoriaProducto', blank=True, null=True)  # Field name made lowercase.
+    idproveedorproducto = models.ForeignKey('Proveedoresproductos', models.CASCADE, db_column='idProveedorProducto', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'productos'
 
 class CotizacionesProductos(models.Model):
-    idcotizacion = models.ForeignKey(Cotizaciones, models.DO_NOTHING, db_column='idCotizacion', blank=True, null=True)  # Field name made lowercase.
-    idproducto = models.ForeignKey(Productos, models.DO_NOTHING, db_column='idProducto', blank=True, null=True)  # Field name made lowercase.
+    idcotizacion = models.ForeignKey(Cotizaciones, models.CASCADE, db_column='idCotizacion', blank=True, null=True)  # Field name made lowercase.
+    idproducto = models.ForeignKey(Productos, models.CASCADE, db_column='idProducto', blank=True, null=True)  # Field name made lowercase.
     cantidad = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -163,8 +163,8 @@ class CotizacionesProductos(models.Model):
 
 
 class CotizacionesServicios(models.Model):
-    idcotizacion = models.ForeignKey(Cotizaciones, models.DO_NOTHING, db_column='idCotizacion', blank=True, null=True)  # Field name made lowercase.
-    idservicio = models.ForeignKey('Servicios', models.DO_NOTHING, db_column='idServicio', blank=True, null=True)  # Field name made lowercase.
+    idcotizacion = models.ForeignKey(Cotizaciones, models.CASCADE, db_column='idCotizacion', blank=True, null=True)  # Field name made lowercase.
+    idservicio = models.ForeignKey('Servicios', models.CASCADE, db_column='idServicio', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -175,7 +175,7 @@ class Cronogramatecnicos(models.Model):
     idcronogramatecnico = models.AutoField(db_column='idCronogramaTecnico', primary_key=True)  # Field name made lowercase.
     idtecnico = models.ForeignKey('Tecnicos', models.CASCADE, db_column='idTecnico', blank=True, null=True)  # Field name made lowercase.
     idcita = models.ForeignKey(Citas, models.CASCADE, db_column='idCita', blank=True, null=True)  # Field name made lowercase.
-    iddisponibilidadcronograma = models.ForeignKey('Disponibilidadcronogramas', models.DO_NOTHING, db_column='idDisponibilidadCronograma', blank=True, null=True)  # Field name made lowercase.
+    iddisponibilidadcronograma = models.ForeignKey('Disponibilidadcronogramas', models.CASCADE, db_column='idDisponibilidadCronograma', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -201,7 +201,7 @@ class Detallesventas(models.Model):
     detallesventa = models.CharField(db_column='detallesVenta', max_length=300)  # Field name made lowercase.
     subtotalventa = models.FloatField(db_column='subtotalVenta')  # Field name made lowercase.
     totalventa = models.FloatField(db_column='totalVenta')  # Field name made lowercase.
-    idventa = models.ForeignKey('Ventas', models.DO_NOTHING, db_column='idVenta')  # Field name made lowercase.
+    idventa = models.ForeignKey('Ventas', models.CASCADE, db_column='idVenta')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -223,8 +223,8 @@ class DjangoAdminLog(models.Model):
     object_repr = models.CharField(max_length=200)
     action_flag = models.PositiveSmallIntegerField()
     change_message = models.TextField()
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    content_type = models.ForeignKey('DjangoContentType', models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(AuthUser, models.CASCADE)
 
     class Meta:
         managed = False
@@ -265,8 +265,8 @@ class DjangoSession(models.Model):
 class Envios(models.Model):
     idenvio = models.AutoField(db_column='idEnvio', primary_key=True)  # Field name made lowercase.
     direccionenvio = models.CharField(db_column='direccionEnvio', max_length=50)  # Field name made lowercase.
-    idtecnico = models.ForeignKey('Tecnicos', models.DO_NOTHING, db_column='idTecnico', blank=True, null=True)  # Field name made lowercase.
-    idestadoenvio = models.ForeignKey('Estadosenvios', models.DO_NOTHING, db_column='idEstadoEnvio', blank=True, null=True)  # Field name made lowercase.
+    idtecnico = models.ForeignKey('Tecnicos', models.CASCADE, db_column='idTecnico', blank=True, null=True)  # Field name made lowercase.
+    idestadoenvio = models.ForeignKey('Estadosenvios', models.CASCADE, db_column='idEstadoEnvio', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -330,7 +330,7 @@ class Estadosusuarios(models.Model):
 
 
 class Historialcotizaciones(models.Model):
-    idcotizacion = models.ForeignKey(Cotizaciones, models.DO_NOTHING, db_column='idCotizacion', blank=True, null=True)  # Field name made lowercase.
+    idcotizacion = models.ForeignKey(Cotizaciones, models.CASCADE, db_column='idCotizacion', blank=True, null=True)  # Field name made lowercase.
     fechacreada = models.DateTimeField(db_column='fechaCreada', blank=True, null=True)  # Field name made lowercase.
     fechaactualizacion = models.DateTimeField(db_column='fechaActualizacion', blank=True, null=True)  # Field name made lowercase.
 
@@ -341,7 +341,7 @@ class Historialcotizaciones(models.Model):
 
 class Historialpqrsfportipoestado(models.Model):
     idregistro = models.AutoField(db_column='idRegistro', primary_key=True)  # Field name made lowercase.
-    idpqrsf = models.ForeignKey('Pqrsf', models.DO_NOTHING, db_column='idPQRSF', blank=True, null=True)  # Field name made lowercase.
+    idpqrsf = models.ForeignKey('Pqrsf', models.CASCADE, db_column='idPQRSF', blank=True, null=True)  # Field name made lowercase.
     idtipopqrsf = models.IntegerField(db_column='idTipoPQRSF', blank=True, null=True)  # Field name made lowercase.
     idestadopqrsf = models.IntegerField(db_column='idEstadoPQRSF', blank=True, null=True)  # Field name made lowercase.
     fecharegistro = models.DateTimeField(db_column='fechaRegistro', blank=True, null=True)  # Field name made lowercase.
@@ -354,7 +354,7 @@ class Historialpqrsfportipoestado(models.Model):
 class Permisos(models.Model):
     idpermiso = models.AutoField(db_column='idPermiso', primary_key=True)  # Field name made lowercase.
     nombrepermiso = models.CharField(db_column='nombrePermiso', max_length=20, blank=True, null=True)  # Field name made lowercase.
-    idrol = models.ForeignKey('Roles', models.DO_NOTHING, db_column='idRol', blank=True, null=True)  # Field name made lowercase.
+    idrol = models.ForeignKey('Roles', models.CASCADE, db_column='idRol', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -362,12 +362,12 @@ class Permisos(models.Model):
 
 
 class Pqrsf(models.Model):
-    idpqrsf = models.AutoField(db_column='idPQRSF', primary_key=True)  # Field name made lowercase.
-    fechapqrsf = models.DateField(db_column='fechaPQRSF',  auto_now_add=True)  # Field name made lowercase.
-    informacionpqrsf = models.TextField(db_column='informacionPQRSF')  # Field name made lowercase.
-    idcliente = models.ForeignKey(Clientes, models.DO_NOTHING, db_column='idCliente')  # Field name made lowercase.
-    idtipopqrsf = models.ForeignKey('Tipospqrsf', models.DO_NOTHING, db_column='idTipoPQRSF')  # Field name made lowercase.
-    idestadopqrsf = models.ForeignKey(Estadospqrsf, models.DO_NOTHING, db_column='idEstadoPQRSF')  # Field name made lowercase.
+    idpqrsf = models.AutoField(db_column='idPQRSF', primary_key=True)
+    fechapqrsf = models.DateField(db_column='fechaPQRSF', auto_now_add=True)
+    informacionpqrsf = models.TextField(db_column='informacionPQRSF')
+    idcliente = models.ForeignKey('Clientes', models.CASCADE, db_column='idCliente')
+    idtipopqrsf = models.ForeignKey('TiposPQRSF', models.CASCADE, db_column='idTipoPQRSF')
+    idestadopqrsf = models.ForeignKey(Estadospqrsf, models.CASCADE, db_column='idEstadoPQRSF')
 
     class Meta:
         managed = False
@@ -386,8 +386,8 @@ class Respuestas(models.Model):
     idrespuesta = models.AutoField(db_column='idRespuesta', primary_key=True)  # Field name made lowercase.
     fecha = models.DateField(blank=True, null=True)
     informacionrespuesta = models.TextField(db_column='informacionRespuesta', blank=True, null=True)  # Field name made lowercase.
-    idadministrador = models.ForeignKey(Administrador, models.DO_NOTHING, db_column='idAdministrador', blank=True, null=True)  # Field name made lowercase.
-    idpqrsf = models.ForeignKey(Pqrsf, models.DO_NOTHING, db_column='idPQRSF', blank=True, null=True)  # Field name made lowercase.
+    idadministrador = models.ForeignKey(Administrador, models.CASCADE, db_column='idAdministrador', blank=True, null=True)  # Field name made lowercase.
+    idpqrsf = models.ForeignKey(Pqrsf, models.CASCADE, db_column='idPQRSF', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -404,8 +404,8 @@ class Roles(models.Model):
 
 
 class RolesHasPermisos(models.Model):
-    idrol = models.ForeignKey(Roles, models.DO_NOTHING, db_column='idRol', blank=True, null=True)  # Field name made lowercase.
-    idpermiso = models.ForeignKey(Permisos, models.DO_NOTHING, db_column='idPermiso', blank=True, null=True)  # Field name made lowercase.
+    idrol = models.ForeignKey(Roles, models.CASCADE, db_column='idRol', blank=True, null=True)  # Field name made lowercase.
+    idpermiso = models.ForeignKey(Permisos, models.CASCADE, db_column='idPermiso', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -417,7 +417,7 @@ class Servicios(models.Model):
     nombreservicio = models.TextField(db_column='nombreServicio')  # Field name made lowercase.
     descripcionservicio = models.TextField(db_column='descripcionServicio')  # Field name made lowercase.
     precioservicio = models.FloatField(db_column='precioServicio', blank=True, null=True)  # Field name made lowercase.
-    idcategoriaservicio = models.ForeignKey(Categoriasservicios, models.DO_NOTHING, db_column='idCategoriaServicio', blank=True, null=True)  # Field name made lowercase.
+    idcategoriaservicio = models.ForeignKey(Categoriasservicios, models.CASCADE, db_column='idCategoriaServicio', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -437,7 +437,7 @@ class Especialidadtecnicos(models.Model):
 
 class Tecnicos(models.Model):
     idtecnico = models.AutoField(primary_key=True)
-    id_especialidad_fk = models.ForeignKey('Especialidadtecnicos', models.DO_NOTHING, db_column='id_especialidad_fk')
+    id_especialidad_fk = models.ForeignKey('Especialidadtecnicos', models.CASCADE, db_column='id_especialidad_fk')
     numerodocumento = models.ForeignKey('Usuarios', models.CASCADE, db_column='numeroDocumento')
 
     def __str__(self):
@@ -463,8 +463,8 @@ class Usuarios(models.Model):
     email = models.EmailField(max_length=120, blank=True, null=True)
     password = models.CharField(max_length=200, blank=True, null=True)
     numerocontacto = models.FloatField(db_column='numeroContacto', blank=True, null=True)  # Field name made lowercase.
-    idrol = models.ForeignKey(Roles, models.DO_NOTHING, db_column='idRol')  # Field name made lowercase.
-    idestadosusuarios = models.ForeignKey(Estadosusuarios, models.DO_NOTHING, db_column='idEstadosUsuarios')  # Field name made lowercase.
+    idrol = models.ForeignKey(Roles, models.CASCADE, db_column='idRol')  # Field name made lowercase.
+    idestadosusuarios = models.ForeignKey(Estadosusuarios, models.CASCADE, db_column='idEstadosUsuarios')  # Field name made lowercase.
     last_login = models.DateTimeField(null=True, blank=True)
 
     def is_authenticated(self):
@@ -484,8 +484,8 @@ class Usuarios(models.Model):
 class Ventas(models.Model):
     idventa = models.AutoField(db_column='idVenta', primary_key=True)  # Field name made lowercase.
     fechaventa = models.DateField(db_column='fechaVenta')  # Field name made lowercase.
-    idenvio = models.ForeignKey(Envios, models.DO_NOTHING, db_column='idEnvio')  # Field name made lowercase.
-    idcotizacion = models.ForeignKey(Cotizaciones, models.DO_NOTHING, db_column='idCotizacion')  # Field name made lowercase.
+    idenvio = models.ForeignKey(Envios, models.CASCADE, db_column='idEnvio')  # Field name made lowercase.
+    idcotizacion = models.ForeignKey(Cotizaciones, models.CASCADE, db_column='idCotizacion')  # Field name made lowercase.
 
     class Meta:
         managed = False

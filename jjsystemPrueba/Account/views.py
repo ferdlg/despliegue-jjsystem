@@ -1,6 +1,6 @@
 import base64
 from django.utils.encoding import force_bytes
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import get_object_or_404, render, HttpResponse
 from django.views import View
 from .forms import LoginForm, NewPasswordForm, RegisterForm
 from .models import Roles, Estadosusuarios, Usuarios
@@ -69,44 +69,29 @@ def registerView(request):
 
 
 def userLogin(request):
-    try:
-        if request.user.is_authenticated:
-            if request.user.idrol.idrol == 1:
-                return redirect('inicio')
-            elif request.user.idrol.idrol == 2:
-                return redirect('productos')
-            elif request.user.idrol.idrol == 3:
-                return redirect('tecnico_home')
-            else:
-                raise ValueError('Usuario autenticado con un rol no válido')
-        
-        if request.method == 'POST':
-            form = LoginForm(request.POST)
-            if form.is_valid():
-                email = form.cleaned_data['email']
-                password = form.cleaned_data['password']
-                user = Usuarios.objects.get(email=email)
-                if user is not None and check_password(password, user.password):
-                    messages.success(request, 'Inicio de sesión exitoso')
-                    login(request, user)
-                    if user.idrol.idrol == 1:
-                        return redirect('inicio')
-                    elif user.idrol.idrol == 2:
-                        return redirect('productos')
-                    elif user.idrol.idrol == 3:
-                        return redirect('tecnico_home')
-                    else:
-                        raise ValueError('Usuario autenticado con un rol no válido')
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = get_object_or_404(Usuarios, email=email)
+            if user is not None and check_password(password, user.password):
+                login(request, user)
+                messages.success(request, 'Inicio de sesión exitoso')
+                if user.idrol.idrol == 1:
+                    return redirect('inicio')
+                elif user.idrol.idrol == 2:
+                    return redirect('productos')
+                elif user.idrol.idrol == 3:
+                    return redirect('tecnico_home')
                 else:
-                    raise ValueError('Credenciales incorrectas')
-        else:
-            form = LoginForm()
-    except Exception as e:
-        messages.success(request, str(e))
-        return redirect('Login.html')
-
+                    messages.error(request, 'Usuario autenticado con un rol no válido')
+            else:
+                messages.error(request, 'Credenciales incorrectas')
+    else:
+        form = LoginForm()
+    
     return render(request, 'Login.html', {'form': form})
-
 #decorador de vistas
 def role_required(required_idrol):
     def decorator(view_func):
