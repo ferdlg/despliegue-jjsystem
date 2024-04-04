@@ -28,9 +28,8 @@
         <table class="table data-table table-bordered">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">Numero</th>
                     <th scope="col">Fecha</th>
-                    <th scope="col">Informacion</th>
                     <th scope="col">Cliente</th>
                     <th scope="col">Tipo</th>
                     <th scope="col">Estado</th>
@@ -44,12 +43,11 @@
                 <tr>
                     <td>{{pqrsf_item.idpqrsf}}</td>
                     <td>{{pqrsf_item.fechapqrsf}}</td>
-                    <td>{{pqrsf_item.informacionpqrsf}}</td>
-                    <td>{{pqrsf_item.idcliente.idcliente}}</td>
+                    <td>{{pqrsf_item.idcliente.numerodocumento.nombre}} {{pqrsf_item.idcliente.numerodocumento.apellido}}</td>
                     <td>{{pqrsf_item.idtipopqrsf.nombretipopqrsf}}</td>
                     <td>{{pqrsf_item.idestadopqrsf.nombreestadopqrsf}}</td>
                     <td> 
-                        <a href="#" class="btn btn-outline-dark btn-sw"> PDF </a>
+                        <a href="{% url 'convertir_pqrsf_pdf' idpqrsf=pqrsf_item.idpqrsf %}" class="btn btn-outline-dark btn-sw">PDF</a>
                     </td>
                     <td> 
                         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#responder-pqrsf{{ pqrsf_item.idpqrsf }}">Responder</button>

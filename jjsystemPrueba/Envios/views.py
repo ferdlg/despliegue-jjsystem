@@ -9,12 +9,13 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from io import BytesIO
 from django.template.loader import get_template
+from django.core.exceptions import ObjectDoesNotExist
 from django.template import Context
 from Account.models import *
 from django.db import connection
 import smtplib
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from jjsystemPrueba import settings
