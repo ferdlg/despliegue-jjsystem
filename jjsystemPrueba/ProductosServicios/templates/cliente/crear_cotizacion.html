@@ -38,6 +38,7 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Fecha</th>
                                     <th scope="col">Descripción</th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -46,6 +47,7 @@
                                     <td>{{ cotizacion.idcotizacion }}</td>
                                     <td>{{ cotizacion.fechacotizacion }}</td>
                                     <td>{{ cotizacion.descripcioncotizacion }}</td>
+                                    <td> <a href="{% url 'ver_cotizacion_cliente' id_cotizacion=cotizacion.idcotizacion %}" class="btn btn-outline-success">Ver cotizacion</a></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>

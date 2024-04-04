@@ -40,19 +40,27 @@ class CotizacionesCRUD(BaseCotizacionesCRUD):
             servicios_seleccionados = request.POST.getlist('servicio[]')
 
             cotizacion = Cotizaciones.objects.get(idcotizacion=id_cotizacion)
-
+            print(productos_seleccionados)
             for idproducto in productos_seleccionados:
-                cantidad = request.POST.get('cantidad_' + idproducto)
-                if cantidad:  # Verifica si se ingresó una cantidad
-                    producto = Productos.objects.get(idproducto=idproducto)
-                    producto_cotizacion = CotizacionesProductos.objects.create(
-                        idcotizacion=cotizacion,
-                        idproducto=producto,
-                        cantidad=cantidad
-                    )
-                else:
-                    messages.error(request, 'No se ha ingresado la cantidad')
-
+                cantidades = request.POST.getlist('cantidad_' + idproducto)
+                for cantidad in cantidades:
+                    if cantidad.strip():  # Verificar si la cantidad no está vacía
+                        try:
+                            cantidad = int(cantidad)
+                            if cantidad > 0:
+                                producto = Productos.objects.get(idproducto=idproducto)
+                                producto_cotizacion = CotizacionesProductos.objects.create(
+                                    idcotizacion=cotizacion,
+                                    idproducto=producto,
+                                    cantidad=cantidad
+                                )
+                                messages.success(request, 'Se ha agregado el producto a la cotización')
+                            else:
+                                messages.error(request, 'La cantidad debe ser un número entero positivo')
+                        except ValueError:
+                            messages.error(request, 'La cantidad debe ser un número entero')
+                    else:
+                        messages.error(request, 'No se ha ingresado la cantidad')
 
             for idservicio in servicios_seleccionados:
                 servicio = Servicios.objects.get(idservicio=idservicio)
@@ -70,6 +78,7 @@ class CotizacionesCRUD(BaseCotizacionesCRUD):
         else:
             productos = Productos.objects.all()
             servicios = Servicios.objects.all()
+            messages.error(request, 'No se han agregado productos o servicios a la cotización')
             return render(request, 'cliente/agregar_productos_servicios.html', {'productos': productos, 'servicios': servicios, 'idcotizacion': id_cotizacion})
 
 def obtener_detalles_cotizacion(id_cotizacion):

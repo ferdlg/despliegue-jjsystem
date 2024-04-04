@@ -13,7 +13,7 @@
                     <h5 class="card-title">Detalles:</h5>
                     <ul class="list-group">
                         <li class="list-group-item" style="padding: 2px; margin-bottom: 2px; background-color: var(--car);">
-                            <strong>ID Cotizacion :</strong>
+                            <strong>Número de Cotizacion :</strong>
                             <input type="number"  class="form-control" name="idcotizacion" id="idcotizacion" value="{{ detalles_cotizacion.0.0 }}" readonly>
                         </li>
                         <li class="list-group-item" style="padding: 2px; margin-bottom: 2px; background-color: var(--car);">
@@ -48,7 +48,6 @@
                             <div class="card m-2" style="width: 200px;">
                                 <div class="card-body">
                                     <h5 class="card-title">Nombre:{{ servicio.nombreServicio }}</h5>
-                                    <!-- Agrega otros detalles del servicio si es necesario -->
                                 </div>
                             </div>
                         {% endfor %}
