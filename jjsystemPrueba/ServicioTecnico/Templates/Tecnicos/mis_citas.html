@@ -51,6 +51,8 @@
                     <th scope="col">Hora</th>
                     <th scope="col">Direccion</th>
                     <th scope="col">Cliente</th>
+                    <th scope="col">Estado cita</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -62,6 +64,40 @@
                     <td>{{ cita.horacita }}</td>
                     <td>{{ cita.direccioncita }}</td>
                     <td>{{ cita.idcotizacion.idcliente.numerodocumento.nombre }} {{ cita.idcotizacion.idcliente.numerodocumento.apellido }}</td>
+                    <td>{{ cita.idestadocita.nombreestadocita }}</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#cambiarEstado">
+                            Cambiar estado
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="cambiarEstado" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Cambiar estado</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Formulario para seleccionar el estado de la cita -->
+                                        <form id="cambiarEstadoForm" action="{% url 'cambiar_estado_cita' cita.idcita %}" method="POST">
+                                            {% csrf_token %}
+                                            <div class="mb-3">
+                                                <label for="idestadocita" class="form-label">Estado de la Cita</label>
+                                                <select class="form-select" id="idestadocita" name="idestadocita">
+                                                    <option value="{{ cita.idestadocita.idestadocita }}">{{ cita.idestadocita.nombreestadocita }}</option>
+                                                    <option value="{{ estado.idestadocita }}">{{ estado.nombreestadocita }}</option>
+                                                </select>
+                                            </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" form="cambiarEstadoForm" class="btn btn-primary">Cambiar</button>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                </td>
                 </tr>
                 {% endfor %}
             </tbody>

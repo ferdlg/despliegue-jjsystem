@@ -1,7 +1,7 @@
 from datetime import datetime, time, timedelta
 from django.shortcuts import render, redirect
 from rest_framework import viewsets
-from Account.models import Clientes, Cronogramatecnicos, Tecnicos, Citas
+from Account.models import Clientes, Cronogramatecnicos, Estadoscitas, Tecnicos, Citas
 from .serializers import CronogramatecnicosSerializer
 import json
 from django.contrib import messages
@@ -55,12 +55,11 @@ class cronogramatecnicosCRUD(viewsets.ModelViewSet):
                 fecha_obj = datetime.strptime(fecha_filtro, '%Y-%m-%d').date()
                 citas_filtradas = todas_las_citas.filter(fechacita=fecha_obj)
             except ValueError:
-                mensaje = 'Formato de fecha inválido. Utilice el formato AAAA-MM-DD.'
-                return render(request, 'mensaje.html', {'mensaje': mensaje})
+                messages.error(request,'Formato de fecha inválido. Utilice el formato AAAA-MM-DD.')
         else:
             citas_filtradas = []
-
-        return render(request, 'Tecnicos/mis_citas.html', {'todas_las_citas': todas_las_citas, 'citas_filtradas': citas_filtradas, 'fecha_obj':fecha_obj, 'cliente_cita':cliente_cita})
+        estado = Estadoscitas.objects.get(idestadocita = 5)
+        return render(request, 'Tecnicos/mis_citas.html', {'todas_las_citas': todas_las_citas, 'citas_filtradas': citas_filtradas, 'fecha_obj':fecha_obj, 'cliente_cita':cliente_cita, 'estado':estado})
     
     def citas_eventos_tecnicos(self,request):
         usuario = request.user
@@ -73,7 +72,7 @@ class cronogramatecnicosCRUD(viewsets.ModelViewSet):
             eventos.append({
                 'title': cita.descripcioncita,
                 'start': fecha_hora_inicio.strftime('%Y-%m-%d %H:%M:%S'),
-                
+                'color': 'red'
             })
         
         for fecha_disponible in fechas_disponibles:

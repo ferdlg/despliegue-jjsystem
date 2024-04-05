@@ -695,7 +695,8 @@ VALUES
 	('Confirmada'),
 	('Cancelada'),
 	('Modificada'),
-    ('Programada');
+    ('Programada'),
+    ('Finalizada');
 
 INSERT INTO Citas (fechaCita, direccionCita, contactoCliente, descripcionCita, idTecnico, idAdministrador, idCotizacion, idEstadoCita)
 VALUES

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from rest_framework import viewsets
 from Account.models import Citas , Cotizaciones, Tecnicos, Administrador , Estadoscitas, Usuarios
-from ..correos import correo_cita_agendada
+from ..correos import correo_cambio_estado_cita, correo_cita_agendada
 from .serializers import CitasSerializer
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 from django.contrib import messages
@@ -198,3 +198,20 @@ class citasCRUD(viewsets.ModelViewSet):
         except Exception as e:
             messages.error(request, f'Error al intentar eliminar la cita: {str(e)}')
         return redirect('index')
+    
+    def cambiar_estado_cita(self, request, idcita):
+        if request.method == 'POST':
+            idestadocita = request.POST.get('idestadocita')
+            try:
+                cita = Citas.objects.get(idcita=idcita)
+                estado_cita = Estadoscitas.objects.get(idestadocita=idestadocita)
+                cita.idestadocita = estado_cita
+                cita.save()
+                cliente = cita.idcotizacion.idcliente.idcliente
+                correo_cambio_estado_cita(request,idcliente=cliente, idcita = cita.idcita)
+                messages.success(request, 'Estado de la cita cambiado correctamente')
+            except Citas.DoesNotExist:
+                messages.error(request, 'La cita no existe')
+            except Estadoscitas.DoesNotExist:
+                messages.error(request, 'El estado de la cita no existe')
+            return redirect('mis_citas')

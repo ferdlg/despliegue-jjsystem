@@ -137,7 +137,7 @@ class PasswordResetRequestView(APIView):
                 reset_link = f'http://127.0.0.1:8000/account/reestablecer_password_enlace/{uidb64}/{token}'
                 asunto = 'Solicitud de restablecimiento de contraseña'
                 correo_origen = settings.EMAIL_HOST_USER
-                html_message = render_to_string('correo_respuesta_cliente.html', {'usuario': user, 'reset_link':reset_link})
+                html_message = render_to_string('correo_reset_password.html', {'usuario': user, 'reset_link':reset_link})
                 user_email = user.email
                 send_mail(asunto, '', correo_origen, [user_email], html_message=html_message)
                 messages.success(request,'Se ha enviado el correo de restablecimiento de contraseña, correctamente')

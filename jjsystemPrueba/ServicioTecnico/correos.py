@@ -79,5 +79,16 @@ def correo_cita_agendada(request, idcliente, idtecnico, idcita):
 
     return None
 
-def correo_modificacion_cita(request, idcita):
-     return None
+def correo_cambio_estado_cita(request, idcliente,idcita):
+    cliente = Clientes.objects.get(idcliente=idcliente)
+    cita = Citas.objects.get(idcita = idcita)
+    email_cliente = cliente.numerodocumento.email
+
+    html_message_cliente = render_to_string('correos/correo_cambio_estado_cita.html', {'cliente': cliente, 'cita': cita, 'destinatario': 'Cliente'})
+
+
+    asunto_cliente = 'Se ha finalizado tu cita'
+    correo_origen = settings.EMAIL_HOST_USER
+
+    send_mail(asunto_cliente, '', correo_origen, [email_cliente], html_message=html_message_cliente)
+    return None
