@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
+from ..correos import correo_confirmacion_cotizacion
 from ServicioTecnico.controllers.cotizaciones import CotizacionesCRUD as BaseCotizacionesCRUD
 from Account.models import *
 from django.db import connection
@@ -73,12 +74,12 @@ class CotizacionesCRUD(BaseCotizacionesCRUD):
             servicios = Servicios.objects.all()
 
             messages.success(request, 'Se ha creado tu cotizacion correctamente')
+            correo_confirmacion_cotizacion(request, idcotizacion = id_cotizacion)
             return redirect('ver_cotizacion_cliente', id_cotizacion=id_cotizacion )
             
         else:
             productos = Productos.objects.all()
             servicios = Servicios.objects.all()
-            messages.error(request, 'No se han agregado productos o servicios a la cotización')
             return render(request, 'cliente/agregar_productos_servicios.html', {'productos': productos, 'servicios': servicios, 'idcotizacion': id_cotizacion})
 
 def obtener_detalles_cotizacion(id_cotizacion):

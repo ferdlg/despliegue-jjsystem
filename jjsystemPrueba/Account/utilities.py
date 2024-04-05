@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.hashers import make_password, check_password
-
+from django.contrib import messages
 from Account.forms import NewPasswordForm
 
 
@@ -20,6 +20,7 @@ def actualizar_datos_usuario(request, redirect_to):
         usuario.numerocontacto = numerocontacto
         usuario.save()
 
+        messages.success(request, 'Se han actualizado tus datos correctamente.')
         return redirect(redirect_to)
 
     return render(request, redirect_to + '.html', {'usuario': usuario})

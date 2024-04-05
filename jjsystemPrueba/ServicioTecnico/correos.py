@@ -17,8 +17,6 @@ def correo_bienvenida_tecnico(request,idtecnico):
         send_mail(asunto, '', correo_origen, [email], html_message=html_message_tecnico)
         return None
 
-def correo_cotizacion_registrada():
-    return
 
 def correo_cotizacion_aceptada():
     return

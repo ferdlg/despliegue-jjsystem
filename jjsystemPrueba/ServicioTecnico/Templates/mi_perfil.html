@@ -118,4 +118,26 @@
         });
     });
 </script>
+<script>
+    // Obtener el elemento de fecha de la cita
+    var fechaCita = document.getElementById('fechacita');
+
+    // Obtener la fecha actual en formato ISO (YYYY-MM-DD)
+    var fechaActual = new Date().toISOString().split('T')[0];
+
+    // Establecer la fecha mínima como la fecha actual
+    fechaCita.min = fechaActual;
+</script>
+<script>
+    document.getElementById('horacita').addEventListener('input', function() {
+        var horaSeleccionada = this.value;
+        var horaMinima = '07:00';
+        var horaMaxima = '17:00';
+
+        if (horaSeleccionada < horaMinima || horaSeleccionada > horaMaxima) {
+            alert('Por favor, selecciona una hora entre las 7:00 AM y las 5:00 PM.');
+            this.value = ''; // Limpiar el campo de entrada
+        }
+    });
+</script>
 {% endblock %}

@@ -20,11 +20,11 @@
             padding: 20px;
             background-color: #fff;
             border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgb(255, 255, 255);
         }
         .header {
             padding-top: 5px;
-            background-color: rgba(98, 0, 255, 0.71);
+            background-color: rgba(37, 110, 0, 0.71);
             text-align: center;
             padding-bottom: 10px;
         }
@@ -61,34 +61,39 @@
         <!-- Encabezado -->
         <div class="header">
             {% if destinatario == 'Cliente' %}
-                <h1>Confirmación de PQRSF registrada</h1>
+                <h1>Confirmación de cotización registrada</h1>
             {% elif destinatario == 'Administrador' %}
-                <h1>Notificacion de PQRSF registrada</h1>
+                <h1>Notificacion de cotización registrada</h1>
             {% endif %}
         </div>
         <!-- Imagen de portada -->
         <div class="portada">
-            <img src="https://img.freepik.com/free-vector/mailbox-concept-landing-page_23-2148271987.jpg?w=996" alt="Imagen de Portada" style="width: 100%;">
+            <img src="https://img.freepik.com/free-vector/steal-data-illustrative-design_23-2148542056.jpg?w=996" alt="Imagen de Portada" style="width: 100%;">
         </div>
         <!-- Saludo  -->
         <div class="saludo">
             {% if destinatario == 'Cliente' %}
                 <p>Hola {{ cliente.numerodocumento.nombre }},</p>
-                <p>¡Te confirmamos el registro  de tu pqrsf!</p> 
-                <p>Recuerda que el tiempo de respuesta de su solicitud puede variar dependiendo del tipo de PQRSF presentada. Gracias por elegirnos.</p>
+                <p>¡Te confirmamos el registro  de tu cotizacion!</p> 
+                <p>En unos momentos te estaremos enviando un correo con los detalles de la cotizacion, para que puedas confirmar tu compra.</p>
             {% elif destinatario == 'Administrador' %}
                 <p>Hola {{ administrador.numerodocumento.nombre }},</p>
-                <p>¡Se ha registrado una nueva PQRSF, ingresa para poder responderla!</p>
+                <p>¡Se ha registrado una nueva cotizacion, ingresa para poder responderla!</p>
+
             {% endif %}
         </div>
         <!-- Detalle de la cita -->
         
         <div class="detalle" style="background-color: #f9f9f9;">
             {% if destinatario == 'Cliente' %}
-                <p>A continuacion podras descargar el PDF con los detalles en nuestro sitio web!</p>
             {% elif destinatario == 'Administrador' %}
-                <p>A continuacion podras ver los detalles de la pqrsf en el panel de pqrsf</p>
+            <p>Podras ver los detalles de la cotizacion en el panel de administración.</p>
             {% endif %}
+        </div>
+        <div class="btn-iniciarsesion">
+            <a class="btn btn-success" style="text-align: center;" href="http://127.0.0.1:8000/account/login/">
+                Iniciar Sesión
+            </a>
         </div>
         <!-- Footer -->
         <div class="footer">
