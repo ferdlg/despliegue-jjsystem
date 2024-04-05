@@ -1,4 +1,5 @@
 import base64
+from django.conf import settings
 from django.utils.encoding import force_bytes
 from django.shortcuts import get_object_or_404, render, HttpResponse
 from django.views import View
@@ -20,6 +21,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from Account.envio_correo import enviar_correo_registro
+from django.template.loader import render_to_string
 
 
 def registerView(request):
@@ -79,20 +81,25 @@ def userLogin(request):
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            user = get_object_or_404(Usuarios, email=email)
-            if user is not None and check_password(password, user.password):
-                login(request, user)
-                messages.success(request, 'Inicio de sesión exitoso')
-                if user.idrol.idrol == 1:
-                    return redirect('inicio')
-                elif user.idrol.idrol == 2:
-                    return redirect('productos')
-                elif user.idrol.idrol == 3:
-                    return redirect('tecnico_home')
+            try:
+                user = get_object_or_404(Usuarios, email=email)
+                if user is not None and check_password(password, user.password):
+                    login(request, user)
+                    messages.success(request, 'Inicio de sesión exitoso')
+                    if user.idrol.idrol == 1:
+                        return redirect('inicio')
+                    elif user.idrol.idrol == 2:
+                        return redirect('productos')
+                    elif user.idrol.idrol == 3:
+                        return redirect('tecnico_home')
+                    else:
+                        messages.error(request, 'Usuario autenticado con un rol no válido')
                 else:
-                    messages.error(request, 'Usuario autenticado con un rol no válido')
-            else:
-                messages.error(request, 'Credenciales incorrectas')
+                    messages.error(request, 'Credenciales incorrectas')
+                    return redirect('login')
+            except Usuarios.DoesNotExist:
+                messages.error(request, 'Usuario no encontrado')
+                return redirect('login')
     else:
         form = LoginForm()
     
@@ -128,13 +135,11 @@ class PasswordResetRequestView(APIView):
                 uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
                 token = token_generator.make_token(user)
                 reset_link = f'http://127.0.0.1:8000/account/reestablecer_password_enlace/{uidb64}/{token}'
-                send_mail(
-                    'Solicitud de restablecimiento de contraseña',
-                    f'Por favor, sigue este enlace para restablecer tu contraseña: {reset_link}',
-                    'jjsystemproject@gmail.com',
-                    [email],
-                    fail_silently=False,
-                )
+                asunto = 'Solicitud de restablecimiento de contraseña'
+                correo_origen = settings.EMAIL_HOST_USER
+                html_message = render_to_string('correo_respuesta_cliente.html', {'usuario': user, 'reset_link':reset_link})
+                user_email = user.email
+                send_mail(asunto, '', correo_origen, [user_email], html_message=html_message)
                 messages.success(request,'Se ha enviado el correo de restablecimiento de contraseña, correctamente')
             else:
                 messages.error(request, 'Ocurrio un error al enviar el correo, intentalo de nuevo')
@@ -167,13 +172,14 @@ class PasswordResetConfirmView(View):
                 if form.is_valid():
                     user.password = make_password(form.cleaned_data['new_password'])
                     user.save()
+                    messages.success(request, 'Se ha cambiado tu contraseña correctamente')
                     return redirect('login')
                 else:
                     return render(request, 'password_reset_confirm.html', {'form': form})
             else:
-                return HttpResponse('Token de restablecimiento de contraseña inválido', status=400)
+                return messages.error(request,'Token de restablecimiento de contraseña inválido')
         except (TypeError, ValueError, OverflowError, Usuarios.DoesNotExist):
-            return HttpResponse('Enlace de restablecimiento de contraseña inválido', status=400)
+            return messages.error(request,'Enlace de restablecimiento de contraseña inválido')
 
 def password_reset_request(request):
     return render(request, 'password_reset_form.html')

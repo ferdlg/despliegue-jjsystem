@@ -90,7 +90,7 @@
                 <p><strong>Contacto:</strong> {{ tecnico.numerodocumento.numerocontacto }}</p>
             {% elif destinatario == 'Tecnico' %}
                 <p>Datos del cliente</p>
-                <p><strong>Nombre:</strong> {{ cliente.numerodocumento.nombre }} {{ tecnico.numerodocumento.apellido }}</p>
+                <p><strong>Nombre:</strong> {{ cliente.numerodocumento.nombre }} {{ cliente.numerodocumento.apellido }}</p>
                 <p><strong>Contacto:</strong> {{ cliente.numerodocumento.numerocontacto }}</p>
             {% endif %}
         </div>

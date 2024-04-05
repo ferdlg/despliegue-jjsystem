@@ -94,8 +94,9 @@ class citasCRUD(viewsets.ModelViewSet):
             descripcioncita = request.POST.get('descripcioncita')
             idtecnico = request.POST.get('idtecnico')
             idcotizacion = request.POST.get('idcotizacion')
+            idestado = request.POST.get('idestadocita')
 
-            estadocita = Estadoscitas.objects.get(idestadocita = 4)
+            estadocita = Estadoscitas.objects.get(idestadocita =idestado )
             tecnico = Tecnicos.objects.get(idtecnico=idtecnico)
             cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
             numerodocumento = request.user.numerodocumento
@@ -128,7 +129,7 @@ class citasCRUD(viewsets.ModelViewSet):
                     idtecnico=tecnico,
                     idadministrador = administrador,
                     idcotizacion=cotizacion,
-                    idestadocita=estadocita.idestadocita
+                    idestadocita=estadocita
                 )
                 cliente = cita.idcotizacion.idcliente.idcliente
                 messages.success (request,'Se ha registrado exitosamente')
