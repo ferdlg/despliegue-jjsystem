@@ -78,3 +78,6 @@ def correo_cita_agendada(request, idcliente, idtecnico, idcita):
     send_mail(asunto_tecnico, '', correo_origen, [email_tecnico], html_message=html_message_tecnico)
 
     return None
+
+def correo_modificacion_cita(request, idcita):
+     return None

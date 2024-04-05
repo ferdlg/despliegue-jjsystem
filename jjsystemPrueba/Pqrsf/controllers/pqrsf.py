@@ -42,7 +42,6 @@ class pqrsfCRUD(viewsets.ModelViewSet):
                 idestadopqrsf=estadopqrsf,
                 idtipopqrsf=tipopqrsf
             )
-            # Mostrar un mensaje de éxito y redireccionar
             messages.success(request, 'PQRSF registrada correctamente')
             correo_confirmacion_pqrsf_cliente_admin(request, idpqrsf=pqrsf.idpqrsf)
             return redirect('ir_a_pqrsf')

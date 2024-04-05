@@ -9,14 +9,13 @@ from .controllers.pdf import convertir_pqrsf_pdf
 
 def correo_respuesta_cliente(request, idpqrsf):
     pqrsf = Pqrsf.objects.get(idpqrsf = idpqrsf)
-    cliente = Clientes.objects.get(idcliente = pqrsf.idcliente)
+    cliente = Clientes.objects.get(idcliente = pqrsf.idcliente.idcliente)
     email = cliente.numerodocumento.email
 
     asunto = (f'Respuesta a tu {pqrsf.idtipopqrsf.nombretipopqrsf}')
     correo_origen = settings.EMAIL_HOST_USER
 
-    #llamar a la funcion que convierte en pdf la respuesta a la PQRSF 
-    html_message = render_to_string('correo_respuesta_cliente.html', {'pqrsf': pqrsf})
+    html_message = render_to_string('correos/correo_respuesta_cliente.html', {'pqrsf': pqrsf, 'cliente':cliente})
     send_mail(asunto, '', correo_origen, [email], html_message=html_message)
     return None
 

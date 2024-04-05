@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from Account.models import Pqrsf
+from Account.models import Pqrsf, Respuestas
 from Account.models import Estadospqrsf
 from Account.models import Tipospqrsf
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
@@ -15,6 +15,7 @@ def home_pqrsf(request):
     if tipo_seleccionado and tipo_seleccionado != '-1':
         pqrsf_list = pqrsf_list.filter(idtipopqrsf=tipo_seleccionado)
 
+    respuestas = Respuestas.objects.all()
     paginator = Paginator(pqrsf_list, 5)
     page_number = request.GET.get('page')
     try:
@@ -24,7 +25,7 @@ def home_pqrsf(request):
     except EmptyPage:
         pqrsf_item = paginator.page(paginator.num_pages)
     
-    return render(request, "admin/pqrsf.html", {"pqrsf": pqrsf_item, 'tipos': tipos})
+    return render(request, "admin/pqrsf.html", {"pqrsf": pqrsf_item, 'tipos': tipos, 'respuestas':respuestas})
 
     
 

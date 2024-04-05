@@ -60,6 +60,9 @@
                                     <td> 
                                         <a href="{% url 'convertir_pqrsf_pdf' idpqrsf=pqrsf.idpqrsf %}" class="btn btn-outline-dark btn-sw">PDF</a>
                                     </td>
+                                    <td> 
+                                        <a href="{% url 'convertir_respuesta_pdf' idpqrsf=pqrsf.idpqrsf %}" class="btn btn-outline-dark btn-sw">PDF</a>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>

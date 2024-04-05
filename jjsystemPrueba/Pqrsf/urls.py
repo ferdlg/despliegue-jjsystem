@@ -5,7 +5,7 @@ from . import views
 from .controllers.estadospqrsf import estadospqrsfCRUD
 from .controllers.tipospqrsf import tipospqrsfCRUD
 from .controllers.pqrsf import pqrsfCRUD
-from .controllers.pdf import convertir_pqrsf_pdf
+from .controllers.pdf import convertir_pqrsf_pdf, convertir_respuesta_pdf
 from .controllers.respuesta import respuestaCRUD
 
 router = DefaultRouter()
@@ -27,5 +27,6 @@ urlpatterns=[
     path('crear_pqrsf/',pqrsfCRUD.as_view({'post': 'crear_pqrsf', 'get':'crear_pqrsf'}) , name='crear_pqrsf'),
     path('eliminarPqrsf/<idPqrsf>', views.eliminarPqrsf, name='eliminarPqrsf'),
 
-    path('respuesta/<id_pqrsf>', respuestaCRUD.as_view({'post':'crear_respuesta', 'get':'crear_respuesta'}), name='crear_respuesta')
+    path('respuesta/<id_pqrsf>', respuestaCRUD.as_view({'post':'crear_respuesta', 'get':'crear_respuesta'}), name='crear_respuesta'),
+    path('respuesta/descargar/<int:idpqrsf>/', convertir_respuesta_pdf, name='convertir_respuesta_pdf')
 ]
