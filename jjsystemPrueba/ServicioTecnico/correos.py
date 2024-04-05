@@ -1,10 +1,13 @@
+from django.core.mail import EmailMultiAlternatives
 from django.core.mail import send_mail
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
-from Account.models import Clientes, Cotizaciones, Tecnicos, Citas
+from Account.models import Administrador, Clientes, Cotizaciones, Tecnicos, Citas
 from django.conf import settings
 from django.contrib import messages
+
+from ServicioTecnico.controllers.cronogramatecnicos import obtener_disponibilidad_tecnico
 from .controllers.pdf import generar_pdf
 
 def correo_bienvenida_tecnico(request,idtecnico):
@@ -18,29 +21,42 @@ def correo_bienvenida_tecnico(request,idtecnico):
         send_mail(asunto, '', correo_origen, [email], html_message=html_message_tecnico)
         return None
 
-
-def correo_confirmacion_compra(request, idcliente,idcotizacion):
-    cliente = Clientes.objects.get(idcliente=idcliente)
-    cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
-
-    pdf = generar_pdf(request, idcotizacion)
-    asunto = 'Se ha respondido tu cotizacion!'
+def correo_respuesta_cotizacion(request, idcotizacion):
+    cotizacion = get_object_or_404(Cotizaciones, idcotizacion=idcotizacion)
+    cliente = get_object_or_404(Clientes, idcliente=cotizacion.idcliente.idcliente)
     
-    email_cliente = cliente.numerodocumento.email
+    pdf = generar_pdf(request, idcotizacion)
+
+    asunto = 'Respuesta a tu cotización'
     correo_origen = settings.EMAIL_HOST_USER
-    html_message_cliente = render_to_string('correos/respuesta_cotizacion.html',{'cotizacion':cotizacion, 'cliente':cliente, 'destinatario':'Cliente'})
-    send_mail(asunto, '', correo_origen, [email_cliente], html_message=html_message_cliente, fail_silently=False, attachments=[('cotizacion.pdf', pdf, 'application/pdf')])
-    return None 
+    email_cliente = cliente.numerodocumento.email
+    html_message_cliente = render_to_string('correos/respuesta_cotizacion.html', {'cotizacion': cotizacion, 'cliente': cliente, 'destinatario': 'Cliente'})
 
-def correo_fechas_disponibles_cita(request, ):
+    mensaje_correo = EmailMultiAlternatives(asunto, '', correo_origen, [email_cliente])
+    mensaje_correo.attach_alternative(html_message_cliente, "text/html")
+    mensaje_correo.attach('cotizacion.pdf', pdf.getvalue(), 'application/pdf')
 
-    return
+    mensaje_correo.send(fail_silently=False)
+    messages.success(request, 'Se ha enviado el correo de respuesta')
+    return redirect('ver_cotizaciones')
 
-def correo_cotizacion_aceptada():
-    return
+def correo_fechas_disponibles_cita(request, idcotizacion):
+    if request.method == 'POST':
+        cotizacion = get_object_or_404(Cotizaciones, idcotizacion=idcotizacion)
+        cliente = get_object_or_404(Clientes, idcliente=cotizacion.idcliente.idcliente)
 
-def correo_fechas_disponibles_citas():
-    return
+        idtecnico = request.POST.get('idtecnico')
+        tecnico = get_object_or_404(Tecnicos, idtecnico=idtecnico)
+        fechas_disponibles = obtener_disponibilidad_tecnico(idtecnico)
+
+        asunto_cliente = 'Agenda tu cita: Fechas Disponibles'
+        correo_origen = settings.EMAIL_HOST_USER
+        email_cliente = cliente.numerodocumento.email
+        html_message_cliente = render_to_string('correos/fechas_disponibles.html', {'cotizacion': cotizacion, 'cliente': cliente, 'destinatario': 'Cliente', 'fechas_disponibles':fechas_disponibles})
+
+        send_mail(asunto_cliente, '', correo_origen, [email_cliente], html_message=html_message_cliente)
+        messages.success(request, 'Se ha enviado el correo con las fechas disponibles')
+        return redirect('ver_cotizaciones')
 
 def correo_cita_agendada(request, idcliente, idtecnico, idcita):
     cliente = Clientes.objects.get(idcliente=idcliente)

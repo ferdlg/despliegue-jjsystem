@@ -13,6 +13,7 @@ from .controllers.rol_has_permisos import rol_has_permisosCRUD
 from .controllers.roles import rolesCRUD
 from .controllers.servicios import serviciosCRUD, servicios, servicios_landing, home_servicios, createServiciosView, editarServicio, eliminarServicio
 from .controllers.cotizaciones import CotizacionesCRUD, obtener_detalles_cotizacion, vista_detalle_cotizacion
+from .correos import correo_confirmacion_compra
 
 router = DefaultRouter()
 router.register(r'categoriasproductos', categoriaproductosCRUD)
@@ -72,5 +73,6 @@ urlpatterns=[
     path('mi_perfil/', clientesCRUD.as_view({'get':'actualizar_mis_datos','post':'actualizar_mis_datos'}), name='actualizar_mis_datos'),
     path('mi_perfil/cliente/ver_perfil/', clientesCRUD.as_view({'get':'actualizar_mis_datos','post':'actualizar_mis_datos'}), name='cliente/ver_perfil'),
     path('mi_perfil/validar_password/',clientesCRUD.as_view({'post':'validar_contrasena'}), name = 'validar_password'),
-    path('mi_perfil/validar_password/cambiar_password', clientesCRUD.as_view({'post':'cambiar_contrasena'}), name='cambiar_password')
+    path('mi_perfil/validar_password/cambiar_password', clientesCRUD.as_view({'post':'cambiar_contrasena'}), name='cambiar_password'),
+    path('confirmacion_compra/<int:idcotizacion>', correo_confirmacion_compra, name='confirmacion_compra')
 ]

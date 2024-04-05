@@ -54,10 +54,7 @@
             color: #f4f4f4;
             padding: 5px;
             border-radius: 5px;
-            text-decoration: none;
-        }
-        .btn-iniciarsesion{
-            margin: 2%;
+            margin-bottom: 10px;
         }
         .footer {
             margin-top: 20px;
@@ -71,7 +68,7 @@
     <div class="container">
         <!-- Encabezado -->
         <div class="header">
-                <h1>Respuesta a cotización</h1>
+                <h1>Confirmacion de compra</h1>
         </div>
         <!-- Imagen de portada -->
         <div class="portada">
@@ -79,29 +76,30 @@
         </div>
         <!-- Saludo  -->
         <div class="saludo">
+            {% if destinatario == 'Administrador' %}
+                <p>Hola {{ administrador.numerodocumento.nombre }},</p>
+                <p>¡El cliente {{cliente.numerodocumento.nombre}} {{cliente.numerodocumento.apellido}} a confirmado su compra!</p> 
+                <p>A continuación dirigete al panel de administracion para agendar su cita o programar su envio</p> 
+            {% elif destinatario == 'Cliente' %}
                 <p>Hola {{ cliente.numerodocumento.nombre }},</p>
-                <p>¡Te confirmamos el registro  de respuesta a tu cotizacion!</p> 
-                <p>A continuación podras ver los detalles de tu cotizacion en el archivo pdf!</p> 
+                <p>Has confirmado exitosamente tu compra</p>
+            {% endif %}
         </div>
         
         <div class="detalle" style="background-color: #f9f9f9;">
-            <p>Recuerda que debes confirmar tu compra dando click en el boton de confirmar 👇🏻</p>
-            <a href="{% url 'confirmacion_compra' idcotizacion=cotizacion.idcotizacion %}" class="btn" onclick="ocultarElemento()">Confirmar Compra</a>
-        </div>
-        <div class="btn-iniciarsesion">
-            <a class="btn" style="text-align: center;" href="http://127.0.0.1:8000/account/login/">
-                Iniciar Sesión
-            </a>
+            {% if destinatario == 'Administrador' %}
+                <p>Si vas agendar una cita,  enviale las fechas disponibles al cliente, desde el panel de cotizaciones 🙂</p> 
+                <a href="http://127.0.0.1:8000/servicio_tecnico/ver_cotizaciones/" class="btn">Ir al panel</a>
+            {% elif destinatario == 'Cliente' %}
+                <p>Si has solicitado servicios, en unos momentos nuestro equipo tecnico te enviara las fechas disponibles para agendar tu cita. </p>
+                <p>Si has solicitado productos, nuestro equipo tecnico esta gestionando tu compra.</p>
+                <p>Gracias por elegirnos. 😄</p>
+            {% endif %}
         </div>
         <!-- Footer -->
         <div class="footer">
             <p>© 2024 Todos los derechos reservados. JJSystemProject .</p>
         </div>
     </div>
-    <script>
-        function ocultarElemento() {
-          var btnConfirmarCompra = document.querySelector('.btn');
-          btnConfirmarCompra.style.backgroundColor = 'grey';        }
-    </script>
 </body>
 </html>

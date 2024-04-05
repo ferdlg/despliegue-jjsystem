@@ -81,7 +81,16 @@
                     <td>
                         {% if fecha.horas_disponibles %}
                             {% for hora in fecha.horas_disponibles %}
-                                {{ hora }}:00 {% if hora > 12 %}PM{% else %}AM{% endif %}{% if not forloop.last %}, {% endif %}
+                                {% if hora == 0 %}
+                                    12:00 AM
+                                {% elif hora < 12 %}
+                                    {{ hora }}:00 AM
+                                {% elif hora == 12 %}
+                                    12:00 PM
+                                {% else %}
+                                {{ hora|add:"-12" }}PM
+                                {% endif %}
+                                {% if not forloop.last %}, {% endif %}
                             {% endfor %}
                         {% else %}
                             No hay horas disponibles

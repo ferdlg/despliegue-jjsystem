@@ -9,6 +9,7 @@ from .controllers.cronogramatecnicos import cronogramatecnicosCRUD
 from .controllers.estadocotizaciones import estadocotizacionesCRUD
 from .controllers.tecnicos import tecnicosCRUD, tecnico_home, mi_agenda, mis_actividades, mis_citas
 from .controllers.clientes import ClientesCRUD
+from .correos import correo_respuesta_cotizacion, correo_fechas_disponibles_cita
 
 #urls back 
 
@@ -48,6 +49,8 @@ urlpatterns=[
     path('eliminar_citas/<int:idcita>/',citasCRUD.as_view({'post':'eliminar_citas'}),name='eliminar_citas'),
 
     path('ver_cotizaciones/', CotizacionesCRUD.as_view({'get':'listar_cotizaciones'}), name='ver_cotizaciones'),
+    path('ver_cotizaciones/enviar_respuesta/<int:idcotizacion>/', correo_respuesta_cotizacion, name='enviar_respuesta'),
+    path('ver_cotizaciones/enviar_fechas_disponibles/<int:idcotizacion>/', correo_fechas_disponibles_cita, name='fechas_disponibles'),
     path('editar_cotizaciones/<int:idcotizacion>/', CotizacionesCRUD.as_view({'get': 'editar_cotizacion', 'post': 'editar_cotizacion'}), name='editar_cotizaciones'),
     #path('editar_productos_servicios/<int:idcotizacion>/', CotizacionesCRUD.as_view({'get': 'editar_productos_servicios', 'post': 'editar_productos_servicios'}), name='editar_productos_servicios'),
     path('generar_pdf/<int:idcotizacion>/', generar_pdf, name='generar_pdf'),

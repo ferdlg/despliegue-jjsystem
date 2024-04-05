@@ -1,6 +1,6 @@
 from django.core.mail import send_mail
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from Account.models import Clientes, Cotizaciones, Administrador
 from django.conf import settings
@@ -24,3 +24,22 @@ def correo_confirmacion_cotizacion(request, idcotizacion):
     send_mail(asunto_cliente, '', correo_origen, [email_cliente], html_message=html_message_cliente)
     send_mail(asunto_admin, '', correo_origen, [email_admin], html_message=html_message_administrador)
     return None
+
+def correo_confirmacion_compra(request, idcotizacion):
+    cotizacion = get_object_or_404(Cotizaciones, idcotizacion=idcotizacion)
+    cliente = get_object_or_404(Clientes, idcliente=cotizacion.idcliente.idcliente)
+    admin = Administrador.objects.get(numerodocumento=9878465545)
+
+    asunto_cliente = 'Confirmación de tu compra'
+    asunto_admin = 'Nueva venta: confirmacion de compra'
+
+    email_cliente = cliente.numerodocumento.email
+    email_admin = admin.numerodocumento.email
+    correo_origen = settings.EMAIL_HOST_USER
+
+    html_message_cliente = render_to_string('correos/confirmacion_compra.html',{'cotizacion':cotizacion, 'cliente':cliente, 'destinatario':'Cliente'})
+    html_message_administrador = render_to_string('correos/confirmacion_compra.html',{'cotizacion':cotizacion, 'administrador':admin, 'destinatario':'Administrador'})
+
+    send_mail(asunto_cliente, '', correo_origen, [email_cliente], html_message=html_message_cliente)
+    send_mail(asunto_admin, '', correo_origen, [email_admin], html_message=html_message_administrador)
+    return redirect('')

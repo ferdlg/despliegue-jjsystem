@@ -24,7 +24,7 @@
         }
         .header {
             padding-top: 5px;
-            background-color: rgba(94, 1, 91, 0.845);
+            background-color: rgba(244, 134, 0, 0.906);
             text-align: center;
             padding-bottom: 10px;
         }
@@ -71,22 +71,53 @@
     <div class="container">
         <!-- Encabezado -->
         <div class="header">
-                <h1>Respuesta a cotización</h1>
+                <h1>Fechas disponibles</h1>
         </div>
         <!-- Imagen de portada -->
         <div class="portada">
-            <img src="https://img.freepik.com/free-vector/steal-data-illustrative-design_23-2148542056.jpg?w=996" alt="Imagen de Portada" style="width: 100%;">
+            <img src="https://img.freepik.com/free-vector/appointment-booking-with-man-smartphone_23-2148562180.jpg?w=740" alt="Imagen de Portada" style="width: 100%;">
         </div>
         <!-- Saludo  -->
         <div class="saludo">
                 <p>Hola {{ cliente.numerodocumento.nombre }},</p>
-                <p>¡Te confirmamos el registro  de respuesta a tu cotizacion!</p> 
-                <p>A continuación podras ver los detalles de tu cotizacion en el archivo pdf!</p> 
+                <p>Estas son las fechas disponibles que tenemos disponibles para agendar tu cita</p> 
+                <p>Responde este correo unicamente con la fecha DD/MM/AA y la hora 00:00 que elijas, para agendar tu cita</p> 
         </div>
         
         <div class="detalle" style="background-color: #f9f9f9;">
-            <p>Recuerda que debes confirmar tu compra dando click en el boton de confirmar 👇🏻</p>
-            <a href="{% url 'confirmacion_compra' idcotizacion=cotizacion.idcotizacion %}" class="btn" onclick="ocultarElemento()">Confirmar Compra</a>
+            <table class="table table-striped" style="margin-bottom: 10%;">
+                <thead>
+                    <tr class="table-info">
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fecha in fechas_disponibles %}
+                    <tr>
+                        <td>{{ fecha.fecha|date:"D d M Y" }}</td>
+                        <td>
+                            {% if fecha.horas_disponibles %}
+                            {% for hora in fecha.horas_disponibles %}
+                                {% if hora == 0 %}
+                                    12:00 AM
+                                {% elif hora < 12 %}
+                                    {{ hora }}:00 AM
+                                {% elif hora == 12 %}
+                                    12:00 PM
+                                {% else %}
+                                {{ hora|add:"-12" }}PM
+                                {% endif %}
+                                {% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            No hay horas disponibles
+                        {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
         <div class="btn-iniciarsesion">
             <a class="btn" style="text-align: center;" href="http://127.0.0.1:8000/account/login/">

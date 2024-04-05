@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from Account.models import Cotizaciones, Clientes, Estadoscotizaciones, Productos, Servicios, CotizacionesProductos, CotizacionesServicios
+from Account.models import Cotizaciones, Clientes, Estadoscotizaciones, Productos, Servicios, CotizacionesProductos, CotizacionesServicios, Tecnicos
 from .serializers import CotizacionesSerializer
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
@@ -18,7 +18,7 @@ class CotizacionesCRUD(viewsets.ModelViewSet):
             cotizaciones_list = self.queryset.filter(idcotizacion=id_cotizacion)
         else:
             cotizaciones_list = self.queryset.all()
-        
+        tecnicos = Tecnicos.objects.all()
         paginator = Paginator(cotizaciones_list, 5)
         page_number = request.GET.get('page', 1)
         try:
@@ -30,7 +30,7 @@ class CotizacionesCRUD(viewsets.ModelViewSet):
         
         estados = Estadoscotizaciones.objects.all()
         clientes = Clientes.objects.all()
-        return render(request, 'cotizaciones.html', {'cotizaciones': cotizaciones, 'estados':estados, 'clientes':clientes})
+        return render(request, 'cotizaciones.html', {'cotizaciones': cotizaciones, 'estados':estados, 'clientes':clientes, 'tecnicos':tecnicos})
 
     def crear_cotizaciones(self, request):
         if request.method == 'POST':
@@ -100,7 +100,7 @@ class CotizacionesCRUD(viewsets.ModelViewSet):
         
     
     
-    def editar_cotizacion(request, idcotizacion):
+    def editar_cotizacion(self,request, idcotizacion):
         try:
             cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
 

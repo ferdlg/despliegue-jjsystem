@@ -80,6 +80,7 @@
                     <th></th>
                     <th></th>
                     <th scope="col">Respuesta cotización</th>
+                    <th scope="col">Fechas disponibles</th>
                 </tr>
             </thead>
             <tbody>
@@ -110,8 +111,41 @@
                         </form>
                     </td>
                     <td>
-                        
+                        <a href="{% url 'enviar_respuesta' idcotizacion=cotizacion.idcotizacion %}" class="btn btn-outline-info btn-sw"> Enviar </a>
                     </td>
+                    <td>
+                        <a href="#" data-toggle="modal" data-target="#modalFechasDisponibles" class="btn btn-outline-warning">Seleccionar técnico</a>
+                    </td>
+                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="modalFechasDisponibles" tabindex="-1" role="dialog" aria-labelledby="modalFechasDisponiblesLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalFechasDisponiblesLabel" style="color: black;">Enviar fechas disponibles del técnico</h5>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{% url 'fechas_disponibles' idcotizacion=cotizacion.idcotizacion %}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="selectTecnico" style="color: black;">Técnico:</label>
+                                            <select class="form-control" id="selectTecnico" name="idtecnico"> 
+                                                {% for tecnico in tecnicos %}
+                                                    <option value="{{ tecnico.idtecnico }}">{{ tecnico.numerodocumento.nombre }} {{ tecnico.numerodocumento.apellido }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary" style="margin-top: 5px;">Enviar fechas disponibles al cliente</button>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </tr>
                 {% endfor %}                
             </tbody>

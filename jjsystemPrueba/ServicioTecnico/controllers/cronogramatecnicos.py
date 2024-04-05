@@ -24,6 +24,10 @@ def obtener_disponibilidad_tecnico(idtecnico):
             disponibilidad.append({'fecha': fecha, 'horas_disponibles': horas_disponibles})
         
     return disponibilidad
+
+def resta_doce(hora):
+    return hora-12
+
 class cronogramatecnicosCRUD(viewsets.ModelViewSet):
     queryset = Cronogramatecnicos.objects.all()
     serializer_class = CronogramatecnicosSerializer
