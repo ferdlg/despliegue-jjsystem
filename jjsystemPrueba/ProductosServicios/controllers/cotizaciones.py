@@ -89,4 +89,39 @@ def obtener_detalles_cotizacion(id_cotizacion):
 
 def vista_detalle_cotizacion(request, id_cotizacion):
     detalles_cotizacion = obtener_detalles_cotizacion(id_cotizacion)
-    return render(request, 'cliente/ver_cotizacion.html', {'detalles_cotizacion': detalles_cotizacion})
+    cotizacion = Cotizaciones.objects.get(idcotizacion = id_cotizacion)
+    productos = []
+    servicios = []
+    
+    for resultado in detalles_cotizacion:
+        id_producto = resultado[4]
+        nombre_producto = resultado[5]
+        descripcion_producto = resultado[6]
+        precio_producto = resultado[7]
+        
+        id_servicio = resultado[8]
+        nombre_servicio = resultado[9]
+        descripcion_servicio = resultado[10]
+        precio_servicio = resultado[11]
+        
+        # Agregar productos
+        if id_producto:
+            producto = {
+                'id': id_producto,
+                'nombre': nombre_producto,
+                'descripcion': descripcion_producto,
+                'precio': precio_producto
+            }
+            productos.append(producto)
+        
+        # Agregar servicios
+        if id_servicio:
+            servicio = {
+                'id': id_servicio,
+                'nombre': nombre_servicio,
+                'descripcion': descripcion_servicio,
+                'precio': precio_servicio
+            }
+            servicios.append(servicio)
+    
+    return render(request, 'cliente/ver_cotizacion.html', {'productos': productos, 'servicios': servicios, 'cotizacion':cotizacion})

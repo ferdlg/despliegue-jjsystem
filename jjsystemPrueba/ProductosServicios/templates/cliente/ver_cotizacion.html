@@ -14,42 +14,43 @@
                     <ul class="list-group">
                         <li class="list-group-item" style="padding: 2px; margin-bottom: 2px; background-color: var(--car);">
                             <strong>Número de Cotizacion :</strong>
-                            <input type="number"  class="form-control" name="idcotizacion" id="idcotizacion" value="{{ detalles_cotizacion.0.0 }}" readonly>
+                            <input type="number"  class="form-control" name="idcotizacion" id="idcotizacion" value="{{ cotizacion.idcotizacion }}" readonly>
                         </li>
                         <li class="list-group-item" style="padding: 2px; margin-bottom: 2px; background-color: var(--car);">
                             <strong>Fecha de creacion :</strong>
-                            <input type="datetime"  class="form-control" name="fecha" id="fecha" value="{{ detalles_cotizacion.0.1 }}" readonly>
+                            <input type="datetime"  class="form-control" name="fecha" id="fecha" value="{{cotizacion.fechacotizacion }}" readonly>
                         </li>
                         <li class="list-group-item" style="padding: 2px; margin-bottom: 2px; background-color: var(--car);">
                             <strong>Descripcion :</strong>
-                            <input type="text"  class="form-control" name="descripcion" id="descripcion" value="{{ detalles_cotizacion.0.2 }}" readonly>
+                            <input type="text"  class="form-control" name="descripcion" id="descripcion" value="{{cotizacion.descripcioncotizacion }}" readonly>
                         </li>
                         <li class="list-group-item" style="padding: 2px; margin-bottom: 2px; background-color: var(--car);">
                             <strong>Estado :</strong>
-                            <input type="text"  class="form-control" name="estado" id="estado" value="{{ detalles_cotizacion.0.3 }}" readonly>
+                            <input type="text"  class="form-control" name="estado" id="estado" value="{{cotizacion.idestadocotizacion.nombreestadocotizacion }}" readonly>
                         </li>
-                        
                     </ul>
+
                     <h5 class="card-title">Productos:</h5>
                     <div class="card mb-3">
                         <div class="d-flex flex-wrap justify-content-start" style="margin: 10px;">
-                            {% for producto in detalles_cotizacion.4 %}
+                            {% for producto in productos %}
                             <div class="card m-2">
                                 <div class="card-body">
-                                    <p class="card-title">Nombre:{{ producto.nombreproducto }}<p/>
+                                    <p class="card-title">Nombre: {{ producto.nombre }}</p>
                                 </div>
                             </div>
                             {% endfor %}
                         </div>
                     </div>
+
                     <h5 class="card-title">Servicios:</h5>
                     <div class="d-flex flex-wrap justify-content-start" style="margin: 10px;">
-                        {% for servicio in detalles_cotizacion.5 %}
-                            <div class="card m-2" style="width: 200px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Nombre:{{ servicio.nombreServicio }}</h5>
-                                </div>
+                        {% for servicio in servicios %}
+                        <div class="card m-2" style="width: 200px;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ servicio.nombre }}</h5>
                             </div>
+                        </div>
                         {% endfor %}
                     </div>
                 </div>
