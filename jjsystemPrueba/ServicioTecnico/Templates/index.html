@@ -64,10 +64,10 @@
                                         <select class="form-select" id="idcotizacion" name="idcotizacion" required>
                                             <option value="">Selecciona una cotizacion</option>
                                             {% for cotizacion in cotizaciones %}
-                                                <option value="{{ cotizacion.idcotizacion }}">{{ cotizacion.idcotizacion }} {{ cotizacion.idcotizacion.idcliente.numerodocumento.nombre }}</option>
+                                                <option value="{{ cotizacion.idcotizacion }}">{{ cotizacion.idcotizacion }} - {{ cotizacion.idcliente.numerodocumento.nombre }} {{ cotizacion.idcliente.numerodocumento.apellido }}-  {{ cotizacion.fechacotizacion }}</option>
                                             {% endfor %}
                                         </select>
-                                    </div>  
+                                    </div>
                                     <div class="mb-3">
                                         <label for="idtecnico" class="form-label" style="color: black;">Asignar Técnico:</label>
                                         <select class="form-select" id="idtecnico" name="idtecnico" required>

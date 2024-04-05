@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from Account.models import Clientes, Cotizaciones, Administrador
 from django.conf import settings
-from django.contrib import messages
+from ServicioTecnico.controllers.pdf import generar_pdf
 
 def correo_confirmacion_cotizacion(request, idcotizacion):
     cotizacion = Cotizaciones.objects.get(idcotizacion = idcotizacion)

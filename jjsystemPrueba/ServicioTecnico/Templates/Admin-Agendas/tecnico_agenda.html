@@ -65,6 +65,36 @@
     Aun no hay citas asignadas.
     </div>
     {% endif %}
-
+    <h5 style="color: black;">Fechas Disponibles</h5>
+    {% if fechas_disponibles %}
+        <table class="table table-striped" style="margin-bottom: 10%;">
+            <thead>
+                <tr class="table-info">
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Hora</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fecha in fechas_disponibles %}
+                <tr>
+                    <td>{{ fecha.fecha|date:"D d M Y" }}</td>
+                    <td>
+                        {% if fecha.horas_disponibles %}
+                            {% for hora in fecha.horas_disponibles %}
+                                {{ hora }}:00 {% if hora > 12 %}PM{% else %}AM{% endif %}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            No hay horas disponibles
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+    <div class="alert alert-warning" role="alert" style="margin-top: 10px;">
+    No hay fechas disponibles.
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

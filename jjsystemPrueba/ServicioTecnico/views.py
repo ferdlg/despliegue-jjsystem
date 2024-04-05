@@ -1,7 +1,7 @@
 import datetime
 from django.shortcuts import render, redirect
 from rest_framework import viewsets
-from Account.models import Citas , Tecnicos, Administrador, Estadoscitas,Cotizaciones
+from Account.models import Citas , Tecnicos, Administrador, Estadoscitas,Cotizaciones, Clientes
 from Account.utilities import actualizar_datos_usuario, validar_password, cambiar_password
 from .controllers.serializers import CitasSerializer
 from .controllers.citas import citasCRUD
@@ -13,8 +13,9 @@ def index (request):
     tecnicos = Tecnicos.objects.all()
     cotizaciones = Cotizaciones.objects.all()
     fecha_actual = datetime.datetime.now().date()
+    cliente = Clientes.objects.all()
 
-    return render(request, 'index.html', {'estados': estados, 'tecnicos': tecnicos, 'cotizaciones':cotizaciones, 'fecha_actual':fecha_actual})
+    return render(request, 'index.html', {'estados': estados, 'tecnicos': tecnicos, 'cotizaciones':cotizaciones, 'fecha_actual':fecha_actual, 'cliente':cliente})
 
 def indexTecnicos(request):
     return render(request, 'tecnicos.html')

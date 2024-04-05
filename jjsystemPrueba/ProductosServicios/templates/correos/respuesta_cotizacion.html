@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmación de cotizacion registrada</title>
+    <title>Confirmación de respuesta a cotización registrada</title>
     <style>
         /* Estilos CSS para el correo */
         body {
@@ -24,7 +24,7 @@
         }
         .header {
             padding-top: 5px;
-            background-color: rgba(37, 110, 0, 0.71);
+            background-color: rgba(32, 94, 1, 0.845);
             text-align: center;
             padding-bottom: 10px;
         }
@@ -60,11 +60,8 @@
     <div class="container">
         <!-- Encabezado -->
         <div class="header">
-            {% if destinatario == 'Cliente' %}
                 <h1>Confirmación de cotización registrada</h1>
-            {% elif destinatario == 'Administrador' %}
                 <h1>Notificacion de cotización registrada</h1>
-            {% endif %}
         </div>
         <!-- Imagen de portada -->
         <div class="portada">
@@ -72,28 +69,20 @@
         </div>
         <!-- Saludo  -->
         <div class="saludo">
-            {% if destinatario == 'Cliente' %}
                 <p>Hola {{ cliente.numerodocumento.nombre }},</p>
-                <p>¡Te confirmamos el registro  de tu cotizacion!</p> 
-                <p>En unos momentos te estaremos enviando un correo con los detalles de la cotizacion, para que puedas confirmar tu compra.</p>
-            {% elif destinatario == 'Administrador' %}
-                <p>Hola {{ administrador.numerodocumento.nombre }},</p>
-                <p>¡Se ha registrado una nueva cotizacion, ingresa para poder responderla!</p>
+                <p>¡Te confirmamos el registro  de respuesta a tu cotizacion!</p> 
+                <p>A continuación podras ver los detalles de tu cotizacion en el archivo pdf!</p> 
 
-            {% endif %}
         </div>
         <!-- Detalle de la cita -->
         
-        <div class="detalle" style="background-color: #f9f9f9;">
-            {% if destinatario == 'Cliente' %}
-            {% elif destinatario == 'Administrador' %}
-            <p>Podras ver los detalles de la cotizacion en el panel de administración.</p>
-            {% endif %}
-        </div>
         <div class="btn-iniciarsesion">
             <a class="btn btn-success" style="text-align: center;" href="http://127.0.0.1:8000/account/login/">
                 Iniciar Sesión
             </a>
+        </div>
+        <div class="detalle" style="background-color: #f9f9f9;">
+
         </div>
         <!-- Footer -->
         <div class="footer">

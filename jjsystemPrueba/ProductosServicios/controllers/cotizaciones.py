@@ -1,4 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
+
+from ..controllers.utils import obtener_detalles_cotizacion
 from ..correos import correo_confirmacion_cotizacion
 from ServicioTecnico.controllers.cotizaciones import CotizacionesCRUD as BaseCotizacionesCRUD
 from Account.models import *
@@ -41,7 +43,6 @@ class CotizacionesCRUD(BaseCotizacionesCRUD):
             servicios_seleccionados = request.POST.getlist('servicio[]')
 
             cotizacion = Cotizaciones.objects.get(idcotizacion=id_cotizacion)
-            print(productos_seleccionados)
             for idproducto in productos_seleccionados:
                 cantidades = request.POST.getlist('cantidad_' + idproducto)
                 for cantidad in cantidades:
@@ -82,12 +83,6 @@ class CotizacionesCRUD(BaseCotizacionesCRUD):
             servicios = Servicios.objects.all()
             return render(request, 'cliente/agregar_productos_servicios.html', {'productos': productos, 'servicios': servicios, 'idcotizacion': id_cotizacion})
 
-def obtener_detalles_cotizacion(id_cotizacion):
-    with connection.cursor() as cursor:
-        cursor.callproc('ObtenerDetallesCotizacion', [id_cotizacion])
-        resultados = cursor.fetchall()
-    return resultados
-
 def vista_detalle_cotizacion(request, id_cotizacion):
     detalles_cotizacion = obtener_detalles_cotizacion(id_cotizacion)
     cotizacion = Cotizaciones.objects.get(idcotizacion = id_cotizacion)
@@ -99,11 +94,12 @@ def vista_detalle_cotizacion(request, id_cotizacion):
         nombre_producto = resultado[5]
         descripcion_producto = resultado[6]
         precio_producto = resultado[7]
+        cantidad_producto= resultado[8]
         
-        id_servicio = resultado[8]
-        nombre_servicio = resultado[9]
-        descripcion_servicio = resultado[10]
-        precio_servicio = resultado[11]
+        id_servicio = resultado[9]
+        nombre_servicio = resultado[10]
+        descripcion_servicio = resultado[11]
+        precio_servicio = resultado[12]
         
         # Agregar productos
         if id_producto:
@@ -111,7 +107,8 @@ def vista_detalle_cotizacion(request, id_cotizacion):
                 'id': id_producto,
                 'nombre': nombre_producto,
                 'descripcion': descripcion_producto,
-                'precio': precio_producto
+                'precio': precio_producto,
+                'cantidad': cantidad_producto
             }
             productos.append(producto)
         

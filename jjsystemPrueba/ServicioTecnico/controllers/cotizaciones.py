@@ -1,17 +1,8 @@
-from urllib import response
 from rest_framework import viewsets
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from Account.models import Cotizaciones, Clientes, Estadoscotizaciones, Productos, Servicios, CotizacionesProductos, CotizacionesServicios
 from .serializers import CotizacionesSerializer
-from django.contrib import messages
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
-from reportlab.lib import colors
-from io import BytesIO
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
-from reportlab.lib.styles import getSampleStyleSheet
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -160,60 +151,3 @@ class CotizacionesCRUD(viewsets.ModelViewSet):
             return render(request, 'ConfirmarEliminarCotizacion.html', {'cotizacion': cotizacion})
 
         return redirect('ver_cotizaciones')
-
-def generar_pdf(request, idcotizacion):
-    # Obtener la cotización específica
-    cotizacion = get_object_or_404(Cotizaciones, idcotizacion=idcotizacion)
-
-    # Crear un buffer de bytes para el PDF
-    buffer = BytesIO()
-
-    # Configurar el tamaño del documento
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-
-    # Estilo del párrafo
-    styles = getSampleStyleSheet()
-    descripcion_style = styles["Normal"]
-
-    # Crear una tabla para la cotización
-    tabla_datos = [
-        ["ID", "Fecha", "Descripción", "Total", "Cliente", "Num. Documento", "Estado"],
-        [cotizacion.idcotizacion, cotizacion.fechacotizacion,
-         Paragraph(cotizacion.descripcioncotizacion, descripcion_style),
-         cotizacion.totalcotizacion, cotizacion.idcliente.numerodocumento.nombre + " " +
-         cotizacion.idcliente.numerodocumento.apellido, cotizacion.idcliente.numerodocumento.numerodocumento,
-         cotizacion.idestadocotizacion.nombreestadocotizacion]
-    ]
-
-    col_widths = [70, 80, 100, 70, 120, 100, 80]
-
-    tabla = Table(tabla_datos, colWidths=col_widths)
-
-    # Aplicar estilos a la tabla
-    estilo_tabla = TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),  # Centrar verticalmente el texto en todas las celdas
-    ])
-
-    tabla.setStyle(estilo_tabla)
-
-    # Agregar la tabla al documento
-    elementos = [tabla]
-    doc.build(elementos)
-
-    # Obtener el PDF generado
-    pdf = buffer.getvalue()
-    buffer.close()
-
-    # Devolver el PDF como una respuesta HTTP
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="cotizacion_{idcotizacion}.pdf"'
-    response.write(pdf)
-    return response
-
