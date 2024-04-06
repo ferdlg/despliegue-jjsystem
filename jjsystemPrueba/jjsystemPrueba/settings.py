@@ -112,8 +112,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'jjsystem_db',
         'USER': 'root',
-        'PASSWORD': '1021662854',
-        #'PASSWORD': '',
+        #'PASSWORD': '1021662854',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306'
     }
@@ -174,6 +174,9 @@ EMAIL_HOST_PASSWORD = 'oybttoqvhrehynlq'
 
 STATIC_URL = 'static/'
 STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 
 # This production code might break development mode, so we check whether we're in DEBUG mode
 if not DEBUG:

@@ -1,4 +1,5 @@
 {% extends "menu.html" %}
+{% load static %}
 {% block titulo %} Productos {% endblock %}
 {% block contenido %}
 <div class="content">
@@ -31,6 +32,7 @@
                     <th scope="col">Cantidad</th>
                     <th scope="col">Categoría</th>
                     <th scope="col">Proveedor</th>
+                    <th scope="col">Imagen</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -45,6 +47,7 @@
                     <td>{{producto.cantidad}}</td>
                     <td>{{producto.idcategoriaproducto.nombrecategoria}}</td>
                     <td>{{producto.idproveedorproducto.nombreproveedor}}</td>
+                    <td><img src="{% static producto.imagen %}" alt="{{ producto.nombreproducto }}" style="max-width: 100px;"></td>             
                     <td> 
                         <a href="{% url 'editarProducto' idProducto=producto.idproducto %}" class="btn btn-primary btn-sw"> Editar </a>
                     </td>

@@ -6,6 +6,7 @@ from .controllers.envios import enviosCRUD
 from .controllers.estadosenvios import estadosenviosCRUD
 from .controllers.tecnicos import tecnicosCRUD
 from .controllers.ventas import ventasCRUD
+from .controllers.pdf import generar_pdf, generar_pdf_envio
 
 router = DefaultRouter()
 router.register(r'envios', enviosCRUD)
@@ -23,7 +24,8 @@ urlpatterns=[
 
     path('clientes/', views.enviosCliente, name='vista_cliente'),
     path('historialEnvios/', views.historialEnviosCliente, name='historial_envios_cliente'),
-    path('generar_pdf/<str:templateName>/', views.generar_pdf, name='generar_pdf_envios'),
+    path('generar_pdf/<str:templateName>/', generar_pdf, name='generar_pdf_envios'),
+    path('generar_pdf_envio/<int:idenvio>/', generar_pdf_envio, name='generar_pdf_envio'),
 
 
 ]

@@ -17,9 +17,8 @@ from Account.models import *
 from django.db import connection
 import smtplib
 import os
+from reportlab.lib.styles import ParagraphStyle
 # from dotenv import load_dotenv
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 from jjsystemPrueba import settings
 from .envio_correo import enviar_correo_estado_envio
 # Create your views here.
@@ -215,54 +214,6 @@ def historialEnviosCliente(request):
     envios_entregados = envios.filter(idestadoenvio__nombreestadoenvio="Entregado")
 
     return render(request, 'cliente/HistorialEnviosCliente.html', {'envios': envios_entregados, "detallesEnvio": detallesEnvio})
-
-#PDF
-
-def generar_pdf(request, templateName):
-    # Obtener los datos de los envíos
-    envios = Envios.objects.all()
-
-    # Crear un buffer de bytes para el PDF
-    buffer = BytesIO()
-
-    # Configurar el tamaño del documento
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-
-    # Crear una tabla para los envíos
-    tabla_datos = []
-    tabla_datos.append(["ID", "Dirección", "ID Técnico", "Estado"])
-    for envio in envios:
-        tabla_datos.append([envio.idenvio, envio.direccionenvio, envio.idtecnico.idtecnico, envio.idestadoenvio.nombreestadoenvio])
-
-    tabla = Table(tabla_datos)
-
-    logo_path = os.path.join(settings.STATICFILES_DIRS[3], 'images/logo.png')
-    # Aplicar estilos a la tabla
-    estilo_tabla = TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-                               ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-                               ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-                               ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                               ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                               ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-                               ('GRID', (0, 0), (-1, -1), 1, colors.black)])
-
-    tabla.setStyle(estilo_tabla)
-
-    # Agregar la tabla al documento
-    elementos = []
-    elementos.append(tabla)
-    doc.build(elementos)
-
-    # Obtener el PDF generado
-    pdf = buffer.getvalue()
-    buffer.close()
-
-    # Devolver el PDF como una respuesta HTTP
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="envios.pdf"'
-    response.write(pdf)
-    return response
-
 
 
 

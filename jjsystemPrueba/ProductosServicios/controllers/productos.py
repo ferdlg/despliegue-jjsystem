@@ -1,9 +1,15 @@
+import os
+from django.conf import settings
 from django.shortcuts import redirect, render
 from rest_framework import viewsets
 from Account.models import *
 from .serializers import ProductosSerializer
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 from django.contrib import messages
+from django.core.files.base import ContentFile
+from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
 
 '''
     Importamos la biblioteca viewsets 
@@ -36,42 +42,46 @@ def home_productos(request):
     return render(request, "crudAdmin/IndexProductos.html", {"productos": productos_list})
 
 # CRUD de productos
-import os
-from django.conf import settings
-
+    
 def createProductoView(request):
     if request.method == 'POST':
+        # Recuperar datos del formulario
         nombreproducto = request.POST.get('nombre')
         descripcionproducto = request.POST.get('descripcion')
         precioproducto = request.POST.get('precio')
         cantidad = request.POST.get('cantidad')
         idcategoriaproducto = request.POST.get('categoria')
         idproveedorproducto = request.POST.get('proveedor')
-        imagen = request.FILES.get('imagen')
+
+        imagen = request.FILES.get('imagen')  # Obtener el archivo de imagen
 
         try:
             categoria = Categoriasproductos.objects.get(idcategoriaproducto=idcategoriaproducto)
             proveedor = Proveedoresproductos.objects.get(idproveedorproducto=idproveedorproducto)
 
-            ruta_imagen = None
             if imagen:
-                # Ruta de destino para guardar la imagen en la carpeta "productos" dentro de "static"
-                ruta_imagen = os.path.join(settings.STATIC_ROOT, 'productos', imagen.name)
-                with open(ruta_imagen, 'wb+') as destination:
+                # Guardar la imagen en la carpeta de medios
+                nombre_imagen = imagen.name
+                path_imagen = os.path.join(settings.MEDIA_ROOT, 'productos', nombre_imagen)
+                with open(path_imagen, 'wb+') as file:
                     for chunk in imagen.chunks():
-                        destination.write(chunk)
+                        file.write(chunk)
 
-            producto = Productos.objects.create(
-                nombreproducto=nombreproducto,
-                descripcionproducto=descripcionproducto,
-                precioproducto=precioproducto,
-                cantidad=cantidad,
-                idcategoriaproducto=categoria,
-                idproveedorproducto=proveedor,
-                imagen=ruta_imagen
-            )
-            messages.success(request, 'Producto creado correctamente')
-            return redirect('homeProductos')
+                # Crear el objeto Productos con la ruta de la imagen
+                producto = Productos.objects.create(
+                    nombreproducto=nombreproducto,
+                    descripcionproducto=descripcionproducto,
+                    precioproducto=precioproducto,
+                    cantidad=cantidad,
+                    idcategoriaproducto=categoria,
+                    idproveedorproducto=proveedor,
+                    imagen=os.path.join('productos', nombre_imagen)  # Guarda la ruta relativa de la imagen
+                )
+
+                messages.success(request, 'Producto creado correctamente')
+                return redirect('homeProductos')
+            else:
+                messages.error(request, 'No se proporcionó ninguna imagen')
 
         except Categoriasproductos.DoesNotExist:
             messages.error(request, 'La categoría seleccionada no existe')

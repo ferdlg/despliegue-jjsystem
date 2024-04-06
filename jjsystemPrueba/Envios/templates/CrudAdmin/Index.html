@@ -52,6 +52,14 @@
                     <td>{{ e.direccionenvio }}</td>
                     <td>{{ e.idtecnico.idtecnico }}</td>
                     <td>{{ e.idestadoenvio.nombreestadoenvio }}</td>
+                    <td>
+                        <form method="post" action="{% url 'generar_pdf_envio' e.idenvio %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-dark text-dark" style="background-color: transparent; border-color: black;">
+                                <i class="bi bi-download text-dark"></i> PDF
+                            </button>
+                        </form>
+                    </td>
                     <td class="col text-center"> 
                         <a href="{% url 'editarEnvio' idEnvio=e.idenvio %}" class="btn btn-primary btn-sw"> Editar </a>
                     </td>
