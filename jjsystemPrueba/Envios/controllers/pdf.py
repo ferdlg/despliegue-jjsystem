@@ -106,7 +106,8 @@ def generar_pdf_envio(request, idenvio):
     tabla_detalles1 = Table(datos_tabla_detalles1, colWidths=[100, 200])
     tabla_detalles1.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#263465")),
                                          ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-                                         ('WORDWRAP', (1, 1), (-1, -1))]))  
+                                         ('WORDWRAP', (1, 1), (-1, -1)),
+                                         ('ALIGN', (0, 0), (-1, -1), 'CENTER')]))  # Alinea el contenido al centro
     elementos.append(tabla_detalles1)
 
     # Agregar espacio entre las tablas
@@ -119,7 +120,8 @@ def generar_pdf_envio(request, idenvio):
 
     tabla_detalles2 = Table(datos_tabla_detalles2, colWidths=[100, 150, 100])
     tabla_detalles2.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#263465")),
-                                         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke)]))
+                                         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                                         ('ALIGN', (0, 0), (-1, -1), 'CENTER')]))  # Alinea el contenido al centro
     elementos.append(tabla_detalles2)
 
     # Definir función para el pie de página
