@@ -27,7 +27,7 @@ class productosCRUD(viewsets.ModelViewSet):
 # Productos en dashboard admin
 def home_productos(request):
     # Obtener todos los productos
-    productos_list = Productos.objects.all()
+    productos_list = Productos.objects.all().order_by('-idproducto')
 
     # Configurar la paginación
     paginator = Paginator(productos_list, 5)  # Mostrar 10 productos por página
@@ -110,6 +110,9 @@ def editarProducto(request, idProducto):
             idproveedorproducto = request.POST.get('proveedor')
             imagen = request.FILES.get('imagen')
 
+            categoria = Categoriasproductos.objects.get(idcategoriaproducto=idcategoriaproducto)
+            proveedor = Proveedoresproductos.objects.get(idproveedorproducto=idproveedorproducto)
+
             if imagen:
                 # Guardar la imagen en la carpeta de medios
                 nombre_imagen = imagen.name
@@ -117,11 +120,8 @@ def editarProducto(request, idProducto):
                 with open(path_imagen, 'wb+') as file:
                     for chunk in imagen.chunks():
                         file.write(chunk)
-            # Obtener la instancia de categorías
-            categoria = Categoriasproductos.objects.get(idcategoriaproducto=idcategoriaproducto)
-
-            # Obtener la instancia de proveedor
-            proveedor = Proveedoresproductos.objects.get(idproveedorproducto=idproveedorproducto)
+            else:
+                imagen = producto.imagen
 
             # Actualizar los campos del objeto producto
             producto.nombreproducto = nombreproducto
@@ -150,7 +150,7 @@ def editarProducto(request, idProducto):
     except Exception as e:
         messages.error(request, f'Error al editar el producto: {str(e)}')
         return redirect('homeProductos')
-    
+
 def eliminarProducto(request, idProducto):
     producto = Productos.objects.get(idproducto=idProducto)
     producto.delete()

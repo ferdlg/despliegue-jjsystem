@@ -49,7 +49,7 @@
                     <td>{{producto.idproveedorproducto.nombreproveedor}}</td>
                     <td>
                     {% if producto.imagen %}
-                        <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+                        <img src="{% static producto.imagen.url|urlencode %}" class="card-img-top">
                     {% else %}
                         <p>No hay imagen disponible</p>
                     {% endif %}</td>             
