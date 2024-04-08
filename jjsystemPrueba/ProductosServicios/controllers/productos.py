@@ -114,14 +114,20 @@ def editarProducto(request, idProducto):
             proveedor = Proveedoresproductos.objects.get(idproveedorproducto=idproveedorproducto)
 
             if imagen:
-                # Guardar la imagen en la carpeta de medios
+                # Guardar la nueva imagen en la carpeta de medios
                 nombre_imagen = imagen.name
                 path_imagen = os.path.join(settings.MEDIA_ROOT[2], 'static', 'images', 'productos', nombre_imagen)
                 with open(path_imagen, 'wb+') as file:
                     for chunk in imagen.chunks():
                         file.write(chunk)
-            else:
-                imagen = producto.imagen
+                # Actualizar la imagen del producto
+                producto.imagen = os.path.join('productos', nombre_imagen)
+
+            # Obtener la instancia de categoría
+            categoria = Categoriasproductos.objects.get(idcategoriaproducto=idcategoriaproducto)
+
+            # Obtener la instancia de proveedor
+            proveedor = Proveedoresproductos.objects.get(idproveedorproducto=idproveedorproducto)
 
             # Actualizar los campos del objeto producto
             producto.nombreproducto = nombreproducto
@@ -130,7 +136,6 @@ def editarProducto(request, idProducto):
             producto.cantidad = cantidad
             producto.idcategoriaproducto = categoria
             producto.idproveedorproducto = proveedor
-            producto.imagen = imagen
             producto.save()
 
             messages.success(request, 'Producto modificado correctamente')
