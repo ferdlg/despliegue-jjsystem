@@ -143,7 +143,7 @@ class Productos(models.Model):
     descripcionproducto = models.TextField(db_column='descripcionProducto')  # Field name made lowercase.
     precioproducto = models.FloatField(db_column='precioProducto')  # Field name made lowercase.
     cantidad = models.IntegerField()
-    imagen = models.ImageField(upload_to='product_images/', null=True, blank=True)
+    imagen = models.ImageField(upload_to='ProductosServicios/static/images/productos',db_column='imagen', null=True, blank=True)
     idadministrador = models.ForeignKey(Administrador, models.CASCADE, db_column='idAdministrador', blank=True, null=True)  # Field name made lowercase.
     idcategoriaproducto = models.ForeignKey(Categoriasproductos, models.CASCADE, db_column='idCategoriaProducto', blank=True, null=True)  # Field name made lowercase.
     idproveedorproducto = models.ForeignKey('Proveedoresproductos', models.CASCADE, db_column='idProveedorProducto', blank=True, null=True)  # Field name made lowercase.

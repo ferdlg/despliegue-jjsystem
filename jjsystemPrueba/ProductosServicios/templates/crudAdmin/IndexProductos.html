@@ -47,7 +47,12 @@
                     <td>{{producto.cantidad}}</td>
                     <td>{{producto.idcategoriaproducto.nombrecategoria}}</td>
                     <td>{{producto.idproveedorproducto.nombreproveedor}}</td>
-                    <td><img src="{% static producto.imagen %}" alt="{{ producto.nombreproducto }}" style="max-width: 100px;"></td>             
+                    <td>
+                    {% if producto.imagen %}
+                        <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+                    {% else %}
+                        <p>No hay imagen disponible</p>
+                    {% endif %}</td>             
                     <td> 
                         <a href="{% url 'editarProducto' idProducto=producto.idproducto %}" class="btn btn-primary btn-sw"> Editar </a>
                     </td>

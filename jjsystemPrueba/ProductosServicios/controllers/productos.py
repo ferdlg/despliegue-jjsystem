@@ -62,7 +62,7 @@ def createProductoView(request):
             if imagen:
                 # Guardar la imagen en la carpeta de medios
                 nombre_imagen = imagen.name
-                path_imagen = os.path.join(settings.MEDIA_ROOT, 'productos', nombre_imagen)
+                path_imagen = os.path.join(settings.MEDIA_ROOT[2], 'static','images', 'productos', nombre_imagen)
                 with open(path_imagen, 'wb+') as file:
                     for chunk in imagen.chunks():
                         file.write(chunk)
@@ -108,8 +108,15 @@ def editarProducto(request, idProducto):
             cantidad = request.POST.get('cantidad')
             idcategoriaproducto = request.POST.get('categoria')
             idproveedorproducto = request.POST.get('proveedor')
-            foto = request.FILES.get('imagen')
+            imagen = request.FILES.get('imagen')
 
+            if imagen:
+                # Guardar la imagen en la carpeta de medios
+                nombre_imagen = imagen.name
+                path_imagen = os.path.join(settings.MEDIA_ROOT[2], 'static', 'images', 'productos', nombre_imagen)
+                with open(path_imagen, 'wb+') as file:
+                    for chunk in imagen.chunks():
+                        file.write(chunk)
             # Obtener la instancia de categorías
             categoria = Categoriasproductos.objects.get(idcategoriaproducto=idcategoriaproducto)
 
@@ -123,7 +130,7 @@ def editarProducto(request, idProducto):
             producto.cantidad = cantidad
             producto.idcategoriaproducto = categoria
             producto.idproveedorproducto = proveedor
-            producto.imagen = foto
+            producto.imagen = imagen
             producto.save()
 
             messages.success(request, 'Producto modificado correctamente')

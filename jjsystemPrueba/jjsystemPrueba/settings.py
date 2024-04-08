@@ -112,8 +112,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'jjsystem_db',
         'USER': 'root',
-        #'PASSWORD': '1021662854',
-        'PASSWORD': '',
+        'PASSWORD': '1021662854',
+        #'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306'
     }
@@ -201,6 +201,4 @@ MEDIA_URL = 'images/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 # Suprimir todas las advertencias relacionadas con la asignación de números a instancias
-warnings.filterwarnings('ignore', message="Field 'idcliente' expected a number but got.*")
-warnings.filterwarnings('ignore', message="Field 'idtecnico' expected a number but got.*")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
