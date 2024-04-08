@@ -1192,6 +1192,7 @@ END;
 DELIMITER ;
 
 
+USE jjsystem_db;
 DROP PROCEDURE IF EXISTS ObtenerDetallesCotizacion;
 DELIMITER //
 
@@ -1206,6 +1207,7 @@ BEGIN
         productos.nombreProducto, 
         productos.descripcionProducto, 
         productos.precioProducto,
+        cotizaciones_productos.cantidad AS cantidadProducto,
         servicios.idServicio,
         servicios.nombreServicio,
         servicios.descripcionServicio,
@@ -1226,6 +1228,9 @@ BEGIN
         cotizaciones.idCotizacion = id_cotizacion;
 END //
 
+DELIMITER ;
+
+DELIMITER ;
 DELIMITER ;
 
 DELIMITER ;
