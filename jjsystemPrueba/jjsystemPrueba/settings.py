@@ -105,7 +105,7 @@ WSGI_APPLICATION = 'jjsystemPrueba.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
-        default='mysql://root:''@localhost:3306/jjsystem_db',
+        default='postgresql://postgres:postgres@localhost:5432/jjsystem_db',
         conn_max_age=600
     )
     # 'default': {
