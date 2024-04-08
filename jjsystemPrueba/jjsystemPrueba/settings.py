@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
-# import dj_database_url
+import dj_database_url
 import warnings
 
 
@@ -103,20 +103,20 @@ WSGI_APPLICATION = 'jjsystemPrueba.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    # 'default': dj_database_url.config(
-    #     # Replace this value with your local database's connection string.
-    #     default='mysql://root:''@localhost:3306/jjsystem_db',
-    #     conn_max_age=600
-    # )
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'jjsystem_db',
-        'USER': 'root',
-        'PASSWORD': '1021662854',
-        #'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306'
-    }
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='mysql://root:''@localhost:3306/jjsystem_db',
+        conn_max_age=600
+    )
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'jjsystem_db',
+    #     'USER': 'root',
+    #     'PASSWORD': '1021662854',
+    #     #'PASSWORD': '',
+    #     'HOST': 'localhost',
+    #     'PORT': '3306'
+    # }
 }
 
 
@@ -172,11 +172,7 @@ EMAIL_HOST_PASSWORD = 'oybttoqvhrehynlq'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
 STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-
 
 # This production code might break development mode, so we check whether we're in DEBUG mode
 if not DEBUG:
