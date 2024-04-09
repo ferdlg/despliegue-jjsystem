@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS proveedoresProductos(
 );
 
 CREATE TABLE IF NOT EXISTS Productos(
-    idProducto INT NOT NULL AUTO_INCREMENT,
+    idproducto INT NOT NULL AUTO_INCREMENT,
     nombreProducto TEXT(100) NOT NULL,
     descripcionProducto TEXT(200) NOT NULL,
     precioProducto FLOAT NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS Productos(
     idAdministrador INT,
     idCategoriaProducto INT,
     idProveedorProducto INT,
-    PRIMARY KEY(idProducto),
+    PRIMARY KEY(idproducto),
     FOREIGN KEY(idAdministrador) REFERENCES Administrador (idAdministrador),
     FOREIGN KEY(idCategoriaProducto) REFERENCES categoriasProductos (idCategoriaProducto),
     FOREIGN KEY(idProveedorProducto) REFERENCES proveedoresProductos (idProveedorProducto)
@@ -151,10 +151,10 @@ CREATE TABLE IF NOT EXISTS Cotizaciones(
 
 CREATE TABLE IF NOT EXISTS Cotizaciones_Productos(
     idCotizacion INT,
-    idProducto INT,
+    idproducto INT,
     cantidad INT,
     FOREIGN KEY (idCotizacion) REFERENCES Cotizaciones (idCotizacion),
-    FOREIGN KEY (idProducto) REFERENCES Productos (idProducto)
+    FOREIGN KEY (idproducto) REFERENCES Productos (idproducto)
 );
 
 CREATE TABLE IF NOT EXISTS Cotizaciones_Servicios(
@@ -591,7 +591,7 @@ BEGIN
         cotizaciones.fechaCotizacion, 
         cotizaciones.descripcionCotizacion,
         estadoscotizaciones.nombreEstadoCotizacion AS nombreEstado,
-        productos.idProducto, 
+        productos.idproducto, 
         productos.nombreProducto, 
         productos.descripcionProducto, 
         productos.precioProducto,
@@ -605,7 +605,7 @@ BEGIN
     LEFT JOIN 
         cotizaciones_productos ON cotizaciones.idCotizacion = cotizaciones_productos.idCotizacion
     LEFT JOIN 
-        productos ON cotizaciones_productos.idProducto = productos.idProducto
+        productos ON cotizaciones_productos.idproducto = productos.idproducto
     LEFT JOIN 
         cotizaciones_servicios ON cotizaciones.idCotizacion = cotizaciones_servicios.idCotizacion
     LEFT JOIN 
