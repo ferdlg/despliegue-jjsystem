@@ -515,24 +515,6 @@ DELIMITER //
 	END; //
 	DELIMITER ;
 
-	DROP TABLE IF EXISTS enviosEntregados;
-	CREATE table enviosEntregados (
-    idEnvio int primary key,
-    fecha datetime, idTecnicoEncargado int, documentoTecnico bigint);
-	DROP TRIGGER IF EXISTS enviosEntregados;
-    DELIMITER //
-CREATE TRIGGER enviosEntregados
-AFTER UPDATE ON envios
-FOR EACH ROW
-BEGIN
-	IF NEW.idEstadoEnvio = 3 THEN
-		INSERT INTO enviosEntregados (idEnvio, fecha, idTecnicoEncargado, documentoTecnico)
-		SELECT NEW.idEnvio, NOW(), tecnicos.idTecnico, tecnicos.numeroDocumento
-		FROM tecnicos
-		WHERE tecnicos.idTecnico = NEW.idTecnico;
-	END IF;
-END //
-DELIMITER ;
 
 UPDATE envios SET idEstadoEnvio = '3' WHERE envios.idEnvio = 7;
 
