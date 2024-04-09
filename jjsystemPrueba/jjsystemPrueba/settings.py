@@ -28,7 +28,12 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'RENDER' not in os.environ
 
-ALLOWED_HOSTS = ['https://jjsystem.onrender.com/','localhost']
+ALLOWED_HOSTS = ['https://jjsystem.onrender.com/','127.0.0.1','localhost']
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000'
+]
+
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 
@@ -198,3 +203,6 @@ MEDIA_URL = 'images/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 # Suprimir todas las advertencias relacionadas con la asignación de números a instancias
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME :
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
