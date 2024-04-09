@@ -312,7 +312,7 @@ class Estadosenvios(models.Model):
 
 
 class Estadospqrsf(models.Model):
-    idestadopqrsf = models.AutoField(db_column='idEstadoPQRSF', primary_key=True)  # Field name made lowercase.
+    idestadopqrsf= models.AutoField(db_column='idestadopqrsf', primary_key=True)  # Field name made lowercase.
     nombreestadopqrsf = models.CharField(db_column='nombreEstadoPQRSF', max_length=20)  # Field name made lowercase.
 
     class Meta:
@@ -341,9 +341,9 @@ class Historialcotizaciones(models.Model):
 
 class Historialpqrsfportipoestado(models.Model):
     idregistro = models.AutoField(db_column='idRegistro', primary_key=True)  # Field name made lowercase.
-    idpqrsf = models.ForeignKey('Pqrsf', models.CASCADE, db_column='idPQRSF', blank=True, null=True)  # Field name made lowercase.
+    idpqrsf = models.ForeignKey('Pqrsf', models.CASCADE, db_column='idpqrsf', blank=True, null=True)  # Field name made lowercase.
     idtipopqrsf = models.IntegerField(db_column='idtipopqrsf', blank=True, null=True)  # Field name made lowercase.
-    idestadopqrsf = models.IntegerField(db_column='idEstadoPQRSF', blank=True, null=True)  # Field name made lowercase.
+    idestadopqrsf= models.IntegerField(db_column='idestadopqrsf', blank=True, null=True)  # Field name made lowercase.
     fecharegistro = models.DateTimeField(db_column='fechaRegistro', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -362,12 +362,12 @@ class Permisos(models.Model):
 
 
 class Pqrsf(models.Model):
-    idpqrsf = models.AutoField(db_column='idPQRSF', primary_key=True)
-    fechapqrsf = models.DateField(db_column='fechaPQRSF', auto_now_add=True)
-    informacionpqrsf = models.TextField(db_column='informacionPQRSF')
+    idpqrsf = models.AutoField(db_column='idpqrsf', primary_key=True)
+    fechapqrsf = models.DateField(db_column='fechapqrsf', auto_now_add=True)
+    informacionpqrsf = models.TextField(db_column='informacionpqrsf')
     idcliente = models.ForeignKey('Clientes', models.CASCADE, db_column='idcliente')
     idtipopqrsf = models.ForeignKey('TiposPQRSF', models.CASCADE, db_column='idtipopqrsf')
-    idestadopqrsf = models.ForeignKey(Estadospqrsf, models.CASCADE, db_column='idEstadoPQRSF')
+    idestadopqrsf= models.ForeignKey(Estadospqrsf, models.CASCADE, db_column='idestadopqrsf')
 
     class Meta:
         managed = False
@@ -387,7 +387,7 @@ class Respuestas(models.Model):
     fecha = models.DateField(blank=True, null=True)
     informacionrespuesta = models.TextField(db_column='informacionRespuesta', blank=True, null=True)  # Field name made lowercase.
     idadministrador = models.ForeignKey(Administrador, models.CASCADE, db_column='idadministrador', blank=True, null=True)  # Field name made lowercase.
-    idpqrsf = models.ForeignKey(Pqrsf, models.CASCADE, db_column='idPQRSF', blank=True, null=True)  # Field name made lowercase.
+    idpqrsf = models.ForeignKey(Pqrsf, models.CASCADE, db_column='idpqrsf', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False

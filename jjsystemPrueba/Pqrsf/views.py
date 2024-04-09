@@ -39,8 +39,8 @@ def indexPqrsf(request):
 
 @login_required
 @role_required(1)
-def editarPqrsf(request, idPqrsf):
-    pqrsf_item = Pqrsf.objects.get(idpqrsf=idPqrsf)
+def editarPqrsf(request, idpqrsf):
+    pqrsf_item = Pqrsf.objects.get(idpqrsf=idpqrsf)
     estados = Estadospqrsf.objects.all()
     tipos = Tipospqrsf.objects.all()
 
@@ -48,11 +48,11 @@ def editarPqrsf(request, idPqrsf):
         #obtener los datos de la petición
         fechapqrsf = request.POST.get('fecha')
         informacionpqrsf = request.POST.get('informacion')
-        idestadopqrsf = request.POST.get('estado')
+        idestadopqrsf= request.POST.get('estado')
         idtipopqrsf = request.POST.get('tipo')
 
         #obtener la instancia de EstadosPqrsf
-        idestadopqrsf = Estadospqrsf.objects.get(idestadopqrsf=idestadopqrsf)
+        idestadopqrsf= Estadospqrsf.objects.get(idestadopqrsf=idestadopqrsf)
 
         #obtener la instancia de TiposPqrsf
         idtipopqrsf = Tipospqrsf.objects.get(idtipopqrsf=idtipopqrsf)
@@ -60,7 +60,7 @@ def editarPqrsf(request, idPqrsf):
         #actualizar los campos del objeto pqrsf
         pqrsf_item.fechapqrsf = fechapqrsf
         pqrsf_item.informacionpqrsf = informacionpqrsf
-        pqrsf_item.idestadopqrsf = idestadopqrsf
+        pqrsf_item.idestadopqrsf= idestadopqrsf
         pqrsf_item.idtipopqrsf = idtipopqrsf
         pqrsf_item.save()
 

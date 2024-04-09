@@ -250,7 +250,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Estadospqrsf',
             fields=[
-                ('idestadopqrsf', models.AutoField(db_column='idEstadoPQRSF', primary_key=True, serialize=False)),
+                ('idestadopqrsf', models.AutoField(db_column='idestadopqrsf', primary_key=True, serialize=False)),
                 ('nombreestadopqrsf', models.CharField(db_column='nombreEstadoPQRSF', max_length=20)),
             ],
             options={
@@ -283,9 +283,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Pqrsf',
             fields=[
-                ('idpqrsf', models.AutoField(db_column='idPQRSF', primary_key=True, serialize=False)),
-                ('fechapqrsf', models.DateField(db_column='fechaPQRSF')),
-                ('informacionpqrsf', models.TextField(db_column='informacionPQRSF')),
+                ('idpqrsf', models.AutoField(db_column='idpqrsf', primary_key=True, serialize=False)),
+                ('fechapqrsf', models.DateField(db_column='fechapqrsf')),
+                ('informacionpqrsf', models.TextField(db_column='informacionpqrsf')),
             ],
             options={
                 'db_table': 'pqrsf',

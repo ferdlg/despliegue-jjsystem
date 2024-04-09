@@ -17,7 +17,7 @@ router.register(r'respuesta', respuestaCRUD)
 
 urlpatterns=[
     path('',include(router.urls)),
-    path('editarPqrsf/<int:idPqrsf>', views.editarPqrsf, name='editarPqrsf'),
+    path('editarPqrsf/<int:idpqrsf>', views.editarPqrsf, name='editarPqrsf'),
     path('indexPqrsf/', views.indexPqrsf, name='indexPqrsf'),
     path('indexPqrsf/pqrsf', views.home_pqrsf, name='homePqrsf'),
     path('indexPqrsf/pqrsf/pdf/<int:idpqrsf>', convertir_pqrsf_pdf,  name='convertir_pqrsf_pdf'),
@@ -25,7 +25,7 @@ urlpatterns=[
 #cliente
     path('pqrsf/ver_pqrsf', pqrsfCRUD.as_view({'get': 'ir_a_pqrsf'}),  name='ir_a_pqrsf'),
     path('crear_pqrsf/',pqrsfCRUD.as_view({'post': 'crear_pqrsf', 'get':'crear_pqrsf'}) , name='crear_pqrsf'),
-    path('eliminarPqrsf/<idPqrsf>', views.eliminarPqrsf, name='eliminarPqrsf'),
+    path('eliminarPqrsf/<idpqrsf>', views.eliminarPqrsf, name='eliminarPqrsf'),
 
     path('respuesta/<id_pqrsf>', respuestaCRUD.as_view({'post':'crear_respuesta', 'get':'crear_respuesta'}), name='crear_respuesta'),
     path('respuesta/descargar/<int:idpqrsf>/', convertir_respuesta_pdf, name='convertir_respuesta_pdf')
