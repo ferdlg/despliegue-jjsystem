@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Administrador',
             fields=[
-                ('idadministrador', models.AutoField(db_column='idAdministrador', primary_key=True, serialize=False)),
+                ('idadministrador', models.AutoField(db_column='idadministrador', primary_key=True, serialize=False)),
             ],
             options={
                 'db_table': 'administrador',
@@ -108,8 +108,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Categoriasproductos',
             fields=[
-                ('idcategoriaproducto', models.AutoField(db_column='idCategoriaProducto', primary_key=True, serialize=False)),
-                ('nombrecategoria', models.CharField(db_column='nombreCategoria', max_length=20)),
+                ('idcategoriaproducto', models.AutoField(db_column='idcategoriaproducto', primary_key=True, serialize=False)),
+                ('nombrecategoria', models.CharField(db_column='nombrecategoria', max_length=20)),
             ],
             options={
                 'db_table': 'categoriasproductos',
@@ -120,7 +120,7 @@ class Migration(migrations.Migration):
             name='Categoriasservicios',
             fields=[
                 ('idcategoriaservicio', models.AutoField(db_column='idCategoriaServicio', primary_key=True, serialize=False)),
-                ('nombrecategoria', models.CharField(blank=True, db_column='nombreCategoria', max_length=30, null=True)),
+                ('nombrecategoria', models.CharField(blank=True, db_column='nombrecategoria', max_length=30, null=True)),
             ],
             options={
                 'db_table': 'categoriasservicios',
@@ -368,10 +368,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Productos',
             fields=[
-                ('idproducto', models.AutoField(db_column='idProducto', primary_key=True, serialize=False)),
-                ('nombreproducto', models.TextField(db_column='nombreProducto')),
-                ('descripcionproducto', models.TextField(db_column='descripcionProducto')),
-                ('precioproducto', models.FloatField(db_column='precioProducto')),
+                ('idproducto', models.AutoField(db_column='idproducto', primary_key=True, serialize=False)),
+                ('nombreproducto', models.TextField(db_column='nombreproducto')),
+                ('descripcionproducto', models.TextField(db_column='descripcionproducto')),
+                ('precioproducto', models.FloatField(db_column='precioproducto')),
                 ('cantidad', models.IntegerField()),
             ],
             options={
@@ -382,7 +382,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Proveedoresproductos',
             fields=[
-                ('idproveedorproducto', models.AutoField(db_column='idProveedorProducto', primary_key=True, serialize=False)),
+                ('idproveedorproducto', models.AutoField(db_column='idproveedorproducto', primary_key=True, serialize=False)),
                 ('nombreproveedor', models.CharField(db_column='nombreProveedor', max_length=50)),
             ],
             options={

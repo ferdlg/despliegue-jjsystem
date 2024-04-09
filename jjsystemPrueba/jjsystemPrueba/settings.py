@@ -109,10 +109,13 @@ WSGI_APPLICATION = 'jjsystemPrueba.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='mysql://root:1021662854@localhost:3306/jjsystem_db',
-        conn_max_age=600
-    )
+        default='postgres://jjsystem_db_user:6dMP0YFLSFZDvZwgbL7lVp0dMG1joGbF@dpg-coa92bcf7o1s73dme92g-a.oregon-postgres.render.com:5432/jjsystem_db_ujbz'
+        )  
+    # 'default': dj_database_url.config(
+    #     # Replace this value with your local database's connection string.
+    #     default='mysql://root:1021662854@localhost:3306/jjsystem_db',
+    #     conn_max_age=600
+    # )
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'jjsystem_db',

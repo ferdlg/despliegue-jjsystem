@@ -66,7 +66,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form action="{% url 'editarProveedor' idProveedorProducto=proveedor.idproveedorproducto %}" method="post">
+                                <form action="{% url 'editarProveedor' idproveedorproducto=proveedor.idproveedorproducto %}" method="post">
                                     {% csrf_token %}
                                     <div class="mb-3">
                                         <label for="nombreProveedor" class="form-label" style="color: black;">Nombre del Proveedor:</label>
@@ -93,7 +93,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <a href="{% url 'eliminarProveedor' idProveedorProducto=proveedor.idproveedorproducto %}" class="btn btn-danger">Eliminar</a>
+                                <a href="{% url 'eliminarProveedor' idproveedorproducto=proveedor.idproveedorproducto %}" class="btn btn-danger">Eliminar</a>
                             </div>
                         </div>
                     </div>

@@ -24,8 +24,8 @@
                     <form action="{% url 'createCategoriaServicio' %}" method="post">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="nombreCategoria" class="form-label" style="color: black;">Nombre de la Categoría:</label>
-                            <input type="text" class="form-control" id="nombreCategoria" name="nombreCategoria" required>
+                            <label for="nombrecategoria" class="form-label" style="color: black;">Nombre de la Categoría:</label>
+                            <input type="text" class="form-control" id="nombrecategoria" name="nombrecategoria" required>
                         </div>
                     
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -69,8 +69,8 @@
                                 <form action="{% url 'editarCategoriaServicio' idCategoriaServicio=categoria.idcategoriaservicio %}" method="post">
                                     {% csrf_token %}
                                     <div class="mb-3">
-                                        <label for="nombreCategoria" class="form-label" style="color: black;">Nombre de la Categoría:</label>
-                                        <input type="text" class="form-control" id="nombreCategoria" name="nombreCategoria" value="{{categoria.nombrecategoria}}" required>
+                                        <label for="nombrecategoria" class="form-label" style="color: black;">Nombre de la Categoría:</label>
+                                        <input type="text" class="form-control" id="nombrecategoria" name="nombrecategoria" value="{{categoria.nombrecategoria}}" required>
                                     </div>
                                 
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

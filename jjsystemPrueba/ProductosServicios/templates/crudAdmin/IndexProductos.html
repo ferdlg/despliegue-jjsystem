@@ -54,10 +54,10 @@
                         <p>No hay imagen disponible</p>
                     {% endif %}</td>             
                     <td> 
-                        <a href="{% url 'editarProducto' idProducto=producto.idproducto %}" class="btn btn-primary btn-sw"> Editar </a>
+                        <a href="{% url 'editarProducto' idproducto=producto.idproducto %}" class="btn btn-primary btn-sw"> Editar </a>
                     </td>
                     <td>
-                        <a href="{% url 'eliminarProducto' idProducto=producto.idproducto %}" class="btn btn-danger btn-sw"> eliminar </a>
+                        <a href="{% url 'eliminarProducto' idproducto=producto.idproducto %}" class="btn btn-danger btn-sw"> eliminar </a>
                     </td>
                 </tr>
                 {% endfor %}

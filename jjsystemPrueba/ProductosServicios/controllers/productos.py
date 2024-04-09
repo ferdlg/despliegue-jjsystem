@@ -94,9 +94,9 @@ def createProductoView(request):
     proveedores = Proveedoresproductos.objects.all()
     return render(request, "crudAdmin/CreateProducto.html", {"categorias": categorias, "proveedores": proveedores})
 
-def editarProducto(request, idProducto):
+def editarProducto(request, idproducto):
     try:
-        producto = Productos.objects.get(idproducto=idProducto)
+        producto = Productos.objects.get(idproducto=idproducto)
         categorias = Categoriasproductos.objects.all()
         proveedores = Proveedoresproductos.objects.all()
 
@@ -156,8 +156,8 @@ def editarProducto(request, idProducto):
         messages.error(request, f'Error al editar el producto: {str(e)}')
         return redirect('homeProductos')
 
-def eliminarProducto(request, idProducto):
-    producto = Productos.objects.get(idproducto=idProducto)
+def eliminarProducto(request, idproducto):
+    producto = Productos.objects.get(idproducto=idproducto)
     producto.delete()
     messages.success(request, 'Producto eliminado correctamente')
     return redirect('homeProductos')

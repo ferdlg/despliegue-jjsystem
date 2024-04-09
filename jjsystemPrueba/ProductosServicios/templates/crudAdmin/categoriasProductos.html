@@ -24,8 +24,8 @@
                     <form action="{% url 'createCategoriaProducto' %}" method="post">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="nombreCategoria" class="form-label" style="color: black;">Nombre de la Categoría:</label>
-                            <input type="text" class="form-control" id="nombreCategoria" name="nombreCategoria" required>
+                            <label for="nombrecategoria" class="form-label" style="color: black;">Nombre de la Categoría:</label>
+                            <input type="text" class="form-control" id="nombrecategoria" name="nombrecategoria" required>
                         </div>
                     
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -66,11 +66,11 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form action="{% url 'editarCategoriaProducto' idCategoriaProducto=categoria.idcategoriaproducto %}" method="post">
+                                <form action="{% url 'editarCategoriaProducto' idcategoriaproducto=categoria.idcategoriaproducto %}" method="post">
                                     {% csrf_token %}
                                     <div class="mb-3">
-                                        <label for="nombreCategoria" class="form-label" style="color: black;">Nombre de la Categoría:</label>
-                                        <input type="text" class="form-control" id="nombreCategoria" name="nombreCategoria" value="{{ categoria.nombrecategoria }}" required>
+                                        <label for="nombrecategoria" class="form-label" style="color: black;">Nombre de la Categoría:</label>
+                                        <input type="text" class="form-control" id="nombrecategoria" name="nombrecategoria" value="{{ categoria.nombrecategoria }}" required>
                                     </div>
                                 
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -94,7 +94,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <a href="{% url 'eliminarCategoriaProducto' idCategoriaProducto=categoria.idcategoriaproducto %}" class="btn btn-danger">Eliminar</a>
+                                <a href="{% url 'eliminarCategoriaProducto' idcategoriaproducto=categoria.idcategoriaproducto %}" class="btn btn-danger">Eliminar</a>
                             </div>
                         </div>
                     </div>

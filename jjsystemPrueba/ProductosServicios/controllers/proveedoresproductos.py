@@ -36,8 +36,8 @@ def createProveedorProductoView(request):
 
     return render(request, "crudAdmin/proveedoresProductos.html")
 
-def editarProveedorProductoView(request, idProveedorProducto):
-    proveedor = Proveedoresproductos.objects.get(idproveedorproducto=idProveedorProducto)
+def editarProveedorProductoView(request, idproveedorproducto):
+    proveedor = Proveedoresproductos.objects.get(idproveedorproducto=idproveedorproducto)
     if request.method == 'POST':
         nombreproveedor = request.POST.get('nombreProveedor')
         proveedor.nombreproveedor = nombreproveedor
@@ -47,8 +47,8 @@ def editarProveedorProductoView(request, idProveedorProducto):
 
     return render(request, "crudAdmin/proveedoresProductos.html", {"proveedor": proveedor})
 
-def eliminarProveedorProductoView(request, idProveedorProducto):
-    proveedor = Proveedoresproductos.objects.get(idproveedorproducto=idProveedorProducto)
+def eliminarProveedorProductoView(request, idproveedorproducto):
+    proveedor = Proveedoresproductos.objects.get(idproveedorproducto=idproveedorproducto)
     proveedor.delete()
     messages.success(request, 'Proveedor eliminado correctamente')
     return redirect('proveedorProductos')

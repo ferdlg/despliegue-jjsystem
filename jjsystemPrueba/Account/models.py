@@ -3,7 +3,7 @@ from django.db import models
 
 
 class Administrador(models.Model):
-    idadministrador = models.AutoField(db_column='idAdministrador', primary_key=True)  # Field name made lowercase.
+    idadministrador = models.AutoField(db_column='idadministrador', primary_key=True)  # Field name made lowercase.
     numerodocumento = models.ForeignKey('Usuarios', models.CASCADE, db_column='numeroDocumento')  # Field name made lowercase.
 
     class Meta:
@@ -81,8 +81,8 @@ class AuthUserUserPermissions(models.Model):
 
 
 class Categoriasproductos(models.Model):
-    idcategoriaproducto = models.AutoField(db_column='idCategoriaProducto', primary_key=True)  # Field name made lowercase.
-    nombrecategoria = models.CharField(db_column='nombreCategoria', max_length=20)  # Field name made lowercase.
+    idcategoriaproducto = models.AutoField(db_column='idcategoriaproducto', primary_key=True)  # Field name made lowercase.
+    nombrecategoria = models.CharField(db_column='nombrecategoria', max_length=20)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -91,7 +91,7 @@ class Categoriasproductos(models.Model):
 
 class Categoriasservicios(models.Model):
     idcategoriaservicio = models.AutoField(db_column='idCategoriaServicio', primary_key=True)  # Field name made lowercase.
-    nombrecategoria = models.CharField(db_column='nombreCategoria', max_length=30, blank=True, null=True)  # Field name made lowercase.
+    nombrecategoria = models.CharField(db_column='nombrecategoria', max_length=30, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -105,7 +105,7 @@ class Citas(models.Model):
     contactocliente = models.BigIntegerField(db_column='contactoCliente')  # Field name made lowercase.
     descripcioncita = models.TextField(db_column='descripcionCita')  # Field name made lowercase.
     idtecnico = models.ForeignKey('Tecnicos',models.CASCADE, db_column='idTecnico')  # Field name made lowercase.
-    idadministrador = models.ForeignKey(Administrador,models.CASCADE, db_column='idAdministrador')  # Field name made lowercase.
+    idadministrador = models.ForeignKey(Administrador,models.CASCADE, db_column='idadministrador')  # Field name made lowercase.
     idcotizacion = models.ForeignKey('Cotizaciones',models.CASCADE, db_column='idCotizacion')  # Field name made lowercase.
     idestadocita = models.ForeignKey('Estadoscitas',models.CASCADE, db_column='idEstadoCita')  # Field name made lowercase.
     horacita = models.TimeField(db_column='horaCita')  # Field name made lowercase.
@@ -138,15 +138,15 @@ class Cotizaciones(models.Model):
         db_table = 'cotizaciones'
 
 class Productos(models.Model):
-    idproducto = models.AutoField(db_column='idProducto', primary_key=True)  # Field name made lowercase.
-    nombreproducto = models.TextField(db_column='nombreProducto')  # Field name made lowercase.
-    descripcionproducto = models.TextField(db_column='descripcionProducto')  # Field name made lowercase.
-    precioproducto = models.FloatField(db_column='precioProducto')  # Field name made lowercase.
+    idproducto = models.AutoField(db_column='idproducto', primary_key=True)  # Field name made lowercase.
+    nombreproducto = models.TextField(db_column='nombreproducto')  # Field name made lowercase.
+    descripcionproducto = models.TextField(db_column='descripcionproducto')  # Field name made lowercase.
+    precioproducto = models.FloatField(db_column='precioproducto')  # Field name made lowercase.
     cantidad = models.IntegerField()
     imagen = models.ImageField(upload_to='ProductosServicios/static/images/productos',db_column='imagen', null=True, blank=True)
-    idadministrador = models.ForeignKey(Administrador, models.CASCADE, db_column='idAdministrador', blank=True, null=True)  # Field name made lowercase.
-    idcategoriaproducto = models.ForeignKey(Categoriasproductos, models.CASCADE, db_column='idCategoriaProducto', blank=True, null=True)  # Field name made lowercase.
-    idproveedorproducto = models.ForeignKey('Proveedoresproductos', models.CASCADE, db_column='idProveedorProducto', blank=True, null=True)  # Field name made lowercase.
+    idadministrador = models.ForeignKey(Administrador, models.CASCADE, db_column='idadministrador', blank=True, null=True)  # Field name made lowercase.
+    idcategoriaproducto = models.ForeignKey(Categoriasproductos, models.CASCADE, db_column='idcategoriaproducto', blank=True, null=True)  # Field name made lowercase.
+    idproveedorproducto = models.ForeignKey('Proveedoresproductos', models.CASCADE, db_column='idproveedorproducto', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -154,7 +154,7 @@ class Productos(models.Model):
 
 class CotizacionesProductos(models.Model):
     idcotizacion = models.ForeignKey(Cotizaciones, models.CASCADE, db_column='idCotizacion', blank=True, null=True)  # Field name made lowercase.
-    idproducto = models.ForeignKey(Productos, models.CASCADE, db_column='idProducto', blank=True, null=True)  # Field name made lowercase.
+    idproducto = models.ForeignKey(Productos, models.CASCADE, db_column='idproducto', blank=True, null=True)  # Field name made lowercase.
     cantidad = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -374,7 +374,7 @@ class Pqrsf(models.Model):
         db_table = 'pqrsf'
 
 class Proveedoresproductos(models.Model):
-    idproveedorproducto = models.AutoField(db_column='idProveedorProducto', primary_key=True)  # Field name made lowercase.
+    idproveedorproducto = models.AutoField(db_column='idproveedorproducto', primary_key=True)  # Field name made lowercase.
     nombreproveedor = models.CharField(db_column='nombreProveedor', max_length=50)  # Field name made lowercase.
 
     class Meta:
@@ -386,7 +386,7 @@ class Respuestas(models.Model):
     idrespuesta = models.AutoField(db_column='idRespuesta', primary_key=True)  # Field name made lowercase.
     fecha = models.DateField(blank=True, null=True)
     informacionrespuesta = models.TextField(db_column='informacionRespuesta', blank=True, null=True)  # Field name made lowercase.
-    idadministrador = models.ForeignKey(Administrador, models.CASCADE, db_column='idAdministrador', blank=True, null=True)  # Field name made lowercase.
+    idadministrador = models.ForeignKey(Administrador, models.CASCADE, db_column='idadministrador', blank=True, null=True)  # Field name made lowercase.
     idpqrsf = models.ForeignKey(Pqrsf, models.CASCADE, db_column='idPQRSF', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:

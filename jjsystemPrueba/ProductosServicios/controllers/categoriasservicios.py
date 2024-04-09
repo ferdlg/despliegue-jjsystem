@@ -31,7 +31,7 @@ def home_categoriaServicios(request):
 
 def createCategoriaServicioView(request):
     if request.method == 'POST':
-        nombrecategoria = request.POST.get('nombreCategoria')
+        nombrecategoria = request.POST.get('nombrecategoria')
         # Crear la instancia de categoría de servicio
         categoria = Categoriasservicios.objects.create(
                 nombrecategoria = nombrecategoria
@@ -45,7 +45,7 @@ def editarCategoriaServicioView(request, idCategoriaServicio):
     categoria = Categoriasservicios.objects.get(idcategoriaservicio=idCategoriaServicio)
     if request.method == 'POST':
         # Obtener los datos de la petición
-        nombrecategoria = request.POST.get('nombreCategoria')
+        nombrecategoria = request.POST.get('nombrecategoria')
         # Actualizar los campos del objeto categoría de servicio
         categoria.nombrecategoria = nombrecategoria
         categoria.save()

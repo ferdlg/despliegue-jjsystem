@@ -33,7 +33,7 @@ def home_categoriaProductos(request):
 
 def createCategoriaProductoView(request):
     if request.method == 'POST':
-        nombrecategoria = request.POST.get('nombreCategoria')
+        nombrecategoria = request.POST.get('nombrecategoria')
         # Crear la instancia de producto
         categoria = Categoriasproductos.objects.create(
                 nombrecategoria = nombrecategoria
@@ -43,11 +43,11 @@ def createCategoriaProductoView(request):
 
     return render(request, "crudAdmin/categoriasProductos.html", {"categoria": categoria})
 
-def editarCategoriaProductoView(request, idCategoriaProducto):
-    categoria = Categoriasproductos.objects.get(idcategoriaproducto=idCategoriaProducto)
+def editarCategoriaProductoView(request, idcategoriaproducto):
+    categoria = Categoriasproductos.objects.get(idcategoriaproducto=idcategoriaproducto)
     if request.method == 'POST':
         # Obtener los datos de la petición
-        nombrecategoria = request.POST.get('nombreCategoria')  # Corregido aquí
+        nombrecategoria = request.POST.get('nombrecategoria')  # Corregido aquí
         # Actualizar los campos del objeto envio
         categoria.nombrecategoria = nombrecategoria
         categoria.save()
@@ -57,8 +57,8 @@ def editarCategoriaProductoView(request, idCategoriaProducto):
 
     return render(request, "crudAdmin/categoriasProductos.html", {"categoria": categoria})
 
-def eliminarCategoriaProductoView(request, idCategoriaProducto):
-    categoria = Categoriasproductos.objects.get(idcategoriaproducto = idCategoriaProducto)
+def eliminarCategoriaProductoView(request, idcategoriaproducto):
+    categoria = Categoriasproductos.objects.get(idcategoriaproducto = idcategoriaproducto)
     categoria.delete()
     messages.success(request, 'Categoria eliminada correctamente')
     return redirect('categoriaProductos')

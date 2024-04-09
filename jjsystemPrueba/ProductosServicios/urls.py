@@ -42,17 +42,17 @@ urlpatterns=[
 
     path('proveedores/',home_proveedorProductos, name='proveedorProductos'),
     path('crearProveedor/',createProveedorProductoView, name='crearProveedor'),
-    path('editarProveedor/<int:idProveedorProducto>',editarProveedorProductoView, name='editarProveedor'),
-    path('elimiarProveedor/<int:idProveedorProducto>',eliminarProveedorProductoView, name='eliminarProveedor'),
+    path('editarProveedor/<int:idproveedorproducto>',editarProveedorProductoView, name='editarProveedor'),
+    path('elimiarProveedor/<int:idproveedorproducto>',eliminarProveedorProductoView, name='eliminarProveedor'),
 
     path('createProducto/',createProductoView, name='createProducto'),
-    path('editarProducto/<idProducto>',editarProducto, name='editarProducto'),
-    path('eliminarProducto/<idProducto>',eliminarProducto, name='eliminarProducto'),
+    path('editarProducto/<idproducto>',editarProducto, name='editarProducto'),
+    path('eliminarProducto/<idproducto>',eliminarProducto, name='eliminarProducto'),
 
     path('categoriaProducto/', home_categoriaProductos, name='categoriaProductos'),
     path('crearCategoriaProducto/', createCategoriaProductoView, name = 'createCategoriaProducto'),
-    path('editarCategoriaProducto/<idCategoriaProducto>', editarCategoriaProductoView, name='editarCategoriaProducto'),
-    path('eliminarCategoriaProducto/<idCategoriaProducto>', eliminarCategoriaProductoView, name = 'eliminarCategoriaProducto'),
+    path('editarCategoriaProducto/<idcategoriaproducto>', editarCategoriaProductoView, name='editarCategoriaProducto'),
+    path('eliminarCategoriaProducto/<idcategoriaproducto>', eliminarCategoriaProductoView, name = 'eliminarCategoriaProducto'),
 
     path('servicios/', home_servicios, name='homeServicios'),
     path('createServicio/', createServiciosView, name='createServicio'),
