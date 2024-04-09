@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Categoriasservicios',
             fields=[
-                ('idcategoriaservicio', models.AutoField(db_column='idCategoriaServicio', primary_key=True, serialize=False)),
+                ('idcategoriaservicio', models.AutoField(db_column='idcategoriaservicio', primary_key=True, serialize=False)),
                 ('nombrecategoria', models.CharField(blank=True, db_column='nombrecategoria', max_length=30, null=True)),
             ],
             options={
@@ -217,8 +217,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Estadoscitas',
             fields=[
-                ('idestadocita', models.AutoField(db_column='idEstadoCita', primary_key=True, serialize=False)),
-                ('nombreestadocita', models.CharField(db_column='nombreEstadoCita', max_length=20)),
+                ('idestadocita', models.AutoField(db_column='idestadocita', primary_key=True, serialize=False)),
+                ('nombreestadocita', models.CharField(db_column='nombreestadocita', max_length=20)),
             ],
             options={
                 'db_table': 'estadoscitas',
@@ -240,7 +240,7 @@ class Migration(migrations.Migration):
             name='Estadosenvios',
             fields=[
                 ('idestadoenvio', models.AutoField(db_column='idestadoenvio', primary_key=True, serialize=False)),
-                ('nombreestadoenvio', models.CharField(db_column='nombreEstadoEnvio', max_length=20)),
+                ('nombreestadoenvio', models.CharField(db_column='nombreestadoenvio', max_length=20)),
             ],
             options={
                 'db_table': 'estadosenvios',
@@ -310,7 +310,7 @@ class Migration(migrations.Migration):
             name='Proveedoresproductos',
             fields=[
                 ('idproveedorproducto', models.AutoField(db_column='idproveedorproducto', primary_key=True, serialize=False)),
-                ('nombreproveedor', models.CharField(db_column='nombreProveedor', max_length=50)),
+                ('nombreproveedor', models.CharField(db_column='nombreproveedor', max_length=50)),
             ],
             options={
                 'db_table': 'proveedoresproductos',
@@ -353,9 +353,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Servicios',
             fields=[
-                ('idservicio', models.AutoField(db_column='idServicio', primary_key=True, serialize=False)),
-                ('nombreservicio', models.TextField(db_column='nombreServicio')),
-                ('descripcionservicio', models.TextField(db_column='descripcionServicio')),
+                ('idservicio', models.AutoField(db_column='idservicio', primary_key=True, serialize=False)),
+                ('nombreservicio', models.TextField(db_column='nombreservicio')),
+                ('descripcionservicio', models.TextField(db_column='descripcionservicio')),
             ],
             options={
                 'db_table': 'servicios',
@@ -376,7 +376,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Tipospqrsf',
             fields=[
-                ('idtipopqrsf', models.AutoField(db_column='idTipoPQRSF', primary_key=True, serialize=False)),
+                ('idtipopqrsf', models.AutoField(db_column='idtipopqrsf', primary_key=True, serialize=False)),
                 ('nombretipopqrsf', models.CharField(db_column='nombreTipoPQRSF', max_length=20)),
             ],
             options={

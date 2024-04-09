@@ -40,7 +40,7 @@
                     <td>{{servicio.descripcionservicio}}</td>
                     <td>{{servicio.idcategoriaservicio.nombrecategoria}}</td>
                     <td> 
-                        <a href="{% url 'editarServicio' idServicio=servicio.idservicio %}" class="btn btn-primary btn-sw"> Editar </a>
+                        <a href="{% url 'editarServicio' idservicio=servicio.idservicio %}" class="btn btn-primary btn-sw"> Editar </a>
                     </td>
                     <td>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarservicio-{{ servicio.idservicio }}" tabindex="-1" aria-labelledby="eliminarModalLabel{{ servicio.idservicio }}">Eliminar</button>
@@ -58,7 +58,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <a href="{% url 'eliminarServicio' idServicio=servicio.idservicio %}" class="btn btn-danger">Eliminar</a>
+                                <a href="{% url 'eliminarServicio' idservicio=servicio.idservicio %}" class="btn btn-danger">Eliminar</a>
                             </div>
                         </div>
                     </div>

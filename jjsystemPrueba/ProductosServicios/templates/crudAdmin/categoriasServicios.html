@@ -54,7 +54,7 @@
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editar-servicio-{{categoria.idcategoriaservicio}}">Editar</button>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminar-servicio-{{ categoria.idcategoriaservicio }}" tabindex="-1" aria-labelledby="eliminarModalLabel{{ servicio.idCategoriaServicio }}">Eliminar</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminar-servicio-{{ categoria.idcategoriaservicio }}" tabindex="-1" aria-labelledby="eliminarModalLabel{{ servicio.idcategoriaservicio }}">Eliminar</button>
                     </td>
                 </tr>
                 <!-- Modal de editar -->
@@ -66,7 +66,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form action="{% url 'editarCategoriaServicio' idCategoriaServicio=categoria.idcategoriaservicio %}" method="post">
+                                <form action="{% url 'editarCategoriaServicio' idcategoriaservicio=categoria.idcategoriaservicio %}" method="post">
                                     {% csrf_token %}
                                     <div class="mb-3">
                                         <label for="nombrecategoria" class="form-label" style="color: black;">Nombre de la Categoría:</label>
@@ -82,7 +82,7 @@
                 </div>
                 
                 <!-- Modal eliminar -->
-                <div class="modal fade" id="eliminar-servicio-{{categoria.idcategoriaservicio}}" tabindex="-1" aria-labelledby="eliminarModalLabel{{servicio.idCategoriaServicio}}" aria-hidden="true">
+                <div class="modal fade" id="eliminar-servicio-{{categoria.idcategoriaservicio}}" tabindex="-1" aria-labelledby="eliminarModalLabel{{servicio.idcategoriaservicio}}" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -94,7 +94,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <a href="{% url 'eliminarCategoriaServicio' idCategoriaServicio=categoria.idcategoriaservicio %}" class="btn btn-danger">Eliminar</a>
+                                <a href="{% url 'eliminarCategoriaServicio' idcategoriaservicio=categoria.idcategoriaservicio %}" class="btn btn-danger">Eliminar</a>
                             </div>
                         </div>
                     </div>

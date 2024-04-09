@@ -56,13 +56,13 @@ urlpatterns=[
 
     path('servicios/', home_servicios, name='homeServicios'),
     path('createServicio/', createServiciosView, name='createServicio'),
-    path('editarServicio/<idServicio>', editarServicio, name='editarServicio'),
-    path('eliminarServicio/<idServicio>', eliminarServicio, name='eliminarServicio'),
+    path('editarServicio/<idservicio>', editarServicio, name='editarServicio'),
+    path('eliminarServicio/<idservicio>', eliminarServicio, name='eliminarServicio'),
 
     path('categoriaServicio/', home_categoriaServicios, name = 'categoriaServicios'),
     path('createCategoriaServicio/', createCategoriaServicioView, name="createCategoriaServicio"),
-    path('editarCategoriaServicio/<idCategoriaServicio>', editarCategoriaServicioView, name='editarCategoriaServicio'),
-    path('eliminarCategoriaServicio/<idCategoriaServicio>', eliminarCategoriaServicioView, name = 'eliminarCategoriaServicio'),
+    path('editarCategoriaServicio/<idcategoriaservicio>', editarCategoriaServicioView, name='editarCategoriaServicio'),
+    path('eliminarCategoriaServicio/<idcategoriaservicio>', eliminarCategoriaServicioView, name = 'eliminarCategoriaServicio'),
 
     path('cotizaciones/', CotizacionesCRUD.as_view({'get': 'ir_a_cotizaciones'}), name='ir_a_cotizaciones'),
     path('cotizaciones/crear_cotizacion/', CotizacionesCRUD.as_view({'post': 'crear_cotizacion', 'get': 'crear_cotizacion'}), name='crear_cotizacion'),

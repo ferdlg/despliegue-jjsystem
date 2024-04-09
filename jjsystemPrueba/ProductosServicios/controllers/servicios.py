@@ -74,9 +74,9 @@ def createServiciosView(request):
 
 @login_required
 @role_required(1)
-def editarServicio(request, idServicio):
+def editarServicio(request, idservicio):
     try:
-        servicio = Servicios.objects.get(idservicio=idServicio)
+        servicio = Servicios.objects.get(idservicio=idservicio)
         categorias = Categoriasservicios.objects.all()
 
         if request.method == 'POST':
@@ -111,9 +111,9 @@ def editarServicio(request, idServicio):
 
 @login_required
 @role_required(1)
-def eliminarServicio(request, idServicio):
+def eliminarServicio(request, idservicio):
     try:
-        servicio = Servicios.objects.get(idservicio=idServicio)
+        servicio = Servicios.objects.get(idservicio=idservicio)
         servicio.delete()
         messages.success(request, 'Servicio eliminado correctamente')
     except:

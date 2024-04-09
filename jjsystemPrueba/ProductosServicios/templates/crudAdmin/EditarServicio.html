@@ -16,7 +16,7 @@
             </div>
             {% endif %}
 
-            <form action="{% url 'editarServicio' idServicio=servicio.idservicio %}" method="post">
+            <form action="{% url 'editarServicio' idservicio=servicio.idservicio %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="_method" value="put">
             

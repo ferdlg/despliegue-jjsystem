@@ -48,8 +48,8 @@ def createCategoriaServicioView(request):
 
 @login_required
 @role_required(1)
-def editarCategoriaServicioView(request, idCategoriaServicio):
-    categoria = Categoriasservicios.objects.get(idcategoriaservicio=idCategoriaServicio)
+def editarCategoriaServicioView(request, idcategoriaservicio):
+    categoria = Categoriasservicios.objects.get(idcategoriaservicio=idcategoriaservicio)
     if request.method == 'POST':
         # Obtener los datos de la petición
         nombrecategoria = request.POST.get('nombrecategoria')
@@ -63,8 +63,8 @@ def editarCategoriaServicioView(request, idCategoriaServicio):
 
 @login_required
 @role_required(1)
-def eliminarCategoriaServicioView(request, idCategoriaServicio):
-    categoria = Categoriasservicios.objects.get(idcategoriaservicio=idCategoriaServicio)
+def eliminarCategoriaServicioView(request, idcategoriaservicio):
+    categoria = Categoriasservicios.objects.get(idcategoriaservicio=idcategoriaservicio)
     categoria.delete()
 
     messages.success(request, 'Categoria eliminada correctamente')
