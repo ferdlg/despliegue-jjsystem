@@ -134,7 +134,7 @@ class PasswordResetRequestView(APIView):
                 token_generator = PasswordResetTokenGenerator()
                 uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
                 token = token_generator.make_token(user)
-                reset_link = f'http://127.0.0.1:8000/account/reestablecer_password_enlace/{uidb64}/{token}'
+                reset_link = f'https://jjsystem.onrender.com/account/reestablecer_password_enlace/{uidb64}/{token}'
                 asunto = 'Solicitud de restablecimiento de contraseña'
                 correo_origen = settings.EMAIL_HOST_USER
                 html_message = render_to_string('correo_reset_password.html', {'usuario': user, 'reset_link':reset_link})
