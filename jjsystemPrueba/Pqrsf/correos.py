@@ -22,7 +22,7 @@ def correo_respuesta_cliente(request, idpqrsf):
 def correo_confirmacion_pqrsf_cliente_admin(request, idpqrsf):
     pqrsf = Pqrsf.objects.get(idpqrsf=idpqrsf)
     cliente = Clientes.objects.get(idcliente=pqrsf.idcliente.idcliente)
-    admin = Administrador.objects.get(numerodocumento=9878465545)
+    admin = Administrador.objects.get(idadministrador = 1)
 
     email_cliente = cliente.numerodocumento.email
     email_admin = admin.numerodocumento.email

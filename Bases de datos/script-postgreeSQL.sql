@@ -357,6 +357,96 @@ CREATE VIEW EnviosUsuarios AS
     JOIN envios ON ventas.idEnvio = envios.idEnvio
     JOIN usuarios ON clientes.numeroDocumento = usuarios.numeroDocumento;
 
+-- trigger
+-- Trigger asignarCategoriaProducto
+CREATE OR REPLACE FUNCTION asignarCategoriaProducto()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.nombreProducto LIKE 'Camara%' THEN
+        NEW.idCategoriaProducto := (SELECT idCategoriaProducto FROM categoriasProducto WHERE nombreCategoria = 'Camara');
+    ELSIF NEW.nombreProducto LIKE 'DVR%' THEN
+        NEW.idCategoriaProducto := (SELECT idCategoriaProducto FROM categoriasProducto WHERE nombreCategoria = 'DVR');
+    ELSIF NEW.nombreProducto LIKE 'Alarma%' THEN
+        NEW.idCategoriaProducto := (SELECT idCategoriaProducto FROM categoriasProducto WHERE nombreCategoria = 'Alarma');
+    ELSIF NEW.nombreProducto LIKE 'Sensor%' THEN
+        NEW.idCategoriaProducto := (SELECT idCategoriaProducto FROM categoriasProducto WHERE nombreCategoria = 'Sensor');
+    ELSE 
+        NEW.idCategoriaProducto := NULL;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger cotizacionesHistorial
+CREATE OR REPLACE FUNCTION cotizacionesHistorial()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO cotizacionesHistorial (idCotizacion, fechaCreada, fechaActualizacion)
+    VALUES (NEW.idCotizacion, NOW(), NEW.fechaActualizacion);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger enviosEntregados
+CREATE OR REPLACE FUNCTION enviosEntregados()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.idEstadoEnvio = 3 THEN
+        INSERT INTO enviosEntregados (idEnvio, fecha, idTecnicoEncargado, documentoTecnico)
+        SELECT NEW.idEnvio, NOW(), tecnicos.idTecnico, tecnicos.numeroDocumento
+        FROM tecnicos
+        WHERE tecnicos.idTecnico = NEW.idTecnico;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger registroPQRSFPorTipoEstado
+CREATE OR REPLACE FUNCTION registroPQRSFPorTipoEstado()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO historialPQRSFporTipoEstado (idPQRSF, idTipoPQRSF, idEstadoPQRSF, fechaRegistro)
+    VALUES (NEW.idPQRSF, NEW.idTipoPQRSF, NEW.idEstadoPQRSF, NOW());
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger crear_cliente_desde_usuario
+CREATE OR REPLACE FUNCTION crear_cliente_desde_usuario()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.idrol = 2 THEN
+        -- Insertar el cliente con la dirección fija para usuarios con idrol = 2
+        INSERT INTO clientes (direccioncliente, numerodocumento) 
+        VALUES ('Dirección por defecto', NEW.numerodocumento);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger usuario_tecnico
+CREATE OR REPLACE FUNCTION usuario_tecnico()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.idRol = 3 THEN
+        INSERT INTO tecnicos (id_especialidad_fk, numeroDocumento) VALUES ('1', NEW.numeroDocumento);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger usuario_administrador
+CREATE OR REPLACE FUNCTION usuario_administrador()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.idRol = 1 THEN
+        INSERT INTO administrador (numeroDocumento) VALUES (NEW.numeroDocumento);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
 -- procedimientos
 -- Procedimiento almacenado CrearProducto
 DROP PROCEDURE IF EXISTS CrearProducto;
@@ -625,6 +715,7 @@ VALUES
 INSERT INTO Usuarios (numeroDocumento, nombre, apellido, email, password, numeroContacto, idRol, idEstadosUsuarios) 
 VALUES
     (1021826839, 'Admin', 'Admin', 'adminadmin@gmail.com', 'argon2$argon2id$v=19$m=102400,t=2,p=8$NGtaaTVCTVgzbG9tblppRmpwbzc3Vw$90sl4TC+9JodIk1WsTfNLucfaC7vFCQItXbi7hxLbNw', 3208285814, 1, 1);
+
 
 -- Inserción de clientes
 -- Inserción de administradores

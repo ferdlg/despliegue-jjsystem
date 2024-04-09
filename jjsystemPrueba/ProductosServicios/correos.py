@@ -9,7 +9,7 @@ from ServicioTecnico.controllers.pdf import generar_pdf
 def correo_confirmacion_cotizacion(request, idcotizacion):
     cotizacion = Cotizaciones.objects.get(idcotizacion = idcotizacion)
     cliente = Clientes.objects.get(idcliente=cotizacion.idcliente.idcliente)
-    admin = Administrador.objects.get(numerodocumento=9878465545)
+    admin = Administrador.objects.get(idadministrador = 1)
 
     email_cliente = cliente.numerodocumento.email
     email_admin = admin.numerodocumento.email
@@ -28,7 +28,7 @@ def correo_confirmacion_cotizacion(request, idcotizacion):
 def correo_confirmacion_compra(request, idcotizacion):
     cotizacion = get_object_or_404(Cotizaciones, idcotizacion=idcotizacion)
     cliente = get_object_or_404(Clientes, idcliente=cotizacion.idcliente.idcliente)
-    admin = Administrador.objects.get(numerodocumento=9878465545)
+    admin = Administrador.objects.get(idadministrador = 1)
 
     asunto_cliente = 'Confirmación de tu compra'
     asunto_admin = 'Nueva venta: confirmacion de compra'
