@@ -1,18 +1,17 @@
-DROP DATABASE IF EXISTS jjsystem_db;
+-- DROP DATABASE IF EXISTS jjsystem_db; -- No es necesario en PostgreSQL
 CREATE DATABASE jjsystem_db;
-USE jjsystem_db;
+
+\c jjsystem_db; -- Entra a la base de datos recién creada
 
 CREATE TABLE IF NOT EXISTS Roles(
-    idRol INT NOT NULL AUTO_INCREMENT,
-    nombreRol VARCHAR(20),
-    PRIMARY KEY (idRol)
+    idRol SERIAL PRIMARY KEY,
+    nombreRol VARCHAR(20)
 );
 
 CREATE TABLE IF NOT EXISTS Permisos(
-   idPermiso INT NOT NULL AUTO_INCREMENT,
+   idPermiso SERIAL PRIMARY KEY,
    nombrePermiso VARCHAR(20),
    idRol INT,
-   PRIMARY KEY (idPermiso),
    FOREIGN KEY (idRol) REFERENCES Roles (idRol)
 );
 
@@ -24,9 +23,8 @@ CREATE TABLE IF NOT EXISTS Roles_has_Permisos(
 );
 
 CREATE TABLE IF NOT EXISTS EstadosUsuarios(
-    idEstadoUsuario INT NOT NULL AUTO_INCREMENT,
-    nombreEstadoUsuario VARCHAR(50) NOT NULL,
-    PRIMARY KEY (idEstadoUsuario)
+    idEstadoUsuario SERIAL PRIMARY KEY,
+    nombreEstadoUsuario VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Usuarios(
@@ -38,113 +36,103 @@ CREATE TABLE IF NOT EXISTS Usuarios(
     numeroContacto FLOAT DEFAULT NULL,
     idRol INT NOT NULL,
     idEstadosUsuarios INT NOT NULL,
-    last_login DATETIME NULL,
+    last_login TIMESTAMP NULL,
     PRIMARY KEY (numeroDocumento),
     FOREIGN KEY (idRol) REFERENCES Roles (idRol),
     FOREIGN KEY (idEstadosUsuarios) REFERENCES EstadosUsuarios (idEstadoUsuario)
 );
 
 CREATE TABLE IF NOT EXISTS Clientes(
-    idCliente INT NOT NULL AUTO_INCREMENT,
+    idCliente SERIAL PRIMARY KEY,
     direccionCliente VARCHAR(50)  NULL,
     numeroDocumento BIGINT NOT NULL,
-    PRIMARY KEY (idCliente),
     FOREIGN KEY (numeroDocumento) REFERENCES Usuarios (numeroDocumento)
 );
 
 CREATE TABLE IF NOT EXISTS Administrador(
-    idAdministrador INT NOT NULL AUTO_INCREMENT,
+    idAdministrador SERIAL PRIMARY KEY,
     numeroDocumento BIGINT NOT NULL,
-    PRIMARY KEY (idAdministrador),
     FOREIGN KEY (numeroDocumento) REFERENCES Usuarios (numeroDocumento)
 );
+
 CREATE TABLE IF NOT EXISTS Especialidad_tecnicos(
-	id_especialidad int AUTO_INCREMENT primary key,
+	id_especialidad SERIAL PRIMARY KEY,
     nombre_especialidad VARCHAR(50)
 );
+
 CREATE TABLE IF NOT EXISTS Tecnicos (
-    idTecnico INT NOT NULL AUTO_INCREMENT,
-    id_especialidad_fk int NOT NULL,
+    idTecnico SERIAL PRIMARY KEY,
+    id_especialidad_fk INT NOT NULL,
     numeroDocumento BIGINT NOT NULL,
-    PRIMARY KEY (idTecnico),
 	FOREIGN KEY (id_especialidad_fk) REFERENCES Especialidad_tecnicos (id_especialidad),
     FOREIGN KEY (numeroDocumento) REFERENCES Usuarios (numeroDocumento)
 );
 
 CREATE TABLE IF NOT EXISTS EstadosEnvios(
-    idEstadoEnvio INT NOT NULL AUTO_INCREMENT,
-    nombreEstadoEnvio VARCHAR(20) NOT NULL,
-    PRIMARY KEY (idEstadoEnvio)
+    idEstadoEnvio SERIAL PRIMARY KEY,
+    nombreEstadoEnvio VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Envios (
-    idEnvio INT NOT NULL AUTO_INCREMENT,
+    idEnvio SERIAL PRIMARY KEY,
     direccionEnvio VARCHAR(50) NOT NULL,
     idTecnico INT,
     idEstadoEnvio INT,
-    PRIMARY KEY (idEnvio),
     FOREIGN KEY (idTecnico) REFERENCES Tecnicos (idTecnico),
     FOREIGN KEY (idEstadoEnvio) REFERENCES EstadosEnvios (idEstadoEnvio)
 );
 
 CREATE TABLE IF NOT EXISTS categoriasProductos(
-    idCategoriaProducto INT NOT NULL AUTO_INCREMENT,
-    nombreCategoria VARCHAR(20) NOT NULL,
-    PRIMARY KEY(idCategoriaProducto)
+    idCategoriaProducto SERIAL PRIMARY KEY,
+    nombreCategoria VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS proveedoresProductos(
-    idProveedorProducto INT NOT NULL AUTO_INCREMENT,
-    nombreProveedor VARCHAR(50) NOT NULL,
-    PRIMARY KEY (idProveedorProducto)
+    idProveedorProducto SERIAL PRIMARY KEY,
+    nombreProveedor VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Productos(
-    idProducto INT NOT NULL AUTO_INCREMENT,
-    nombreProducto TEXT(100) NOT NULL,
-    descripcionProducto TEXT(200) NOT NULL,
+    idProducto SERIAL PRIMARY KEY,
+    nombreProducto TEXT NOT NULL,
+    descripcionProducto TEXT NOT NULL,
     precioProducto FLOAT NOT NULL,
     cantidad INT NOT NULL,
     imagen VARCHAR(200) NULL,
     idAdministrador INT,
     idCategoriaProducto INT,
     idProveedorProducto INT,
-    PRIMARY KEY(idProducto),
-    FOREIGN KEY(idAdministrador) REFERENCES Administrador (idAdministrador),
-    FOREIGN KEY(idCategoriaProducto) REFERENCES categoriasProductos (idCategoriaProducto),
-    FOREIGN KEY(idProveedorProducto) REFERENCES proveedoresProductos (idProveedorProducto)
+    FOREIGN KEY (idAdministrador) REFERENCES Administrador (idAdministrador),
+    FOREIGN KEY (idCategoriaProducto) REFERENCES categoriasProductos (idCategoriaProducto),
+    FOREIGN KEY (idProveedorProducto) REFERENCES proveedoresProductos (idProveedorProducto)
 );
 
 CREATE TABLE IF NOT EXISTS categoriasServicios(
-    idCategoriaServicio INT NOT NULL AUTO_INCREMENT,
-    nombreCategoria VARCHAR(30),
-    PRIMARY KEY(idCategoriaServicio)
+    idCategoriaServicio SERIAL PRIMARY KEY,
+    nombreCategoria VARCHAR(30)
 );
 
 CREATE TABLE IF NOT EXISTS Servicios(
-    idServicio INT NOT NULL AUTO_INCREMENT,
-    nombreServicio TEXT(100) NOT NULL,
-    descripcionServicio TEXT(200) NOT NULL,
+    idServicio SERIAL PRIMARY KEY,
+    nombreServicio TEXT NOT NULL,
+    descripcionServicio TEXT NOT NULL,
     precioServicio FLOAT, 
     idCategoriaServicio INT,
-    PRIMARY KEY (idServicio),
     FOREIGN KEY (idCategoriaServicio) REFERENCES categoriasServicios (idCategoriaServicio)
 );
 
 CREATE TABLE IF NOT EXISTS EstadosCotizaciones(
-    idEstadoCotizacion INT NOT NULL AUTO_INCREMENT,
-    nombreEstadoCotizacion VARCHAR(20) NOT NULL,
-    PRIMARY KEY (idEstadoCotizacion)
+    idEstadoCotizacion SERIAL PRIMARY KEY,
+    nombreEstadoCotizacion VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Cotizaciones(
-    idCotizacion INT NOT NULL AUTO_INCREMENT,
+    idCotizacion SERIAL PRIMARY KEY,
     fechaCotizacion DATE NOT NULL,
     totalCotizacion FLOAT NOT NULL,
-    descripcionCotizacion TEXT(200) NOT NULL,
+    descripcionCotizacion TEXT NOT NULL,
     idCliente INT NOT NULL,
     idEstadoCotizacion INT NOT NULL,
-    PRIMARY KEY (idCotizacion),
     FOREIGN KEY (idCliente) REFERENCES Clientes (idCliente),
     FOREIGN KEY (idEstadoCotizacion) REFERENCES EstadosCotizaciones (idEstadoCotizacion)
 );
@@ -165,23 +153,21 @@ CREATE TABLE IF NOT EXISTS Cotizaciones_Servicios(
 );
 
 CREATE TABLE IF NOT EXISTS EstadosCitas(
-    idEstadoCita INT NOT NULL AUTO_INCREMENT, 
-    nombreEstadoCita VARCHAR(20) NOT NULL, 
-    PRIMARY KEY (idEstadoCita)
+    idEstadoCita SERIAL PRIMARY KEY, 
+    nombreEstadoCita VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Citas(
-    idCita INT NOT NULL AUTO_INCREMENT,
+    idCita SERIAL PRIMARY KEY,
     fechaCita DATE NOT NULL,
     horaCita TIME NOT NULL,
     direccionCita VARCHAR(50) NOT NULL,
     contactoCliente BIGINT NOT NULL,
-    descripcionCita TEXT(200) NOT NULL,
+    descripcionCita TEXT NOT NULL,
     idTecnico INT NOT NULL,
     idAdministrador INT NOT NULL,
     idCotizacion INT NOT NULL,
     idEstadoCita INT NOT NULL,
-    PRIMARY KEY (idCita),
     FOREIGN KEY (idTecnico) REFERENCES Tecnicos (idTecnico),
     FOREIGN KEY (idAdministrador) REFERENCES Administrador (idAdministrador),
     FOREIGN KEY (idCotizacion) REFERENCES Cotizaciones (idCotizacion),
@@ -189,102 +175,93 @@ CREATE TABLE IF NOT EXISTS Citas(
 );
 
 CREATE TABLE IF NOT EXISTS DisponibilidadCronogramas(
-    idDisponibilidadCronograma INT NOT NULL AUTO_INCREMENT,
-    nombreDisponibilidad VARCHAR(30) NOT NULL,
-    PRIMARY KEY (idDisponibilidadCronograma)
+    idDisponibilidadCronograma SERIAL PRIMARY KEY,
+    nombreDisponibilidad VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS CronogramaTecnicos(
-    idCronogramaTecnico INT NOT NULL AUTO_INCREMENT,
+    idCronogramaTecnico SERIAL PRIMARY KEY,
     idTecnico INT,
     idCita INT,
     idDisponibilidadCronograma INT,
-    PRIMARY KEY (idCronogramaTecnico),
     FOREIGN KEY (idTecnico) REFERENCES Tecnicos (idTecnico), 
     FOREIGN KEY (idCita) REFERENCES Citas (idCita),
     FOREIGN KEY (idDisponibilidadCronograma) REFERENCES DisponibilidadCronogramas (idDisponibilidadCronograma)
 );
 
 CREATE TABLE IF NOT EXISTS ActividadesCronogramaTecnicos(
-    idActividadCronogramaTecnico INT NOT NULL AUTO_INCREMENT,
-    nombreActividad VARCHAR(30) NOT NULL,
-    PRIMARY KEY (idActividadCronogramaTecnico)
+    idActividadCronogramaTecnico SERIAL PRIMARY KEY,
+    nombreActividad VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS DetallesActividadCronograma(
-    idDetalleActividad INT NOT NULL AUTO_INCREMENT,
+    idDetalleActividad SERIAL PRIMARY KEY,
     idCronogramaTecnico INT,
     idActividadCronogramaTecnico INT,
-    fechaActividadCronograma DATETIME NOT NULL,
-    PRIMARY KEY(idDetalleActividad),
+    fechaActividadCronograma TIMESTAMP NOT NULL,
     FOREIGN KEY (idCronogramaTecnico) REFERENCES CronogramaTecnicos (idCronogramaTecnico),
     FOREIGN KEY (idActividadCronogramaTecnico) REFERENCES ActividadesCronogramaTecnicos (idActividadCronogramaTecnico)
 );
 
 CREATE TABLE IF NOT EXISTS Ventas(
-    idVenta INT NOT NULL AUTO_INCREMENT,
+    idVenta SERIAL PRIMARY KEY,
     fechaVenta DATE NOT NULL,
     idEnvio INT NOT NULL,
     idCotizacion INT NOT NULL,
-    PRIMARY KEY(idVenta),
-    FOREIGN KEY(idEnvio) REFERENCES Envios (idEnvio),
-    FOREIGN KEY(idCotizacion) REFERENCES Cotizaciones (idCotizacion)
+    FOREIGN KEY (idEnvio) REFERENCES Envios (idEnvio),
+    FOREIGN KEY (idCotizacion) REFERENCES Cotizaciones (idCotizacion)
 );
 
 CREATE TABLE IF NOT EXISTS DetallesVentas(
-    idDetalleVenta INT NOT NULL AUTO_INCREMENT,
+    idDetalleVenta SERIAL PRIMARY KEY,
     detallesVenta VARCHAR(300) NOT NULL,
     subtotalVenta FLOAT NOT NULL,
     totalVenta FLOAT NOT NULL,
     idVenta INT NOT NULL,
-    PRIMARY KEY (idDetalleVenta),
     FOREIGN KEY (idVenta) REFERENCES Ventas (idVenta)
 );
 
 CREATE TABLE IF NOT EXISTS TiposPQRSF(
-    idTipoPQRSF INT NOT NULL AUTO_INCREMENT,
-    nombreTipoPQRSF VARCHAR (20) NOT NULL,
-    PRIMARY KEY (idTipoPQRSF)
+    idTipoPQRSF SERIAL PRIMARY KEY,
+    nombreTipoPQRSF VARCHAR (20) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS EstadosPQRSF( 
-    idEstadoPQRSF INT NOT NULL AUTO_INCREMENT,
-    nombreEstadoPQRSF VARCHAR (20) NOT NULL,
-    PRIMARY KEY (idEstadoPQRSF)
+    idEstadoPQRSF SERIAL PRIMARY KEY,
+    nombreEstadoPQRSF VARCHAR (20) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS PQRSF(
-    idPQRSF INT NOT NULL AUTO_INCREMENT,
+    idPQRSF SERIAL PRIMARY KEY,
     fechaPQRSF DATE NOT NULL,
-    informacionPQRSF TEXT(200) NOT NULL,
+    informacionPQRSF TEXT NOT NULL,
     idCliente INT NOT NULL,
     idTipoPQRSF INT NOT NULL,
     idEstadoPQRSF INT NOT NULL,
-    PRIMARY KEY (idPQRSF),
     FOREIGN KEY (idCliente) REFERENCES Clientes (idCliente),
     FOREIGN KEY (idTipoPQRSF) REFERENCES TiposPQRSF (idTipoPQRSF),
     FOREIGN KEY (idEstadoPQRSF) REFERENCES EstadosPQRSF (idEstadoPQRSF)
 );
 
 CREATE TABLE IF NOT EXISTS Respuestas (
-    idRespuesta INT NOT NULL AUTO_INCREMENT,
-    fecha DATE NULL,
-    informacionRespuesta TEXT(200) NULL,
+    idRespuesta SERIAL PRIMARY KEY,
+    fecha TIMESTAMP NULL,
+    informacionRespuesta TEXT NULL,
     idAdministrador INT NULL,
     idPQRSF INT NULL,
-    PRIMARY KEY (idRespuesta),
     FOREIGN KEY (idAdministrador) REFERENCES Administrador (idAdministrador),
     FOREIGN KEY (idPQRSF) REFERENCES PQRSF (idPQRSF)
 );
 
 CREATE TABLE IF NOT EXISTS historialCotizaciones (
-    idCotizacion int,
-    fechaCreada datetime DEFAULT CURRENT_TIMESTAMP, 
-    fechaActualizacion datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    foreign key(idCotizacion) references Cotizaciones (idCotizacion)
+    idCotizacion SERIAL PRIMARY KEY,
+    fechaCreada TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    fechaActualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY(idCotizacion) REFERENCES Cotizaciones (idCotizacion)
 );
-CREATE TABLE detalle_envios_ventas (
-    idenvio INT PRIMARY KEY,
+
+CREATE TABLE IF NOT EXISTS detalle_envios_ventas (
+    idenvio SERIAL PRIMARY KEY,
     direccionenvio VARCHAR(255),
     detallesventa VARCHAR(255),
     tecnicoasignado INT,
@@ -292,317 +269,225 @@ CREATE TABLE detalle_envios_ventas (
     fechaventa DATE
 );
 
+-- vistas
+-- Vista Producto_Categoria
+DROP VIEW IF EXISTS Producto_Categoria;
 
-    /*Vistas*/
-    
-    DROP VIEW IF EXISTS Producto_Categoria;
-    
-    CREATE VIEW Producto_Categoria AS 
-	SELECT concat(nombreProducto, nombreCategoria) as Producto, nombreCategoria as Categoria
-    From productos
-    INNER JOIN categoriasproductos on productos.idCategoriaProducto = categoriasproductos.idCategoriaProducto;
-    
-    DROP VIEW IF EXISTS Servicio_Categoria;
-    
-    CREATE VIEW Servicio_Categoria AS 
-	SELECT concat(nombreServicio, nombreCategoria) as Servicio, nombreCategoria as Categoria
-    From servicios
-    INNER JOIN categoriasservicios on servicios.idCategoriaServicio = categoriasservicios.idCategoriaServicio;
-    
-    DROP VIEW IF EXISTS Cotizacion_Cliente;
-    
-    CREATE VIEW Cotizacion_Cliente AS 
-	SELECT concat(nombre, " ", apellido) as Nombre_Usuario, fechaCotizacion as Fecha, totalCotizacion as Total
-    From cotizaciones
-    INNER JOIN Clientes on Cotizaciones.idCliente = Clientes.idCliente
-    INNER JOIN Usuarios on Clientes.numeroDocumento = Usuarios.numeroDocumento;
+CREATE VIEW Producto_Categoria AS 
+    SELECT CONCAT(productos.nombreProducto, categoriasproductos.nombreCategoria) AS Producto, categoriasproductos.nombreCategoria AS Categoria
+    FROM productos
+    INNER JOIN categoriasproductos ON productos.idCategoriaProducto = categoriasproductos.idCategoriaProducto;
 
--- DROP VIEW IF EXISTS consultarEnvios;
+-- Vista Servicio_Categoria
+DROP VIEW IF EXISTS Servicio_Categoria;
 
-	CREATE VIEW consultarEnvios
-	AS SELECT envios.idEnvio, estadosenvios.nombreEstadoEnvio, envios.direccionEnvio,
-	tecnicos.idTecnico
-	FROM estadosenvios
-	JOIN envios ON envios.idEstadoEnvio = estadosenvios.idEstadoEnvio
-	JOIN tecnicos ON tecnicos.idTecnico = envios.idTecnico;
-    
-	DROP VIEW IF EXISTS consultarQuejas;
-    
-    	CREATE VIEW consultarQuejas AS
-	SELECT idPQRSF, fechaPQRSF, informacionPQRSF, c.idCliente, nombreEstadoPQRSF
-	FROM PQRSF
-	JOIN Clientes c ON PQRSF.idCliente = c.idCliente
-	JOIN EstadosPQRSF e ON PQRSF.idEstadoPQRSF = e.idEstadoPQRSF
-	WHERE idTipoPQRSF = 2;
+CREATE VIEW Servicio_Categoria AS 
+    SELECT CONCAT(servicios.nombreServicio, categoriasservicios.nombreCategoria) AS Servicio, categoriasservicios.nombreCategoria AS Categoria
+    FROM servicios
+    INNER JOIN categoriasservicios ON servicios.idCategoriaServicio = categoriasservicios.idCategoriaServicio;
 
-	DROP VIEW IF EXISTS Detalle_Envios;
+-- Vista Cotizacion_Cliente
+DROP VIEW IF EXISTS Cotizacion_Cliente;
 
-	CREATE VIEW Detalle_Envios AS 
-	SELECT envios.idEnvio, envios.direccionEnvio, tecnicos.numeroDocumento, estadosenvios.nombreEstadoEnvio
-	FROM envios
-	INNER JOIN tecnicos ON envios.idTecnico = tecnicos.idTecnico
-	INNER JOIN estadosenvios ON envios.idEstadoEnvio = estadosenvios.idEstadoEnvio;
+CREATE VIEW Cotizacion_Cliente AS 
+    SELECT CONCAT(Usuarios.nombre, ' ', Usuarios.apellido) AS Nombre_Usuario, cotizaciones.fechaCotizacion AS Fecha, cotizaciones.totalCotizacion AS Total
+    FROM cotizaciones
+    INNER JOIN Clientes ON cotizaciones.idCliente = Clientes.idCliente
+    INNER JOIN Usuarios ON Clientes.numeroDocumento = Usuarios.numeroDocumento;
 
-    DROP VIEW IF EXISTS detalle_envios_y_ventas;
+-- Vista consultarEnvios
+DROP VIEW IF EXISTS consultarEnvios;
 
-    CREATE VIEW detalle_envios_y_ventas AS
-    SELECT
-        e.idEnvio AS idEnvio,
-        e.direccionEnvio AS direccionEnvio,
-        dv.detallesVenta AS detallesVenta,
-        t.idTecnico AS tecnicoAsignado,
-        CONCAT(u.nombre, ' ', u.apellido) AS nombreTecnico,
-        t.numeroDocumento AS numeroDocumento,
-        v.fechaVenta AS fechaVenta,
-        v.idVenta AS idVenta
-    FROM
-        jjsystem_db.envios e
-    JOIN jjsystem_db.ventas v ON e.idEnvio = v.idEnvio
-    JOIN jjsystem_db.detallesventas dv ON v.idVenta = dv.idVenta
-    JOIN jjsystem_db.tecnicos t ON e.idTecnico = t.idTecnico
-    JOIN jjsystem_db.usuarios u ON t.numeroDocumento = u.numeroDocumento
-    WHERE
-        u.idRol = 3;
+CREATE VIEW consultarEnvios AS 
+    SELECT envios.idEnvio, estadosenvios.nombreEstadoEnvio, envios.direccionEnvio, tecnicos.idTecnico
+    FROM estadosenvios
+    JOIN envios ON envios.idEstadoEnvio = estadosenvios.idEstadoEnvio
+    JOIN tecnicos ON tecnicos.idTecnico = envios.idTecnico;
 
-    DROP VIEW IF EXISTS VistaEnviosClientes;
+-- Vista consultarQuejas
+DROP VIEW IF EXISTS consultarQuejas;
 
-    CREATE VIEW VistaEnviosClientes AS
-    SELECT
-        e.idEnvio AS idEnvio,
-        e.direccionEnvio AS direccionEnvio,
-        e.idTecnico AS idTecnico,
-        e.idEstadoEnvio AS idEstadoEnvio,
-        c.idCliente AS idCliente,
-        c.direccionCliente AS direccionCliente,
-        c.numeroDocumento AS documentoCliente
-    FROM
-        jjsystem_db.envios e
-    JOIN jjsystem_db.clientes c ON e.direccionEnvio = c.direccionCliente;
+CREATE VIEW consultarQuejas AS 
+    SELECT PQRSF.idPQRSF, PQRSF.fechaPQRSF, PQRSF.informacionPQRSF, Clientes.idCliente, EstadosPQRSF.nombreEstadoPQRSF
+    FROM PQRSF
+    JOIN Clientes ON PQRSF.idCliente = Clientes.idCliente
+    JOIN EstadosPQRSF ON PQRSF.idEstadoPQRSF = EstadosPQRSF.idEstadoPQRSF
+    WHERE PQRSF.idTipoPQRSF = 2;
 
-    DROP VIEW IF EXISTS EnviosUsuarios;
+-- Vista Detalle_Envios
+DROP VIEW IF EXISTS Detalle_Envios;
 
-    CREATE VIEW EnviosUsuarios AS
-    SELECT 
-        usuarios.email AS emailCliente,
-        usuarios.nombre AS nombreCliente,
-        usuarios.apellido AS apellidoCliente,
-        usuarios.numeroDocumento AS numeroDocumentoCliente,
-        envios.idEnvio,
-        envios.direccionEnvio
-    FROM 
-        Ventas AS ventas
-    JOIN 
-        Cotizaciones AS cotizaciones ON ventas.idCotizacion = cotizaciones.idCotizacion
-    JOIN 
-        Clientes AS clientes ON cotizaciones.idCliente = clientes.idCliente
-    JOIN 
-        Envios AS envios ON ventas.idEnvio = envios.idEnvio
-    JOIN 
-        Usuarios AS usuarios ON clientes.numeroDocumento = usuarios.numeroDocumento;
+CREATE VIEW Detalle_Envios AS 
+    SELECT envios.idEnvio, envios.direccionEnvio, tecnicos.numeroDocumento, estadosenvios.nombreEstadoEnvio
+    FROM envios
+    INNER JOIN tecnicos ON envios.idTecnico = tecnicos.idTecnico
+    INNER JOIN estadosenvios ON envios.idEstadoEnvio = estadosenvios.idEstadoEnvio;
 
+-- Vista detalle_envios_y_ventas
+DROP VIEW IF EXISTS detalle_envios_y_ventas;
 
-/*Procedimiento*/
+CREATE VIEW detalle_envios_y_ventas AS 
+    SELECT e.idEnvio AS idEnvio, e.direccionEnvio AS direccionEnvio, dv.detallesVenta AS detallesVenta, t.idTecnico AS tecnicoAsignado,
+    CONCAT(u.nombre, ' ', u.apellido) AS nombreTecnico, t.numeroDocumento AS numeroDocumento, v.fechaVenta AS fechaVenta, v.idVenta AS idVenta
+    FROM envios e
+    JOIN ventas v ON e.idEnvio = v.idEnvio
+    JOIN detallesventas dv ON v.idVenta = dv.idVenta
+    JOIN tecnicos t ON e.idTecnico = t.idTecnico
+    JOIN usuarios u ON t.numeroDocumento = u.numeroDocumento
+    WHERE u.idRol = 3;
 
+-- Vista VistaEnviosClientes
+DROP VIEW IF EXISTS VistaEnviosClientes;
+
+CREATE VIEW VistaEnviosClientes AS 
+    SELECT e.idEnvio AS idEnvio, e.direccionEnvio AS direccionEnvio, e.idTecnico AS idTecnico, e.idEstadoEnvio AS idEstadoEnvio,
+    c.idCliente AS idCliente, c.direccionCliente AS direccionCliente, c.numeroDocumento AS documentoCliente
+    FROM envios e
+    JOIN clientes c ON e.direccionEnvio = c.direccionCliente;
+
+-- Vista EnviosUsuarios
+DROP VIEW IF EXISTS EnviosUsuarios;
+
+CREATE VIEW EnviosUsuarios AS 
+    SELECT usuarios.email AS emailCliente, usuarios.nombre AS nombreCliente, usuarios.apellido AS apellidoCliente,
+    usuarios.numeroDocumento AS numeroDocumentoCliente, envios.idEnvio, envios.direccionEnvio
+    FROM ventas
+    JOIN cotizaciones ON ventas.idCotizacion = cotizaciones.idCotizacion
+    JOIN clientes ON cotizaciones.idCliente = clientes.idCliente
+    JOIN envios ON ventas.idEnvio = envios.idEnvio
+    JOIN usuarios ON clientes.numeroDocumento = usuarios.numeroDocumento;
+
+-- procedimientos
+-- Procedimiento almacenado CrearProducto
 DROP PROCEDURE IF EXISTS CrearProducto;
-    DELIMITER //
-	CREATE PROCEDURE CrearProducto(
-		IN p_nombreProducto TEXT(100),
-		IN p_descripcionProducto TEXT(200),
-		IN p_precioProducto FLOAT,
-		IN p_cantidad INT,
-        IN p_idAdministrador INT,
-        IN p_idCategoriaProducto INT,
-        IN p_idProveedorProducto INT
-	)
-	BEGIN
-		INSERT INTO productos (nombreProducto, descripcionProducto, precioProducto, cantidad, idAdministrador , idCategoriaProducto, idProveedorProducto )
-		VALUES (p_nombreProducto,p_descripcionProducto, p_precioProducto, p_cantidad, p_idAdministrador, p_idCategoriaProducto, p_idProveedorProducto );
-	END //
-	DELIMITER ;
-    
-    DROP PROCEDURE IF EXISTS CrearServicio;
-    DELIMITER //
-    CREATE PROCEDURE CrearServicio(
-		IN p_nombreServicio TEXT(100),
-		IN p_descripcionServicio TEXT(200),
-		IN p_idCategoriaServicio INT
-    )
-	BEGIN
-		INSERT INTO servicios (nombreServicio, descripcionServicio, idCategoriaServicio)
-		VALUES (p_nombreServicio, p_descripcionServicio, p_idCategoriaServicio);
-	END //
-	DELIMITER ;
-
-    DROP PROCEDURE IF EXISTS AsignarActividad;
-	
-    DELIMITER //
-	CREATE PROCEDURE AsignarActividad(
-		IN p_idTecnico INT,
-		IN p_idActividadCronogramaTecnico INT,
-		IN p_idCita INT,
-		IN p_fechaActividadCronograma DATETIME
-	)
-	BEGIN
-		DECLARE idCronogramaTecnico INT;
-		SELECT MAX(idCronogramaTecnico) INTO idCronogramaTecnico FROM cronogramatecnicos;
-		INSERT INTO detallesactividadcronograma (idCronogramaTecnico, idActividadCronogramaTecnico, fechaActividadCronograma)
-		VALUES (idCronogramaTecnico, p_idActividadCronogramaTecnico, p_fechaActividadCronograma);
-		UPDATE CronogramaTecnicos
-		SET Tecnico_idTecnico = p_idTecnico
-		WHERE Cita_idCita = p_idCita;
-	END //
-	DELIMITER ;
-
-    DROP PROCEDURE IF EXISTS RegistrarEnvio;
-    DELIMITER //
-	CREATE PROCEDURE RegistrarEnvio(
-	    IN p_direccionEnvio VARCHAR(255),
-	    IN p_idTecnico INT,
-	    IN p_idEstadoEnvio INT
-	)
-	BEGIN
-	    INSERT INTO envios (direccionEnvio, idTecnico, idEstadoEnvio)
-	    VALUES (p_direccionEnvio, p_idTecnico, p_idEstadoEnvio);
-	END //
-	DELIMITER ;
-
-   DROP PROCEDURE IF EXISTS RegistrarPQRSF;
-   DELIMITER //
-	CREATE PROCEDURE RegistrarPQRSF(
-	    IN p_fechaPQRSF DATE,
-	    IN p_informacionPQRSF TEXT(200),
-	    IN p_idCliente INT,
-	    IN p_idEstadoPQRSF INT,
-	    IN p_idTipoPQRSF INT
-	)
-	BEGIN
-	    INSERT INTO PQRSF (fechaPQRSF, informacionPQRSF, idCliente, idEstadoPQRSF, idTipoPQRSF)
-	    VALUES (p_fechaPQRSF, p_informacionPQRSF, p_idCliente, p_idEstadoPQRSF, p_idTipoPQRSF); 
-	END //
-	DELIMITER ;
-
-
-/*Trigger*/
-
-DELIMITER //
-    CREATE TRIGGER asignarCategoriaProducto
-    BEFORE INSERT ON productos
-    FOR EACH ROW 
-    BEGIN 
-		IF NEW.nombreProducto LIKE 'Camara%' THEN
-			SET NEW.idCategoriaProducto = (SELECT idCategoriaProducto FROM categoriasProducto WHERE nombreCategoria = 'Camara');
-		ELSEIF NEW.nombreProducto LIKE 'DVR%' THEN
-			SET NEW.idCategoriaProducto = (SELECT idCategoriaProducto FROM categoriasProducto WHERE nombreCategoria = 'DVR');
-		ELSEIF NEW.nombreProducto LIKE 'Alarma%' THEN
-			SET NEW.idCategoriaProducto = (SELECT idCategoriaProducto FROM categoriasProducto WHERE nombreCategoria = 'Alarma');
-		ELSEIF NEW.nombreProducto LIKE 'Sensor%' THEN
-			SET NEW.idCategoriaProducto = (SELECT idCategoriaProducto FROM categoriasProducto WHERE nombreCategoria = 'Sensor');
-		ELSE 
-			SET NEW.idCategoriaProducto = NULL;
-		END IF;
-	END;
-
-    
-	DROP TRIGGER IF EXISTS Cotizaciones;
-    
-    DELIMITER //
-	CREATE TRIGGER cotizacionesHistorial
-	AFTER UPDATE ON historialCotizaciones
-	FOR EACH ROW
-	BEGIN
-		INSERT INTO cotizacionesHistorial (idCotizacion, fechaCreada, fechaActualizacion)
-        VALUES (NEW.idCotizacion, NOW(), NEW.fechaActualizacion);
-	END; //
-	DELIMITER ;
-
-	DROP TABLE IF EXISTS enviosEntregados;
-	CREATE table enviosEntregados (
-    idEnvio int primary key,
-    fecha datetime, idTecnicoEncargado int, documentoTecnico bigint);
-	DROP TRIGGER IF EXISTS enviosEntregados;
-    DELIMITER //
-CREATE TRIGGER enviosEntregados
-AFTER UPDATE ON envios
-FOR EACH ROW
+CREATE OR REPLACE PROCEDURE CrearProducto(
+    IN p_nombreProducto TEXT,
+    IN p_descripcionProducto TEXT,
+    IN p_precioProducto FLOAT,
+    IN p_cantidad INT,
+    IN p_idAdministrador INT,
+    IN p_idCategoriaProducto INT,
+    IN p_idProveedorProducto INT
+)
+AS $$
 BEGIN
-	IF NEW.idEstadoEnvio = 3 THEN
-		INSERT INTO enviosEntregados (idEnvio, fecha, idTecnicoEncargado, documentoTecnico)
-		SELECT NEW.idEnvio, NOW(), tecnicos.idTecnico, tecnicos.numeroDocumento
-		FROM tecnicos
-		WHERE tecnicos.idTecnico = NEW.idTecnico;
-	END IF;
-END //
-DELIMITER ;
-
-UPDATE envios SET idEstadoEnvio = '3' WHERE envios.idEnvio = 7;
-
-CREATE TABLE IF NOT EXISTS historialPQRSFporTipoEstado (
-	idRegistro INT AUTO_INCREMENT PRIMARY KEY,
-	idPQRSF INT,
-	idTipoPQRSF INT,
-	idEstadoPQRSF INT,
-	fechaRegistro DATETIME,
-    foreign key(idPQRSF) references PQRSF (idPQRSF)
-);
-
-DELIMITER //
-CREATE TRIGGER registroPQRSFPorTipoEstado
-AFTER INSERT ON PQRSF
-FOR EACH ROW
-BEGIN
-	INSERT INTO historialPQRSFporTipoEstado (idPQRSF, idTipoPQRSF, idEstadoPQRSF, fechaRegistro)
-	SELECT NEW.idPQRSF, NEW.idTipoPQRSF, NEW.idEstadoPQRSF, NOW();
-END; //
-DELIMITER ;
-
-use jjsystem_db;
-
-DELIMITER //
-CREATE TRIGGER crear_cliente_desde_usuario
-AFTER INSERT ON usuarios
-FOR EACH ROW
-BEGIN
-    IF NEW.idrol = 2 THEN
-        -- Insertar el cliente con la dirección fija para usuarios con idrol = 2
-        INSERT INTO clientes (direccioncliente, numerodocumento) 
-        VALUES ('Dirección por defecto', NEW.numerodocumento);
-    END IF;
+    INSERT INTO productos (nombreProducto, descripcionProducto, precioProducto, cantidad, idAdministrador, idCategoriaProducto, idProveedorProducto)
+    VALUES (p_nombreProducto, p_descripcionProducto, p_precioProducto, p_cantidad, p_idAdministrador, p_idCategoriaProducto, p_idProveedorProducto);
 END;
-//
+$$ LANGUAGE plpgsql;
 
-DROP trigger IF exists usuario_tecnico;
-
-DELIMITER //
-CREATE TRIGGER usuario_tecnico
-AFTER INSERT ON usuarios
-FOR EACH ROW
+-- Procedimiento almacenado CrearServicio
+DROP PROCEDURE IF EXISTS CrearServicio;
+CREATE OR REPLACE PROCEDURE CrearServicio(
+    IN p_nombreServicio TEXT,
+    IN p_descripcionServicio TEXT,
+    IN p_idCategoriaServicio INT
+)
+AS $$
 BEGIN
-    IF NEW.idRol = 3 THEN
-        INSERT INTO tecnicos (id_especialidad_fk, numeroDocumento) VALUES ('1', NEW.numeroDocumento);
-    END IF;
+    INSERT INTO servicios (nombreServicio, descripcionServicio, idCategoriaServicio)
+    VALUES (p_nombreServicio, p_descripcionServicio, p_idCategoriaServicio);
 END;
-//
-DELIMITER ;
-DROP TRIGGER IF EXISTS usuario_administrador;
+$$ LANGUAGE plpgsql;
 
-DELIMITER //
-CREATE TRIGGER usuario_administrador
-AFTER INSERT ON usuarios
-FOR EACH ROW
+-- Procedimiento almacenado AsignarActividad
+DROP PROCEDURE IF EXISTS AsignarActividad;
+CREATE OR REPLACE PROCEDURE AsignarActividad(
+    IN p_idTecnico INT,
+    IN p_idActividadCronogramaTecnico INT,
+    IN p_idCita INT,
+    IN p_fechaActividadCronograma TIMESTAMP
+)
+AS $$
 BEGIN
-    IF NEW.idRol = 1 THEN
-        INSERT INTO administrador (numeroDocumento) VALUES (NEW.numeroDocumento);
-    END IF;
+    INSERT INTO detallesactividadcronograma (idCronogramaTecnico, idActividadCronogramaTecnico, fechaActividadCronograma)
+    VALUES ((SELECT MAX(idCronogramaTecnico) FROM cronogramatecnicos), p_idActividadCronogramaTecnico, p_fechaActividadCronograma);
+    UPDATE CronogramaTecnicos
+    SET Tecnico_idTecnico = p_idTecnico
+    WHERE Cita_idCita = p_idCita;
 END;
-//
-DELIMITER ;
+$$ LANGUAGE plpgsql;
 
+-- Procedimiento almacenado RegistrarEnvio
+DROP PROCEDURE IF EXISTS RegistrarEnvio;
+CREATE OR REPLACE PROCEDURE RegistrarEnvio(
+    IN p_direccionEnvio VARCHAR(255),
+    IN p_idTecnico INT,
+    IN p_idEstadoEnvio INT
+)
+AS $$
+BEGIN
+    INSERT INTO envios (direccionEnvio, idTecnico, idEstadoEnvio)
+    VALUES (p_direccionEnvio, p_idTecnico, p_idEstadoEnvio);
+END;
+$$ LANGUAGE plpgsql;
 
-USE jjsystem_db;
+-- Procedimiento almacenado RegistrarPQRSF
+DROP PROCEDURE IF EXISTS RegistrarPQRSF;
+CREATE OR REPLACE PROCEDURE RegistrarPQRSF(
+    IN p_fechaPQRSF DATE,
+    IN p_informacionPQRSF TEXT,
+    IN p_idCliente INT,
+    IN p_idEstadoPQRSF INT,
+    IN p_idTipoPQRSF INT
+)
+AS $$
+BEGIN
+    INSERT INTO PQRSF (fechaPQRSF, informacionPQRSF, idCliente, idEstadoPQRSF, idTipoPQRSF)
+    VALUES (p_fechaPQRSF, p_informacionPQRSF, p_idCliente, p_idEstadoPQRSF, p_idTipoPQRSF); 
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger asignarCategoriaProducto
+DROP TRIGGER IF EXISTS asignarCategoriaProducto ON productos;
+CREATE OR REPLACE FUNCTION asignarCategoriaProducto()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.nombreProducto LIKE 'Camara%' THEN
+        NEW.idCategoriaProducto := (SELECT idCategoriaProducto FROM categoriasProducto WHERE nombreCategoria = 'Camara');
+    ELSIF NEW.nombreProducto LIKE 'DVR%' THEN
+        NEW.idCategoriaProducto := (SELECT idCategoriaProducto FROM categoriasProducto WHERE nombreCategoria = 'DVR');
+    ELSIF NEW.nombreProducto LIKE 'Alarma%' THEN
+        NEW.idCategoriaProducto := (SELECT idCategoriaProducto FROM categoriasProducto WHERE nombreCategoria = 'Alarma');
+    ELSIF NEW.nombreProducto LIKE 'Sensor%' THEN
+        NEW.idCategoriaProducto := (SELECT idCategoriaProducto FROM categoriasProducto WHERE nombreCategoria = 'Sensor');
+    ELSE 
+        NEW.idCategoriaProducto := NULL;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger cotizacionesHistorial
+DROP TRIGGER IF EXISTS cotizacionesHistorial ON historialCotizaciones;
+CREATE OR REPLACE FUNCTION cotizacionesHistorial()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO cotizacionesHistorial (idCotizacion, fechaCreada, fechaActualizacion)
+    VALUES (NEW.idCotizacion, NOW(), NEW.fechaActualizacion);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger enviosEntregados
+DROP TRIGGER IF EXISTS enviosEntregados ON envios;
+CREATE OR REPLACE FUNCTION enviosEntregados()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.idEstadoEnvio = 3 THEN
+        INSERT INTO enviosEntregados (idEnvio, fecha, idTecnicoEncargado, documentoTecnico)
+        SELECT NEW.idEnvio, NOW(), tecnicos.idTecnico, tecnicos.numeroDocumento
+        FROM tecnicos
+        WHERE tecnicos.idTecnico = NEW.idTecnico;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Procedimiento almacenado ObtenerDetallesCotizacion
 DROP PROCEDURE IF EXISTS ObtenerDetallesCotizacion;
-DELIMITER //
-
-CREATE PROCEDURE ObtenerDetallesCotizacion(IN id_cotizacion INT)
+CREATE OR REPLACE PROCEDURE ObtenerDetallesCotizacion(IN id_cotizacion INT)
+AS $$
 BEGIN
     SELECT 
         cotizaciones.idCotizacion, 
@@ -632,21 +517,16 @@ BEGIN
         estadoscotizaciones ON cotizaciones.idEstadoCotizacion = estadoscotizaciones.idEstadoCotizacion
     WHERE 
         cotizaciones.idCotizacion = id_cotizacion;
-END //
+END;
+$$ LANGUAGE plpgsql;
 
-DELIMITER ;
-
-DELIMITER ;
-DELIMITER ;
-
-DELIMITER ;
-
+-- registros 
 INSERT INTO ROLES (idRol, nombreRol) 
 VALUES
-	(1, "Gerente"),
-    (2, "Cliente"),
-    (3, "Tecnico");
-    
+	(1, 'Gerente'),
+    (2, 'Cliente'),
+    (3, 'Tecnico');
+
 -- Inserción de permisos
 INSERT INTO PERMISOS (nombrePermiso, idRol) 
 VALUES
@@ -765,27 +645,27 @@ VALUES
 -- Inserción de envíos
 INSERT INTO categoriasProductos (nombreCategoria) 
 VALUES
-	("Camara"),
-    ("DVR"),
-    ("Alarma"),
-    ("Sensor");
+	('Camara'),
+    ('DVR'),
+    ('Alarma'),
+    ('Sensor');
     
 INSERT INTO proveedoresProductos (nombreProveedor)
 VALUES
-	("TechSecure"),
-    ("SecureGuard"),
-    ("SecureTech Solutions"),
-	("Servicios SafeGuard"),
-    ("TechGuard Systems"),
-    ("Soluciones SecureNet"),
-    ("Servicios de Seguridad Proactiva"),
-    ("Sistemas de Seguridad Global"),
-    ("Security Solutions"),
-    ("Seguridad integrada de Tyco"),
-    ("Soluciones de seguridad Stanley"),
-    ("Soluciones de construcción de Honeywell"),
-    ("Tecnologías de construcción de Siemens"),
-    ("Vida digital de AT&T");
+	('TechSecure'),
+    ('SecureGuard'),
+    ('SecureTech Solutions'),
+	('Servicios SafeGuard'),
+    ('TechGuard Systems'),
+    ('Soluciones SecureNet'),
+    ('Servicios de Seguridad Proactiva'),
+    ('Sistemas de Seguridad Global'),
+    ('Security Solutions'),
+    ('Seguridad integrada de Tyco'),
+    ('Soluciones de seguridad Stanley'),
+    ('Soluciones de construcción de Honeywell'),
+    ('Tecnologías de construcción de Siemens'),
+    ('Vida digital de AT&T');
 
 INSERT INTO Productos (nombreProducto, descripcionProducto, precioProducto, cantidad, idAdministrador, idCategoriaProducto, idProveedorProducto)
 VALUES
@@ -853,14 +733,14 @@ VALUES
 
 INSERT INTO tiposPQRSF (nombreTipoPQRSF)
 VALUES
-	("Peticion"),
-    ("Queja"),
-    ("Reclamo"),
-    ("Sugerencia"),
-    ("Felicitacion");
+('Peticion'),
+('Queja'),
+('Reclamo'),
+('Sugerencia'),
+('Felicitacion');
     
 INSERT INTO estadosPQRSF (nombreEstadoPQRSF)
 VALUES
-	("Solicitada"),
-    ("En trámite"),
-    ("Resuelta");
+('Solicitada'),
+('En trámite'),
+('Resuelta');
