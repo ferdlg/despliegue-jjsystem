@@ -377,7 +377,7 @@ class Migration(migrations.Migration):
             name='Tipospqrsf',
             fields=[
                 ('idtipopqrsf', models.AutoField(db_column='idtipopqrsf', primary_key=True, serialize=False)),
-                ('nombretipopqrsf', models.CharField(db_column='nombreTipoPQRSF', max_length=20)),
+                ('nombretipopqrsf', models.CharField(db_column='nombretipopqrsf', max_length=20)),
             ],
             options={
                 'db_table': 'tipospqrsf',

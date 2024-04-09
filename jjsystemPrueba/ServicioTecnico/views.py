@@ -7,8 +7,6 @@ from .controllers.serializers import CitasSerializer
 from .controllers.citas import citasCRUD
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from Account.views import role_required
-from django.contrib.auth.decorators import login_required
 
 def index (request):
     estados = Estadoscitas.objects.all()

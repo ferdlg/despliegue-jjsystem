@@ -449,7 +449,7 @@ class Tecnicos(models.Model):
 
 class Tipospqrsf(models.Model):
     idtipopqrsf = models.AutoField(db_column='idtipopqrsf', primary_key=True)  # Field name made lowercase.
-    nombretipopqrsf = models.CharField(db_column='nombreTipoPQRSF', max_length=20)  # Field name made lowercase.
+    nombretipopqrsf = models.CharField(db_column='nombretipopqrsf', max_length=20)  # Field name made lowercase.
 
     class Meta:
         managed = False
