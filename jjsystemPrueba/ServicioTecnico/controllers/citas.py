@@ -7,8 +7,7 @@ from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 from django.contrib import messages
 import datetime
 import pytz
-from Account.views import role_required
-from django.contrib.auth.decorators import login_required
+
 class citasCRUD(viewsets.ModelViewSet):
     queryset = Citas.objects.all()
     serializer_class = CitasSerializer

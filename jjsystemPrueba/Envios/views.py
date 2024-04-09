@@ -23,8 +23,6 @@ from jjsystemPrueba import settings
 from .envio_correo import enviar_correo_estado_envio
 # Create your views here.
 
-@login_required
-@role_required(1)
 def homeEnvios(request):
     search_query = request.GET.get('search', '')
     estado_filter = request.GET.get('estado', '')  # Obtener el valor del filtro por estado
@@ -60,8 +58,8 @@ def homeEnvios(request):
 
 
 
-@login_required
-@role_required(1)
+#@login_required
+#@role_required(1)
 def createEnvioView(request):
     if request.method == 'POST':
         direccion = request.POST.get('direccion')
@@ -94,8 +92,8 @@ def createEnvioView(request):
     tecnicos = Tecnicos.objects.all()  # Obtener todos los técnicos
     return render(request, "crudAdmin/Create.html", {"estados": estados, "tecnicos": tecnicos})
 
-@login_required
-@role_required(1)
+#@login_required
+#@role_required(1)
 
 def editarEnvio(request, idenvio):
     idenvio = None  # Asignar un valor por defecto
@@ -153,8 +151,8 @@ def editarEnvio(request, idenvio):
 
     return render(request, "crudAdmin/Editar.html", {"envio": envio, "estados": estados, "tecnicos": tecnicos})
 
-@login_required
-@role_required(1)
+#@login_required
+#@role_required(1)
 def eliminarEnvio(request, idenvio):
     try:
         envio = Envios.objects.get(idenvio=idenvio)
@@ -171,8 +169,8 @@ def eliminarEnvio(request, idenvio):
     return redirect('homeEnvios')
 #Views del tecnico
 
-@login_required
-@role_required(3)
+#@login_required
+#@role_required(1)
 def homeEnviosTecnico(request):
     # Obtener el número de documento del técnico autenticado
     numerodocumento = request.user.numerodocumento
@@ -182,8 +180,7 @@ def homeEnviosTecnico(request):
 
 
 #Views cliente
-@login_required
-@role_required(2)
+
 def enviosCliente(request):
     # Obtener el número de documento del cliente autenticado
     numerodocumento = request.user.numerodocumento
@@ -199,8 +196,7 @@ def enviosCliente(request):
 
     return render(request, 'cliente/EnviosCliente.html', {'envios': envios, "detallesEnvio": detallesEnvio})
 
-@login_required
-@role_required(2)
+    
 def historialEnviosCliente(request):
     # Obtener el número de documento del cliente autenticado
     numerodocumento = request.user.numerodocumento
