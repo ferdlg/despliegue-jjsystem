@@ -433,7 +433,7 @@ class Especialidadtecnicos(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'Especialidad_tecnicos'
+        db_table = 'especialidad_tecnicos'
 
 class Tecnicos(models.Model):
     idtecnico = models.AutoField(primary_key=True)

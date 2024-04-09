@@ -100,6 +100,16 @@ class cronogramatecnicosCRUD(viewsets.ModelViewSet):
                 'title': cita.descripcioncita,
                 'start': fecha_hora_inicio.strftime('%Y-%m-%d %H:%M:%S'),
                 })
+            fechas_disponibles=obtener_disponibilidad_tecnico(idtecnico=idtecnico)
+            for fecha_disponible in fechas_disponibles:
+                for hora_disponible in fecha_disponible['horas_disponibles']:
+                # Crear una fecha y hora combinadas
+                    fecha_hora_disponible = datetime.combine(fecha_disponible['fecha'], time(hour=hora_disponible))
+                    eventos.append({
+                        'title': 'Disponible',
+                        'start': fecha_hora_disponible.strftime('%Y-%m-%d %H:%M:%S'),
+                        'color': 'green'
+                    })
 
             eventos_json = json.dumps(eventos)
             cliente_cita = []
@@ -118,7 +128,6 @@ class cronogramatecnicosCRUD(viewsets.ModelViewSet):
             else:
                 citas_filtradas = []
 
-            fechas_disponibles=obtener_disponibilidad_tecnico(idtecnico=idtecnico)
             return render(request, 'Admin-Agendas/tecnico_agenda.html', {
                 'todas_las_citas': todas_las_citas,
                 'citas_filtradas': citas_filtradas,
