@@ -1,4 +1,4 @@
-<div class="modal fade bd-example-modal-xl" id="delete{{ cita.idCita }}" tabindex="-1" role="dialog"
+<div class="modal fade bd-example-modal-xl" id="delete{{ cita.idcita }}" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -9,13 +9,13 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="modalCitas" action="{% url 'Citas' cita.idCita %}" 
+                <form class="modalCitas" action="{% url 'Citas' cita.idcita %}" 
                     method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <input type="hidden" name="_method" value="DELETE">
                     <p>
                         ¿Está seguro de que desea eliminar la cita
-                        <strong>{{ cita.descripcionCita }}</strong>?
+                        <strong>{{ cita.descripcioncita }}</strong>?
                     </p>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-info" data-dismiss="modal" aria-label="Close">

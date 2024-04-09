@@ -57,11 +57,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Citas',
             fields=[
-                ('idcita', models.AutoField(db_column='idCita', primary_key=True, serialize=False)),
-                ('fechacita', models.DateField(db_column='fechaCita')),
-                ('direccioncita', models.CharField(db_column='direccionCita', max_length=50)),
-                ('contactocliente', models.BigIntegerField(db_column='contactoCliente')),
-                ('descripcioncita', models.TextField(db_column='descripcionCita')),
+                ('idcita', models.AutoField(db_column='idcita', primary_key=True, serialize=False)),
+                ('fechacita', models.DateField(db_column='fechacita')),
+                ('direccioncita', models.CharField(db_column='direccioncita', max_length=50)),
+                ('contactocliente', models.BigIntegerField(db_column='contactocliente')),
+                ('descripcioncita', models.TextField(db_column='descripcioncita')),
             ],
             options={
                 'db_table': 'citas',

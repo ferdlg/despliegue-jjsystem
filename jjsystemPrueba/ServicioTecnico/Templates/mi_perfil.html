@@ -120,13 +120,13 @@
 </script>
 <script>
     // Obtener el elemento de fecha de la cita
-    var fechaCita = document.getElementById('fechacita');
+    var fechacita = document.getElementById('fechacita');
 
     // Obtener la fecha actual en formato ISO (YYYY-MM-DD)
     var fechaActual = new Date().toISOString().split('T')[0];
 
     // Establecer la fecha mínima como la fecha actual
-    fechaCita.min = fechaActual;
+    fechacita.min = fechaActual;
 </script>
 <script>
     document.getElementById('horacita').addEventListener('input', function() {

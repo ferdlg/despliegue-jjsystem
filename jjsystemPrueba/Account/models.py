@@ -99,16 +99,16 @@ class Categoriasservicios(models.Model):
 
 
 class Citas(models.Model):
-    idcita = models.AutoField(db_column='idCita', primary_key=True)  # Field name made lowercase.
-    fechacita = models.DateField(db_column='fechaCita')  # Field name made lowercase.
-    direccioncita = models.CharField(db_column='direccionCita', max_length=50)  # Field name made lowercase.
-    contactocliente = models.BigIntegerField(db_column='contactoCliente')  # Field name made lowercase.
-    descripcioncita = models.TextField(db_column='descripcionCita')  # Field name made lowercase.
+    idcita = models.AutoField(db_column='idcita', primary_key=True)  # Field name made lowercase.
+    fechacita = models.DateField(db_column='fechacita')  # Field name made lowercase.
+    direccioncita = models.CharField(db_column='direccioncita', max_length=50)  # Field name made lowercase.
+    contactocliente = models.BigIntegerField(db_column='contactocliente')  # Field name made lowercase.
+    descripcioncita = models.TextField(db_column='descripcioncita')  # Field name made lowercase.
     idtecnico = models.ForeignKey('Tecnicos',models.CASCADE, db_column='idtecnico')  # Field name made lowercase.
     idadministrador = models.ForeignKey(Administrador,models.CASCADE, db_column='idadministrador')  # Field name made lowercase.
     idcotizacion = models.ForeignKey('Cotizaciones',models.CASCADE, db_column='idcotizacion')  # Field name made lowercase.
     idestadocita = models.ForeignKey('Estadoscitas',models.CASCADE, db_column='idestadocita')  # Field name made lowercase.
-    horacita = models.TimeField(db_column='horaCita')  # Field name made lowercase.
+    horacita = models.TimeField(db_column='horacita')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -174,7 +174,7 @@ class CotizacionesServicios(models.Model):
 class Cronogramatecnicos(models.Model):
     idcronogramatecnico = models.AutoField(db_column='idCronogramaTecnico', primary_key=True)  # Field name made lowercase.
     idtecnico = models.ForeignKey('Tecnicos', models.CASCADE, db_column='idtecnico', blank=True, null=True)  # Field name made lowercase.
-    idcita = models.ForeignKey(Citas, models.CASCADE, db_column='idCita', blank=True, null=True)  # Field name made lowercase.
+    idcita = models.ForeignKey(Citas, models.CASCADE, db_column='idcita', blank=True, null=True)  # Field name made lowercase.
     iddisponibilidadcronograma = models.ForeignKey('Disponibilidadcronogramas', models.CASCADE, db_column='idDisponibilidadCronograma', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -445,7 +445,7 @@ class Tecnicos(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'Tecnicos'
+        db_table = 'tecnicos'
 
 class Tipospqrsf(models.Model):
     idtipopqrsf = models.AutoField(db_column='idtipopqrsf', primary_key=True)  # Field name made lowercase.
