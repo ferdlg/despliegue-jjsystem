@@ -295,7 +295,7 @@ class Estadoscitas(models.Model):
 
 class Estadoscotizaciones(models.Model):
     idestadocotizacion = models.AutoField(db_column='idestadocotizacion', primary_key=True)  # Field name made lowercase.
-    nombreestadocotizacion = models.CharField(db_column='nombreEstadoCotizacion', max_length=20)  # Field name made lowercase.
+    nombreestadocotizacion = models.CharField(db_column='nombreestadocotizacion', max_length=20)  # Field name made lowercase.
 
     class Meta:
         managed = False

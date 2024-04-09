@@ -229,7 +229,7 @@ class Migration(migrations.Migration):
             name='Estadoscotizaciones',
             fields=[
                 ('idestadocotizacion', models.AutoField(db_column='idestadocotizacion', primary_key=True, serialize=False)),
-                ('nombreestadocotizacion', models.CharField(db_column='nombreEstadoCotizacion', max_length=20)),
+                ('nombreestadocotizacion', models.CharField(db_column='nombreestadocotizacion', max_length=20)),
             ],
             options={
                 'db_table': 'estadoscotizaciones',
