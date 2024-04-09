@@ -6,7 +6,8 @@ from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-
+from Account.views import role_required
+from django.contrib.auth.decorators import login_required
 
 class ventasCRUD(viewsets.ModelViewSet):
     queryset = Ventas.objects.all()
@@ -32,6 +33,8 @@ class ventasCRUD(viewsets.ModelViewSet):
             messages.warning(request, 'Aun no tienes compras para mostrar')
             return render(request, 'cliente/compras.html')
 # Ventas en dashboard admin
+@login_required
+@role_required(1)
 def home_ventas(request):
     idventa = request.GET.get('idventa')
     
@@ -53,7 +56,8 @@ def home_ventas(request):
     
     return render(request, "crudAdmin/IndexVentas.html", {"ventas":ventas})
 
-
+@login_required
+@role_required(1)
 def createVenta(request):
     if request.method == 'POST':
         try:
@@ -93,7 +97,8 @@ def createVenta(request):
         envios = Envios.objects.all()
         cotizaciones = Cotizaciones.objects.all()
         return render(request, "crudAdmin/createVenta.html", {"envios": envios, "cotizaciones": cotizaciones})
-
+@login_required
+@role_required(1)
 def editVenta(request, idVenta):
     try:
         venta = Ventas.objects.get(idventa=idVenta)
@@ -134,7 +139,8 @@ def editVenta(request, idVenta):
         envios = Envios.objects.all()
         cotizaciones = Cotizaciones.objects.all()
         return render(request, "crudAdmin/EditVenta.html", {"venta": venta, "envios": envios, "cotizaciones": cotizaciones})
-    
+@login_required
+@role_required(1)    
 def deleteVenta(request, idVenta):
     venta = Ventas.objects.get(idventa=idVenta)
     if request.method == 'POST':

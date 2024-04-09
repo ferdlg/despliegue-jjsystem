@@ -4,7 +4,8 @@ from Account.models import Categoriasproductos
 from .serializers import CategoriasProductosSerializers
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 from django.contrib import messages
-
+from Account.views import role_required
+from django.contrib.auth.decorators import login_required
 #definimos la clase 
 class categoriaproductosCRUD(viewsets.ModelViewSet):
     # usamos queryset, que traera todos los objetos de la clase
@@ -13,7 +14,8 @@ class categoriaproductosCRUD(viewsets.ModelViewSet):
     serializer_class = CategoriasProductosSerializers
 
 
-
+@login_required
+@role_required(1)
 def home_categoriaProductos(request):
     # Obtener todos los productos
     categoria_list = Categoriasproductos.objects.all()
@@ -30,7 +32,8 @@ def home_categoriaProductos(request):
 
     return render(request, "crudAdmin/categoriasProductos.html", {"categorias": categorias})
 
-
+@login_required
+@role_required(1)
 def createCategoriaProductoView(request):
     if request.method == 'POST':
         nombrecategoria = request.POST.get('nombrecategoria')
@@ -42,7 +45,8 @@ def createCategoriaProductoView(request):
         return redirect('categoriaProductos')
 
     return render(request, "crudAdmin/categoriasProductos.html", {"categoria": categoria})
-
+@login_required
+@role_required(1)
 def editarCategoriaProductoView(request, idcategoriaproducto):
     categoria = Categoriasproductos.objects.get(idcategoriaproducto=idcategoriaproducto)
     if request.method == 'POST':
@@ -56,7 +60,8 @@ def editarCategoriaProductoView(request, idcategoriaproducto):
         return redirect('categoriaProductos')
 
     return render(request, "crudAdmin/categoriasProductos.html", {"categoria": categoria})
-
+@login_required
+@role_required(1)
 def eliminarCategoriaProductoView(request, idcategoriaproducto):
     categoria = Categoriasproductos.objects.get(idcategoriaproducto = idcategoriaproducto)
     categoria.delete()

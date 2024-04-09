@@ -9,7 +9,11 @@ from reportlab.lib import colors
 from Account.models import Administrador, Pqrsf, Respuestas
 import os
 from django.contrib import messages
+from Account.views import role_required
+from django.contrib.auth.decorators import login_required
 
+@login_required
+@role_required(1)
 def convertir_pqrsf_pdf(request, idpqrsf):
     pqrsf = Pqrsf.objects.get(idpqrsf=idpqrsf)
 

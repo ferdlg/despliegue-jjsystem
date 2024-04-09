@@ -9,8 +9,12 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.styles import ParagraphStyle
-
+from Account.views import role_required
+from django.contrib.auth.decorators import login_required
 from ProductosServicios.controllers.utils import obtener_detalles_cotizacion
+
+@login_required
+@role_required(1)
 def generar_pdf(request, idcotizacion):
     # Obtener la cotización y los detalles de la cotización
     cotizacion = get_object_or_404(Cotizaciones, idcotizacion=idcotizacion)

@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from Account.models import Productos, Servicios
 from Account.models import Categoriasproductos 
-
+from Account.views import role_required
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def landing(request):
@@ -36,6 +37,8 @@ def producto(request, id):
     producto = Productos.objects.get(idproducto = id)
     return render(request, 'landing/VisualizaciónProducto.html',{'producto':producto})
 
+@login_required
+@role_required(1)
 def home(request):
     return render(request, "crudAdmin/IndexProductosServicios.html")
 

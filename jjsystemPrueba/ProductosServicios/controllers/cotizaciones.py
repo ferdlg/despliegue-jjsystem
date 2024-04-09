@@ -6,7 +6,8 @@ from ServicioTecnico.controllers.cotizaciones import CotizacionesCRUD as BaseCot
 from Account.models import *
 from django.db import connection
 from django.contrib import messages
-
+from Account.views import role_required
+from django.contrib.auth.decorators import login_required
 
 class CotizacionesCRUD(BaseCotizacionesCRUD):
     # Métodos heredados de la clase base

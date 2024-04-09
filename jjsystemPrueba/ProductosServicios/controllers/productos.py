@@ -9,8 +9,8 @@ from django.contrib import messages
 from django.core.files.base import ContentFile
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
-
-
+from Account.views import role_required
+from django.contrib.auth.decorators import login_required
 '''
     Importamos la biblioteca viewsets 
     de Django Rest Framework la cual nos proporciona las
@@ -24,6 +24,8 @@ class productosCRUD(viewsets.ModelViewSet):
     # Usamos serializer class para poder ver los objetos que se traen 
     serializer_class = ProductosSerializer
 
+@login_required
+@role_required(1)
 # Productos en dashboard admin
 def home_productos(request):
     # Obtener todos los productos
@@ -42,7 +44,8 @@ def home_productos(request):
     return render(request, "crudAdmin/IndexProductos.html", {"productos": productos_list})
 
 # CRUD de productos
-    
+@login_required
+@role_required(1)   
 def createProductoView(request):
     if request.method == 'POST':
         # Recuperar datos del formulario
@@ -93,7 +96,8 @@ def createProductoView(request):
     categorias = Categoriasproductos.objects.all()
     proveedores = Proveedoresproductos.objects.all()
     return render(request, "crudAdmin/CreateProducto.html", {"categorias": categorias, "proveedores": proveedores})
-
+@login_required
+@role_required(1)
 def editarProducto(request, idproducto):
     try:
         producto = Productos.objects.get(idproducto=idproducto)
@@ -155,7 +159,8 @@ def editarProducto(request, idproducto):
     except Exception as e:
         messages.error(request, f'Error al editar el producto: {str(e)}')
         return redirect('homeProductos')
-
+@login_required
+@role_required(1)
 def eliminarProducto(request, idproducto):
     producto = Productos.objects.get(idproducto=idproducto)
     producto.delete()

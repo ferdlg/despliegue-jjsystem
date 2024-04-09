@@ -10,7 +10,11 @@ from django.http import HttpResponse
 from io import BytesIO
 import os
 from Account.models import DetalleEnviosVentas, Envios, Tecnicos
+from Account.views import role_required
+from django.contrib.auth.decorators import login_required
 
+@login_required
+@role_required(1)
 def generar_pdf(request, templateName):
     # Obtener los datos de los envíos
     envios = Envios.objects.all()
@@ -64,6 +68,8 @@ def generar_pdf(request, templateName):
     response.write(pdf)
     return response
 
+@login_required
+@role_required(1)
 def generar_pdf_envio(request, idenvio):
     # Obtener el envío específico
     envio = Envios.objects.get(idenvio=idenvio)

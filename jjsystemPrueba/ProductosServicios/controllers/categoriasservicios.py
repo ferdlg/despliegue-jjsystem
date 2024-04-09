@@ -4,7 +4,8 @@ from Account.models import Categoriasservicios
 from .serializers import CategoriasServiciosSerializers
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 from django.contrib import messages
-
+from Account.views import role_required
+from django.contrib.auth.decorators import login_required
 
 class categoriaserviciosCRUD(viewsets.ModelViewSet):
     queryset = Categoriasservicios.objects.all()
@@ -12,6 +13,8 @@ class categoriaserviciosCRUD(viewsets.ModelViewSet):
 
 
 
+@login_required
+@role_required(1)
 #crud categorias servicios 
 def home_categoriaServicios(request):
     # Obtener todas las categorías de servicios
@@ -29,6 +32,8 @@ def home_categoriaServicios(request):
 
     return render(request, "crudAdmin/categoriasServicios.html", {"categorias": categorias})
 
+@login_required
+@role_required(1)
 def createCategoriaServicioView(request):
     if request.method == 'POST':
         nombrecategoria = request.POST.get('nombrecategoria')
@@ -41,6 +46,8 @@ def createCategoriaServicioView(request):
 
     return render(request, "crudAdmin/categoriasServicios.html")
 
+@login_required
+@role_required(1)
 def editarCategoriaServicioView(request, idCategoriaServicio):
     categoria = Categoriasservicios.objects.get(idcategoriaservicio=idCategoriaServicio)
     if request.method == 'POST':
@@ -54,6 +61,8 @@ def editarCategoriaServicioView(request, idCategoriaServicio):
 
     return render(request, "crudAdmin/categoriasServicios.html", {"categoria": categoria})
 
+@login_required
+@role_required(1)
 def eliminarCategoriaServicioView(request, idCategoriaServicio):
     categoria = Categoriasservicios.objects.get(idcategoriaservicio=idCategoriaServicio)
     categoria.delete()

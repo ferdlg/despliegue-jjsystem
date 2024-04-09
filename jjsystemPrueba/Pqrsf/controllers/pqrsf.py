@@ -5,6 +5,8 @@ from .serializers import PqrsfSerializer
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from ..correos import correo_confirmacion_pqrsf_cliente_admin
+from Account.views import role_required
+from django.contrib.auth.decorators import login_required
 
 class pqrsfCRUD(viewsets.ModelViewSet):
     queryset = Pqrsf.objects.all()
@@ -20,7 +22,6 @@ class pqrsfCRUD(viewsets.ModelViewSet):
 
         return render(request, 'cliente/ver_pqrsf.html', {'estados':estados,'tipos':tipos, 'pqrsfs':pqrsfs, 'cliente':cliente})
     
-
     def crear_pqrsf(self, request):
         if request.method == 'POST':
             numerodocumento = request.user.numerodocumento

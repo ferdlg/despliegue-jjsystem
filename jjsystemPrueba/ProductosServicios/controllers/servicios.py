@@ -4,7 +4,8 @@ from Account.models import Categoriasproductos, Categoriasservicios, Servicios
 from .serializers import ServiciosSerializer
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 from django.contrib import messages
-
+from Account.views import role_required
+from django.contrib.auth.decorators import login_required
 
 class serviciosCRUD(viewsets.ModelViewSet):
     queryset = Servicios.objects.all()
@@ -20,6 +21,8 @@ def servicios_landing(request, categoria):
     servicios = Servicios.objects.filter(idcategoriaservicio=categoria)
     return render(request, 'landing/ServiciosCategorias.html', {'servicios': servicios})
 
+@login_required
+@role_required(1)
 # Servicios en dashboard admin
 def home_servicios(request):
     # Obtener todos los productos
@@ -37,7 +40,8 @@ def home_servicios(request):
 
     return render(request, "crudAdmin/IndexServicios.html", {"servicios": servicios})
 
-
+@login_required
+@role_required(1)
 #crud en el front
 def createServiciosView(request):
     try:
@@ -68,7 +72,8 @@ def createServiciosView(request):
         messages.error(request, f'Error al crear el servicio: {str(e)}')
         return redirect('homeServicios')
 
-
+@login_required
+@role_required(1)
 def editarServicio(request, idServicio):
     try:
         servicio = Servicios.objects.get(idservicio=idServicio)
@@ -104,6 +109,8 @@ def editarServicio(request, idServicio):
         messages.error(request, f'Error al editar el servicio: {str(e)}')
         return redirect('homeServicios')
 
+@login_required
+@role_required(1)
 def eliminarServicio(request, idServicio):
     try:
         servicio = Servicios.objects.get(idservicio=idServicio)

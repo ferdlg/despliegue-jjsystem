@@ -3,8 +3,12 @@ from Account.models import Pqrsf, Respuestas
 from Account.models import Estadospqrsf
 from Account.models import Tipospqrsf
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
+from Account.views import role_required
+from django.contrib.auth.decorators import login_required
 
 # Admin
+@login_required
+@role_required(1)
 def home_pqrsf(request):
     # Obtener los tipos de PQRSF para el filtro
     tipos = Tipospqrsf.objects.all()
@@ -28,11 +32,13 @@ def home_pqrsf(request):
     return render(request, "admin/pqrsf.html", {"pqrsf": pqrsf_item, 'tipos': tipos, 'respuestas':respuestas})
 
     
-
+@login_required
+@role_required(1)
 def indexPqrsf(request):
     return render(request, 'admin/indexPqrsf.html')
 
-
+@login_required
+@role_required(1)
 def editarPqrsf(request, idPqrsf):
     pqrsf_item = Pqrsf.objects.get(idpqrsf=idPqrsf)
     estados = Estadospqrsf.objects.all()
@@ -61,7 +67,8 @@ def editarPqrsf(request, idPqrsf):
         return redirect('indexPqrsf')
 
     return render(request, "editarPqrsf.html", {"pqrsf": pqrsf_item, "estados": estados, "tipos": tipos})
-
+@login_required
+@role_required(1)
 def eliminarPqrsf(request, idpqrsf):
     pqrsf = Pqrsf.objects.get(idpqrsf = idpqrsf)
     pqrsf.delete()
