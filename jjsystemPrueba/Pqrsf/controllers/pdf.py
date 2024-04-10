@@ -107,7 +107,7 @@ def convertir_respuesta_pdf(request, idpqrsf):
         messages.error(request, "Aún no se ha registradodo la respuesta para esta PQRSF.")
         return redirect('homePqrsf')
     pqrsf = Pqrsf.objects.get(idpqrsf = respuesta.idpqrsf.idpqrsf)
-    admin = Administrador.objects.get(numerodocumento = 9878465545)
+    admin = Administrador.objects.get(idadministrador=1)
 
     response = HttpResponse(content_type = 'application/pdf')
     response['Content-Disposition'] = f'attachment; filename="{pqrsf.idtipopqrsf.nombretipopqrsf}_{pqrsf.idpqrsf}_respuesta_{respuesta.idrespuesta}.pdf"'
@@ -138,7 +138,7 @@ def convertir_respuesta_pdf(request, idpqrsf):
         ['Tipo de pqrsf:', pqrsf.idtipopqrsf.nombretipopqrsf],
         ['Encargado PQRSF: ', f'{admin.numerodocumento.nombre} {admin.numerodocumento.apellido}'],
         ['Correo electronico:', admin.numerodocumento.email],
-        ['No.Documento:', admin.numerodocumento]
+        ['No.Documento:', admin.numerodocumento.numerodocumento]
     ]
     datos_cuerpo_solicitud = [
         ['Estimado(a)' f' {pqrsf.idcliente.numerodocumento.nombre} {pqrsf.idcliente.numerodocumento.apellido},'],

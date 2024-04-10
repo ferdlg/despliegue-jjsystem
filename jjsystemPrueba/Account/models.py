@@ -313,7 +313,7 @@ class Estadosenvios(models.Model):
 
 class Estadospqrsf(models.Model):
     idestadopqrsf= models.AutoField(db_column='idestadopqrsf', primary_key=True)  # Field name made lowercase.
-    nombreestadopqrsf = models.CharField(db_column='nombreEstadoPQRSF', max_length=20)  # Field name made lowercase.
+    nombreestadopqrsf = models.CharField(db_column='nombreestadopqrsf', max_length=20)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -340,7 +340,7 @@ class Historialcotizaciones(models.Model):
 
 
 class Historialpqrsfportipoestado(models.Model):
-    idregistro = models.AutoField(db_column='idRegistro', primary_key=True)  # Field name made lowercase.
+    idregistro = models.AutoField(db_column='idregistro', primary_key=True)  # Field name made lowercase.
     idpqrsf = models.ForeignKey('Pqrsf', models.CASCADE, db_column='idpqrsf', blank=True, null=True)  # Field name made lowercase.
     idtipopqrsf = models.IntegerField(db_column='idtipopqrsf', blank=True, null=True)  # Field name made lowercase.
     idestadopqrsf= models.IntegerField(db_column='idestadopqrsf', blank=True, null=True)  # Field name made lowercase.
@@ -383,9 +383,9 @@ class Proveedoresproductos(models.Model):
 
 
 class Respuestas(models.Model):
-    idrespuesta = models.AutoField(db_column='idRespuesta', primary_key=True)  # Field name made lowercase.
+    idrespuesta = models.AutoField(db_column='idrespuesta', primary_key=True)  # Field name made lowercase.
     fecha = models.DateField(blank=True, null=True)
-    informacionrespuesta = models.TextField(db_column='informacionRespuesta', blank=True, null=True)  # Field name made lowercase.
+    informacionrespuesta = models.TextField(db_column='informacionrespuesta', blank=True, null=True)  # Field name made lowercase.
     idadministrador = models.ForeignKey(Administrador, models.CASCADE, db_column='idadministrador', blank=True, null=True)  # Field name made lowercase.
     idpqrsf = models.ForeignKey(Pqrsf, models.CASCADE, db_column='idpqrsf', blank=True, null=True)  # Field name made lowercase.
 
@@ -514,4 +514,4 @@ class EnviosUsuarios(models.Model):
 
     class Meta:
         managed = False  
-        db_table = 'EnviosUsuarios'
+        db_table = 'enviosUsuarios'

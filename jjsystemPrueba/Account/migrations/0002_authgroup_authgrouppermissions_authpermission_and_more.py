@@ -149,7 +149,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Historialpqrsfportipoestado',
             fields=[
-                ('idregistro', models.AutoField(db_column='idRegistro', primary_key=True, serialize=False)),
+                ('idregistro', models.AutoField(db_column='idregistro', primary_key=True, serialize=False)),
                 ('idtipopqrsf', models.IntegerField(blank=True, db_column='idtipopqrsf', null=True)),
                 ('idestadopqrsf', models.IntegerField(blank=True, db_column='idestadopqrsf', null=True)),
                 ('fecharegistro', models.DateTimeField(blank=True, db_column='fechaRegistro', null=True)),
