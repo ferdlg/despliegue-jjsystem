@@ -42,6 +42,7 @@ class CotizacionesCRUD(BaseCotizacionesCRUD):
         if request.method == 'POST':
             productos_seleccionados = request.POST.getlist('producto[]')
             servicios_seleccionados = request.POST.getlist('servicio[]')
+            print(productos_seleccionados, servicios_seleccionados)
 
             cotizacion = Cotizaciones.objects.get(idcotizacion=id_cotizacion)
             for idproducto in productos_seleccionados:
