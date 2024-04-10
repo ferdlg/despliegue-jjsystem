@@ -147,6 +147,7 @@ CREATE TABLE IF NOT EXISTS Cotizaciones_Productos(
 );
 
 CREATE TABLE IF NOT EXISTS Cotizaciones_Servicios(
+    id SERIAL PRIMARY KEY,
     idCotizacion INT,
     idServicio INT,
     FOREIGN KEY (idCotizacion) REFERENCES Cotizaciones (idCotizacion),
