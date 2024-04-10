@@ -5,7 +5,7 @@ class UsuariosBackend(ModelBackend):
     def authenticate(self, request, email=None, password=None, **kwargs):
         try:
             user = Usuarios.objects.get(email=email, password=password)
-            if user.idestadosusuarios.idestadousuario == 1:  # Verifica si el usuario está activo
+            if user.idestadosusuarios.idestadousuario== 1:  # Verifica si el usuario está activo
                 return user
         except Usuarios.DoesNotExist:
             return None

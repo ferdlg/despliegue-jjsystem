@@ -16,9 +16,9 @@ class Migration(migrations.Migration):
                 ('emailCliente', models.EmailField(max_length=120)),
                 ('nombreCliente', models.CharField(max_length=50)),
                 ('apellidoCliente', models.CharField(max_length=50)),
-                ('numeroDocumentoCliente', models.BigIntegerField(primary_key=True, serialize=False)),
-                ('idEnvio', models.IntegerField()),
-                ('direccionEnvio', models.CharField(max_length=50)),
+                ('numerodocumentoCliente', models.BigIntegerField(primary_key=True, serialize=False)),
+                ('idenvio', models.IntegerField()),
+                ('direccionenvio', models.CharField(max_length=50)),
             ],
             options={
                 'db_table': 'EnviosUsuarios',

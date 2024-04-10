@@ -34,8 +34,8 @@ class CotizacionesCRUD(viewsets.ModelViewSet):
 
     def crear_cotizaciones(self, request):
         if request.method == 'POST':
-            totalcotizacion = request.POST.get('totalCotizacion')
-            descripcioncotizacion = request.POST.get('descripcionCotizacion')
+            totalcotizacion = request.POST.get('totalcotizacion')
+            descripcioncotizacion = request.POST.get('descripcioncotizacion')
             idcliente = request.POST.get('cliente')
             idestadocotizacion = request.POST.get('estado')
 
@@ -105,8 +105,8 @@ class CotizacionesCRUD(viewsets.ModelViewSet):
             cotizacion = Cotizaciones.objects.get(idcotizacion=idcotizacion)
 
             if request.method == 'POST':
-                totalcotizacion = request.POST.get('totalCotizacion')
-                descripcioncotizacion = request.POST.get('descripcionCotizacion')
+                totalcotizacion = request.POST.get('totalcotizacion')
+                descripcioncotizacion = request.POST.get('descripcioncotizacion')
                 idcliente = request.POST.get('cliente')
                 idestadocotizacion = request.POST.get('estado')
 
