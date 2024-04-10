@@ -1,7 +1,7 @@
 # tests/test_models.py
 from django.test import TestCase
 from unittest import TestCase
-from Envios.models import Envios, Tecnicos, Estadosenvios
+from Account.models import Envios, Tecnicos, Estadosenvios
 
 class TestEnvio(TestCase):
 
