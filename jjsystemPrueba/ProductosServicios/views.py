@@ -37,8 +37,8 @@ def producto(request, id):
     producto = Productos.objects.get(idproducto = id)
     return render(request, 'landing/VisualizaciónProducto.html',{'producto':producto})
 
-@login_required
-@role_required(1)
+# @login_required
+# @role_required(1)
 def home(request):
     return render(request, "crudAdmin/IndexProductosServicios.html")
 

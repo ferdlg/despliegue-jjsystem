@@ -38,7 +38,6 @@ urlpatterns = [
     path('envios/', include('Envios.urls')),
     path('pqrsf/', include('Pqrsf.urls')),
     
-     
     path('', landing, name='landing'),
     path('servicios/', servicios, name='servicios'),
     path('productos/', productos, name='productos')
