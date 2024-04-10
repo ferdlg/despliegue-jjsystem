@@ -95,11 +95,11 @@ def createEnvioView(request):
 #@login_required
 #@role_required(1)
 
-def editarEnvio(request, idenvio):
+def editarEnvio(request, idEnvio):
     idenvio = None  # Asignar un valor por defecto
 
     try:
-        envio = Envios.objects.get(idenvio=idenvio)
+        envio = Envios.objects.get(idenvio=idEnvio)
         estados = Estadosenvios.objects.all()
         tecnicos = Tecnicos.objects.all()
     except ObjectDoesNotExist:
@@ -125,14 +125,14 @@ def editarEnvio(request, idenvio):
 
             # Obtener el correo electrónico del cliente asociado al envío
             try:
-                envio_usuario = EnviosUsuarios.objects.get(idenvio=idenvio)
+                envio_usuario = EnviosUsuarios.objects.get(idEnvio=idEnvio)
                 email_cliente = envio_usuario.emailCliente
             except EnviosUsuarios.DoesNotExist:
                 messages.error(request, 'No se pudo encontrar el cliente asociado al envío.')
                 return redirect('homeEnvios')
 
             # Envío de correo electrónico al cliente con el estado actualizado
-            detalles_envio = DetalleEnviosVentas.objects.get(idenvio=idenvio)  # <-- Usar idenvio
+            detalles_envio = DetalleEnviosVentas.objects.get(idenvio=idEnvio)  # <-- Usar idenvio
             idenvio = detalles_envio.idenvio
 
             # Agregar impresión para verificar los parámetros
@@ -153,9 +153,9 @@ def editarEnvio(request, idenvio):
 
 #@login_required
 #@role_required(1)
-def eliminarEnvio(request, idenvio):
+def eliminarEnvio(request, idEnvio):
     try:
-        envio = Envios.objects.get(idenvio=idenvio)
+        envio = Envios.objects.get(idenvio=idEnvio)
     except ObjectDoesNotExist:
         messages['error'] = 'El envío que intenta eliminar no existe.'
         return redirect('homeEnvios')

@@ -30,12 +30,12 @@
                         <form action="{% url 'crear_cotizaciones' %}" method="post">
                             {% csrf_token %}
                             <div class="mb-3">
-                                <label for="totalcotizacion" class="form-label" style="color: black;">Total:</label>
-                                <input type="number" class="form-control" id="totalcotizacion" name="totalcotizacion" required>
+                                <label for="totalCotizacion" class="form-label" style="color: black;">Total:</label>
+                                <input type="number" class="form-control" id="totalCotizacion" name="totalCotizacion" required>
                             </div>
                             <div class="mb-3">
-                                <label for="descripcioncotizacion" class="form-label" style="color: black;">Descripción:</label>
-                                <input type="text" class="form-control" id="descripcioncotizacion" name="descripcioncotizacion" required>
+                                <label for="descripcionCotizacion" class="form-label" style="color: black;">Descripción:</label>
+                                <input type="text" class="form-control" id="descripcionCotizacion" name="descripcionCotizacion" required>
                             </div>
                             <div class="mb-3">
                                 <label for="cliente" class="form-label" style="color: black;">Cliente:</label>

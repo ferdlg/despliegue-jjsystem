@@ -8,12 +8,12 @@
             <form action="{% url 'editar_cotizaciones' idcotizacion=cotizacion.idcotizacion %}" method="post">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label for="totalcotizacion" class="form-label">Total:</label>
-                    <input type="number" class="form-control" id="totalcotizacion" name="totalcotizacion" value="{{ cotizacion.totalcotizacion }}" required>
+                    <label for="totalCotizacion" class="form-label">Total:</label>
+                    <input type="number" class="form-control" id="totalCotizacion" name="totalCotizacion" value="{{ cotizacion.totalcotizacion }}" required>
                 </div>
                 <div class="mb-3">
-                    <label for="descripcioncotizacion" class="form-label">Descripción:</label>
-                    <input type="text" class="form-control" id="descripcioncotizacion" name="descripcioncotizacion" value="{{ cotizacion.descripcioncotizacion }}" required>
+                    <label for="descripcionCotizacion" class="form-label">Descripción:</label>
+                    <input type="text" class="form-control" id="descripcionCotizacion" name="descripcionCotizacion" value="{{ cotizacion.descripcioncotizacion }}" required>
                 </div>
                 <div class="mb-3">
                     <label for="cliente" class="form-label">Cliente:</label>

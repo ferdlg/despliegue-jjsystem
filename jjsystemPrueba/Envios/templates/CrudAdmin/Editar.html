@@ -24,7 +24,7 @@
             </div>
             {% endif %}
 
-            <form action="{% url 'editarEnvio' idenvio=envio.idenvio %}" method="post">
+            <form action="{% url 'editarEnvio' idEnvio=envio.idenvio %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="_method" value="put">
             

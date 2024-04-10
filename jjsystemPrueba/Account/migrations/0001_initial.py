@@ -71,8 +71,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Clientes',
             fields=[
-                ('idcliente', models.AutoField(db_column='idcliente', primary_key=True, serialize=False)),
-                ('direccioncliente', models.CharField(db_column='direccioncliente', max_length=50)),
+                ('idcliente', models.AutoField(db_column='idCliente', primary_key=True, serialize=False)),
+                ('direccioncliente', models.CharField(db_column='direccionCliente', max_length=50)),
             ],
             options={
                 'db_table': 'clientes',
@@ -82,10 +82,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Cotizaciones',
             fields=[
-                ('idcotizacion', models.AutoField(db_column='idcotizacion', primary_key=True, serialize=False)),
-                ('fechacotizacion', models.DateField(db_column='fechacotizacion')),
-                ('totalcotizacion', models.FloatField(db_column='totalcotizacion')),
-                ('descripcioncotizacion', models.TextField(db_column='descripcioncotizacion')),
+                ('idcotizacion', models.AutoField(db_column='idCotizacion', primary_key=True, serialize=False)),
+                ('fechacotizacion', models.DateField(db_column='fechaCotizacion')),
+                ('totalcotizacion', models.FloatField(db_column='totalCotizacion')),
+                ('descripcioncotizacion', models.TextField(db_column='descripcionCotizacion')),
             ],
             options={
                 'db_table': 'cotizaciones',
@@ -192,8 +192,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Envios',
             fields=[
-                ('idenvio', models.AutoField(db_column='idenvio', primary_key=True, serialize=False)),
-                ('direccionenvio', models.CharField(db_column='direccionenvio', max_length=50)),
+                ('idenvio', models.AutoField(db_column='idEnvio', primary_key=True, serialize=False)),
+                ('direccionenvio', models.CharField(db_column='direccionEnvio', max_length=50)),
             ],
             options={
                 'db_table': 'envios',
@@ -204,9 +204,9 @@ class Migration(migrations.Migration):
             name='Enviosentregados',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('idenvio', models.IntegerField(blank=True, db_column='idenvio', null=True)),
+                ('idenvio', models.IntegerField(blank=True, db_column='idEnvio', null=True)),
                 ('fecha', models.DateTimeField(blank=True, null=True)),
-                ('idtecnicoencargado', models.IntegerField(blank=True, db_column='idtecnicoEncargado', null=True)),
+                ('idtecnicoencargado', models.IntegerField(blank=True, db_column='idTecnicoEncargado', null=True)),
                 ('documentotecnico', models.BigIntegerField(blank=True, db_column='documentoTecnico', null=True)),
             ],
             options={
@@ -228,8 +228,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Estadoscotizaciones',
             fields=[
-                ('idestadocotizacion', models.AutoField(db_column='idestadocotizacion', primary_key=True, serialize=False)),
-                ('nombreestadocotizacion', models.CharField(db_column='nombreestadocotizacion', max_length=20)),
+                ('idestadocotizacion', models.AutoField(db_column='idEstadoCotizacion', primary_key=True, serialize=False)),
+                ('nombreestadocotizacion', models.CharField(db_column='nombreEstadoCotizacion', max_length=20)),
             ],
             options={
                 'db_table': 'estadoscotizaciones',
@@ -239,8 +239,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Estadosenvios',
             fields=[
-                ('idestadoenvio', models.AutoField(db_column='idestadoenvio', primary_key=True, serialize=False)),
-                ('nombreestadoenvio', models.CharField(db_column='nombreestadoenvio', max_length=20)),
+                ('idestadoenvio', models.AutoField(db_column='idEstadoEnvio', primary_key=True, serialize=False)),
+                ('nombreestadoenvio', models.CharField(db_column='nombreEstadoEnvio', max_length=20)),
             ],
             options={
                 'db_table': 'estadosenvios',
@@ -261,8 +261,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Estadosusuarios',
             fields=[
-                ('idestadousuario', models.AutoField(db_column='idestadousuario', primary_key=True, serialize=False)),
-                ('nombreestadousuario', models.CharField(db_column='nombreestadousuario', max_length=50)),
+                ('idestadousuario', models.AutoField(db_column='idEstadoUsuario', primary_key=True, serialize=False)),
+                ('nombreestadousuario', models.CharField(db_column='nombreEstadoUsuario', max_length=50)),
             ],
             options={
                 'db_table': 'estadosusuarios',
@@ -332,8 +332,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Roles',
             fields=[
-                ('idrol', models.AutoField(db_column='idrol', primary_key=True, serialize=False)),
-                ('nombrerol', models.CharField(blank=True, db_column='nombrerol', max_length=20, null=True)),
+                ('idrol', models.AutoField(db_column='idRol', primary_key=True, serialize=False)),
+                ('nombrerol', models.CharField(blank=True, db_column='nombreRol', max_length=20, null=True)),
             ],
             options={
                 'db_table': 'roles',
@@ -365,7 +365,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Tecnicos',
             fields=[
-                ('idtecnico', models.AutoField(db_column='idtecnico', primary_key=True, serialize=False)),
+                ('idtecnico', models.AutoField(db_column='idTecnico', primary_key=True, serialize=False)),
                 ('especialidad', models.CharField(max_length=50)),
             ],
             options={
@@ -387,12 +387,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Usuarios',
             fields=[
-                ('numerodocumento', models.BigIntegerField(db_column='numerodocumento', primary_key=True, serialize=False)),
+                ('numerodocumento', models.BigIntegerField(db_column='numeroDocumento', primary_key=True, serialize=False)),
                 ('nombre', models.CharField(blank=True, max_length=50, null=True)),
                 ('apellido', models.CharField(blank=True, max_length=50, null=True)),
                 ('email', models.EmailField(blank=True, max_length=120, null=True)),
                 ('password', models.CharField(blank=True, max_length=100, null=True)),
-                ('numerocontacto', models.FloatField(blank=True, db_column='numerocontacto', null=True)),
+                ('numerocontacto', models.FloatField(blank=True, db_column='numeroContacto', null=True)),
                 ('last_login', models.DateTimeField(blank=True, null=True)),
             ],
             options={
