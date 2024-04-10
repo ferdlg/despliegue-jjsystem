@@ -160,7 +160,7 @@ class CotizacionesProductos(models.Model):
     class Meta:
         managed = False
         db_table = 'cotizaciones_productos'
-        primary_key = ('idcotizacion', 'idproducto') 
+        
 
 
 class CotizacionesServicios(models.Model):
