@@ -99,6 +99,7 @@ class cronogramatecnicosCRUD(viewsets.ModelViewSet):
                 eventos.append({
                 'title': cita.descripcioncita,
                 'start': fecha_hora_inicio.strftime('%Y-%m-%d %H:%M:%S'),
+                'color':'red'
                 })
             fechas_disponibles=obtener_disponibilidad_tecnico(idtecnico=idtecnico)
             for fecha_disponible in fechas_disponibles:
