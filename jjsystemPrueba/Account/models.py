@@ -154,14 +154,12 @@ class Productos(models.Model):
 
 class CotizacionesProductos(models.Model):
     idcotizacion = models.ForeignKey(Cotizaciones, models.CASCADE, db_column='idcotizacion', blank=True, null=True)  # Field name made lowercase.
-    idproducto = models.ForeignKey(Productos, models.CASCADE, db_column='idproducto', blank=True, null=True)  # Field name made lowercase.
+    idproducto = models.ForeignKey('Productos', models.CASCADE, db_column='idproducto', blank=True, null=True)  # Field name made lowercase.
     cantidad = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'cotizaciones_productos'
-        
-
 
 class CotizacionesServicios(models.Model):
     idcotizacion = models.ForeignKey(Cotizaciones, models.CASCADE, db_column='idcotizacion', blank=True, null=True)  # Field name made lowercase.

@@ -138,6 +138,7 @@ CREATE TABLE IF NOT EXISTS Cotizaciones(
 );
 
 CREATE TABLE IF NOT EXISTS Cotizaciones_Productos(
+    id SERIAL PRIMARY KEY,
     idCotizacion INT,
     idProducto INT,
     cantidad INT,
