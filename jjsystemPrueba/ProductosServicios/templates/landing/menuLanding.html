@@ -51,7 +51,7 @@
             <button class="btn btn-info"><a class="navbar-brand" href="{% url 'historial_compras' %}">Mis compras</a></button>
             <button class="btn btn-info"><a class="navbar-brand" href="{% url 'vista_cliente' %}">Mis envios</a></button>
             {% else %}
-            <a href="#about_us" class="btn btn-info">Acerca de nosotros<a/>
+            <a href="{% url 'landing' %}#about_us" class="btn btn-info">Acerca de nosotros<a/>
             <button class="btn btn-info"data-bs-toggle="modal" data-bs-target="#exampleModal">PQRSF</a></button> -->
             {% endif %} 
             {% if user.is_authenticated and user.idrol.idrol == 2 %}
