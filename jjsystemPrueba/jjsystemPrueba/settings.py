@@ -30,9 +30,6 @@ DEBUG = 'RENDER' not in os.environ
 ALLOWED_HOSTS = ['https://jjsystem.onrender.com/','127.0.0.1','localhost']
 CSRF_TRUSTED_ORIGINS = ['https://jjsystem.onrender.com/']
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000'
-]
 
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
@@ -48,6 +45,7 @@ if RENDER_EXTERNAL_HOSTNAME:
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.postgres',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
