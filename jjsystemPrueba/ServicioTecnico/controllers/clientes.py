@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 class ClientesCRUD(viewsets.ModelViewSet):
-    queryset = Clientes.objects.all()
+    queryset = Clientes.objects.all().order_by('numerodocumento')
     serializer_class = ClientesSerializer
 
     def listar_clientes(self, request):

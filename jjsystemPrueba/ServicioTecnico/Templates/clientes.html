@@ -21,7 +21,6 @@
         <table class="table data-table table-bordered">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Apellido</th>
                     <th scope="col">No. Documento</th>
@@ -36,7 +35,6 @@
             <tbody>
                 {% for cliente in clientes %}
                 <tr>
-                    <td>{{cliente.idcliente}}</td>
                     <td>{{cliente.numerodocumento.nombre}}</td>
                     <td>{{cliente.numerodocumento.apellido}}</td>
                     <td>{{cliente.numerodocumento.numerodocumento}}</td>
