@@ -1,0 +1,94 @@
+        :root {
+        --color-primary: rgba(19, 46, 67, 1); /* Color principal */
+        --color-white: #ffffff; /* Color blanco */
+        --color-selected: rgba(36, 126, 194, 0.763);
+        --color-white-second:rgb(226, 226, 226); /* Color cuando el elemento está seleccionado */
+    }
+    body {
+        font-family: 'Montserrat', sans-serif;
+        color: var(--light);
+    }
+  /* Estilo para el navbar */
+    .navbar{
+        background-color: var( --color-white-second) !important; /* Color de fondo */
+        border-bottom: 1px   var(--color-primary) ; /* Borde inferior azul */
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-link img {
+        width: 30px; 
+        height: 30px; 
+    }
+    
+        .navbar .navbar-brand,
+        .navbar .nav-link {
+        color: var(--color-primary) !important; /* Color azul para el texto */    
+        margin-right: 100px;
+
+    }
+    .nav-item{
+        margin-right:15px;
+        text-decoration: none;
+        list-style: none;
+    }
+    .nav-item .dropdown-menu{
+        margin-right: 70px;
+    }
+    
+    .offcanvas {
+        background-color: var(--color-primary) !important; /* Color de fondo */
+        max-width: 300px;
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+    
+  /* Estilo para el botón del toggler */
+    .navbar-toggler {
+        background-color: var(--color-primary) !important; /* Fondo azul */
+    }
+    
+  /* Estilo para el texto del navbar-brand */
+    .navbar-brand {
+        color: var(--color-white) !important; /* Color del texto */
+    }
+  /* Centrar los elementos del canvas */
+    .offcanvas-body {
+        display: flex;
+    }
+  /* Estilo para el texto de la ventana offcanvas */
+    .offcanvas .nav-link {
+        color: var(--color-white) !important; /* Color del texto */
+        padding: 13px;
+        margin-right: 10px; /* Espacio entre elementos del menú */
+        margin-top: 25px;
+        border-radius: 50px;
+    }
+    
+  /* Estilo para el elemento seleccionado */
+    .offcanvas .nav-link.active,
+    .offcanvas .nav-link:focus,
+    .offcanvas .nav-link:hover {
+        background-color: var(--color-selected) !important;
+        border-radius: 50px; /* Color de fondo */
+    }
+  /* Establecer el color de fondo del menú desplegable */
+    .dropdown-menu {
+        background-color: var(--color-primary) !important; /* Utiliza el color principal */
+    }
+
+    /* Ocultar la flecha hacia abajo */
+    .dropdown-menu::after {
+        display: none;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: var(--color-primary) !important; /* Color de fondo */
+        text-align: center;
+        padding: 10px 0; /* Espaciado interno */
+    }
+    .text-muted {
+        color: var(--color-white) !important;
+    }

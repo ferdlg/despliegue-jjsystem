@@ -1,0 +1,76 @@
+/*Estilo del contenido de la página*/
+
+.main{
+    padding-top: 13rem;
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
+.product_container h1{
+    padding-top: 1rem;
+    padding-bottom: 3rem;
+    text-align: center;
+}
+
+.product_sellected img{
+    width: 30rem;
+}
+
+.product_sellected{
+    display: flex;
+    font-weight: bold;
+}
+
+.product_info .product_title{
+    font-size: medium;
+    padding-bottom: 2rem;
+}
+
+.product_info .product_description h3{
+    color: #848A93;
+    padding-bottom: 1rem;
+}
+
+.product_info .product_description p{
+    color: #263465;
+    padding-bottom: 3rem;
+}
+
+.product_info .product_characteristics h3{
+    color: #848A93;
+    padding-bottom: 1rem;
+}
+
+    .product_characteristics .characteristics_table{
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 3rem;
+    }
+
+/*Estilo de botones de la página*/
+
+.product_buttons{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 3rem;
+}
+
+    .product_buttons button{
+        cursor: pointer;
+        color: #FFFFFF;
+        background-color: #018ABE;
+        padding: 1.3rem;
+        border: 0;
+        border-radius: 1rem;
+        transition: all 0.4s linear;
+    }
+
+    .product_buttons button a{
+        color: #FFFFFF;
+        text-decoration: none;
+        
+    }
+
+    .product_buttons button:hover{
+        background: #263465;
+    }

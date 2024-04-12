@@ -1,0 +1,39 @@
+:root {
+    --primary: rgba(19, 46, 67, 1);
+    --light: #FFFFFF;
+    --color-botones: rgba(21, 107, 0, 0.772);
+    --color-botones-hover: rgba(0, 53, 6, 0.833);
+}
+
+.contenedor-productos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centra horizontalmente las tarjetas */
+    padding: 2%;
+    margin-top: 60px; /* Ajusta el margen superior para evitar que las tarjetas se oculten debajo del navbar */
+}
+.contenedor-productos a{
+    background-color: var(--color-botones);
+    border-color: var(--color-botones);
+}
+.contenedor-productos a:hover{
+    background-color: var(--color-botones-hover);
+    border-color: var(--color-botones-hover);
+}
+
+.contenedor-productos .card {
+    flex: 0 1 calc(30% - 20px);
+    margin: 10px;
+}
+    .pagination .page-link {
+        color: #a4b0f3; /* Cambia el color del texto de los enlaces */
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: #2b2f68; /* Cambia el color del fondo del enlace activo */
+        border-color: #2b2f68; /* Cambia el color del borde del enlace activo */
+    }
+    
+    .pagination .page-link:focus {
+        box-shadow: 0 0 0 0.2rem rgba(8, 0, 255, 0.25); /* Cambia el color del enlace enfocado */
+    }
