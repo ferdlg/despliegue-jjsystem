@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'RENDER' not in os.environ
 
-ALLOWED_HOSTS = ['https://jjsystem.onrender.com/','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['jjsystem.onrender.com/','127.0.0.1','localhost']
 CSRF_TRUSTED_ORIGINS = ['https://jjsystem.onrender.com/']
 
 CORS_ALLOWED_ORIGINS = [
@@ -180,7 +180,7 @@ EMAIL_HOST_PASSWORD = 'oybttoqvhrehynlq'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # This production code might break development mode, so we check whether we're in DEBUG mode
 if not DEBUG:
