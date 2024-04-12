@@ -16,7 +16,7 @@ class ventasCRUD(viewsets.ModelViewSet):
     #cliente Historial de compras 
     def historial_compras(self,request):
         numerodocumento = request.user.numerodocumento        
-        compras_queryset = Ventas.objects.filter(idcotizacion__idcliente__numerodocumento=numerodocumento).order_by('-fechaventa')
+        compras_queryset = Ventas.objects.filter(idcotizacion__idcliente__numerodocumento=numerodocumento)
         paginator = Paginator(compras_queryset, 10)
         page_number = request.GET.get('page')
 
