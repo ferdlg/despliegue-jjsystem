@@ -18,7 +18,7 @@ body{
 }
 @font-face {
     font-family: "Berlin-sans-serif";
-    src: url("../fuentes/Berlin-sans-serif.ttf");
+    src: url("../fuentes_account/Berlin-sans-serif.ttf");
 }
 .modal-title{
     font-family:"Berlin-sans-serif";
