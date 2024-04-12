@@ -15,7 +15,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = 'RENDER' not in os.environ
 DEBUG = False
-ALLOWED_HOSTS = ['jjsystem.onrender.com','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['jjsystem-production.up.railway.app/','jjsystem.onrender.com','127.0.0.1','localhost']
 CSRF_TRUSTED_ORIGINS = ['https://jjsystem-production.up.railway.app/']
 
 
