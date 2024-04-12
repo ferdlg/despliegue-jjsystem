@@ -16,7 +16,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 DEBUG = 'RENDER' not in os.environ
 
 ALLOWED_HOSTS = ['jjsystem.onrender.com','127.0.0.1','localhost']
-CSRF_TRUSTED_ORIGINS = ['jjsystem.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://jjsystem.onrender.com/']
 
 
 
