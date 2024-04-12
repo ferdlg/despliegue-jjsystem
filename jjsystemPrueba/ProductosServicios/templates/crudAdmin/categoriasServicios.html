@@ -1,0 +1,106 @@
+{% extends "menu.html" %}
+{% block titulo %} Servicios {% endblock %}
+{% block contenido %}
+<div class="content">
+    <nav class="available_prod">
+        <div class="container">
+            <div class="row">
+                <div class="allowed_prod">
+                    <h2 class="font-weight-bold text-center text-lg-left">Categorias Servicios</h2>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agregar-categoria">Agregar categoria</button>
+    <!-- Modal de agregar  -->
+    <div class="modal fade" id="agregar-categoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: black;">Agregar categoria</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'createCategoriaServicio' %}" method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="nombrecategoria" class="form-label" style="color: black;">Nombre de la Categoría:</label>
+                            <input type="text" class="form-control" id="nombrecategoria" name="nombrecategoria" required>
+                        </div>
+                    
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="s-data-table">
+        <table class="table data-table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th style="width: 5%;"></th>
+                    <th style="width: 5%;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for categoria in categorias %}
+                <tr>
+                    <td>{{categoria.idcategoriaservicio}}</td>
+                    <td>{{categoria.nombrecategoria}}</td>
+                    <td> 
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editar-servicio-{{categoria.idcategoriaservicio}}">Editar</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminar-servicio-{{ categoria.idcategoriaservicio }}" tabindex="-1" aria-labelledby="eliminarModalLabel{{ servicio.idcategoriaservicio }}">Eliminar</button>
+                    </td>
+                </tr>
+                <!-- Modal de editar -->
+                <div class="modal fade" id="editar-servicio-{{categoria.idcategoriaservicio}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: black;">Editar Categoria</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{% url 'editarCategoriaServicio' idcategoriaservicio=categoria.idcategoriaservicio %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="nombrecategoria" class="form-label" style="color: black;">Nombre de la Categoría:</label>
+                                        <input type="text" class="form-control" id="nombrecategoria" name="nombrecategoria" value="{{categoria.nombrecategoria}}" required>
+                                    </div>
+                                
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal eliminar -->
+                <div class="modal fade" id="eliminar-servicio-{{categoria.idcategoriaservicio}}" tabindex="-1" aria-labelledby="eliminarModalLabel{{servicio.idcategoriaservicio}}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="eliminarModalLabel{{servicio.idcategoriaservicio}}" style="color: black;">Confirmar Eliminación</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" style="color: black;">
+                                ¿Estás seguro de que deseas eliminar el servicio "{{servicio.nombrecategoria}}"?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <a href="{% url 'eliminarCategoriaServicio' idcategoriaservicio=categoria.idcategoriaservicio %}" class="btn btn-danger">Eliminar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+{% endblock %}

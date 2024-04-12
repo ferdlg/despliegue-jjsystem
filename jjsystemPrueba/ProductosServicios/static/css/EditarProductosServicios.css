@@ -1,0 +1,54 @@
+/* Centrar el formulario en la página */
+.editar-producto main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+/* Estilos para el formulario */
+.editar-producto .container {
+    background-color: #f8f9fa;
+    margin-top: 65px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 800px; /* Ancho máximo del formulario */
+    color: rgba(0, 0, 0, 0.991);
+}
+
+.editar-producto h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Ajuste de espaciado entre los elementos del formulario */
+.editar-producto .mb-3.row {
+    margin-bottom: 15px;
+}
+
+/* Estilos para los botones */
+.editar-producto .btn {
+    margin-right: 10px;
+}
+
+.editar-producto .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.editar-producto .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.editar-producto .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.editar-producto .btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}

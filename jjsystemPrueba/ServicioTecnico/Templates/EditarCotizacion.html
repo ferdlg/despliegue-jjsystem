@@ -1,0 +1,41 @@
+{% extends "menu.html" %}
+{% block titulo %} Editar Cotización {% endblock %}
+{% block contenido %}
+<div class="contenido" style="padding: 10px; margin-bottom: 20px;">
+    <main class="editar-producto">
+        <div class="container py-4">
+            <h2>Editar Cotización</h2>
+            <form action="{% url 'editar_cotizaciones' idcotizacion=cotizacion.idcotizacion %}" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="totalcotizacion" class="form-label">Total:</label>
+                    <input type="number" class="form-control" id="totalcotizacion" name="totalcotizacion" value="{{ cotizacion.totalcotizacion }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="descripcioncotizacion" class="form-label">Descripción:</label>
+                    <input type="text" class="form-control" id="descripcioncotizacion" name="descripcioncotizacion" value="{{ cotizacion.descripcioncotizacion }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="cliente" class="form-label">Cliente:</label>
+                    <select class="form-select" id="cliente" name="cliente" required>
+                        {% for cliente in clientes %}
+                        <option value="{{ cliente.idcliente }}" {% if cliente.idcliente == cotizacion.idcliente_id %} selected {% endif %}>{{ cliente.numerodocumento.nombre }} {{ cliente.numerodocumento.apellido }} {{ cliente.numerodocumento.numerodocumento }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="estado" class="form-label">Estado:</label>
+                    <select class="form-select" id="estado" name="estado" required>
+                        {% for estado in estados %}
+                        <option value="{{ estado.idestadocotizacion }}" {% if estado.idestadocotizacion == cotizacion.idestadocotizacion_id %} selected {% endif %}>{{ estado.nombreestadocotizacion }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                <a href="{% url 'ver_cotizaciones' %}" class="btn btn-secondary">Cancelar</a>
+            </form>
+            <br>
+        </div>
+    </main>
+</div>
+{% endblock %}

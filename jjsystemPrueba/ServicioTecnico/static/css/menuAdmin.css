@@ -1,0 +1,30 @@
+:root {
+    --color-primary: rgba(19, 46, 67, 1); /* Color principal */
+    --color-white: #ffffff; /* Color blanco */
+    --color-selected: rgba(36, 126, 194, 0.763);
+    --color-white-second:rgb(226, 226, 226); /* Color cuando el elemento está seleccionado */
+}
+body {
+    height: 100%;
+    background-color: var(--color-selected) ;
+}
+
+.card {
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+a{
+    text-decoration: none !important;
+    color: black !important;
+}

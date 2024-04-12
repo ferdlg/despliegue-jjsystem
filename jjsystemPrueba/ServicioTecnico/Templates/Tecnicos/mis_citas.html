@@ -1,0 +1,143 @@
+{% extends "menu.html" %}
+{% block titulo %} Citas {% endblock %}
+{% block contenido %}
+<div class="content">
+    <div class="row">
+        <div class="col-md-6">
+            <form id="filtro-form" method="get">
+                <div class="form-group">
+                    <label for="fecha">Filtrar por fecha:</label>
+                    <input type="date" id="fecha" name="fecha" class="form-control">
+                </div>
+                <button type="submit" style="display: none;"></button> <!-- Botón oculto para enviar el formulario -->
+                {% if citas_filtradas %}
+                <table class="table  table-striped" style="margin-top: 10px; background-color: rgba(0, 128, 0, 0.5) !important;">
+                    <caption>Citas programadas para {{fecha_obj}}</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">No. Cita</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Hora</th>
+                            <th scope="col">Dirección</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cita in citas_filtradas %}
+                        <tr>
+                            <td>{{ cita.idcita }}</td>
+                            <td>{{ cita.descripcioncita }}</td>
+                            <td>{{ cita.fechacita }}</td>
+                            <td>{{ cita.horacita }}</td>
+                            <td>{{ cita.direccioncita }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="alert alert-info" role="alert" style="margin-top: 10px;">
+                    No hay citas programadas para la fecha ingresada.
+                </div>
+                {% endif %}
+            </form>
+        </div>
+        <h5 style="color: black;">Citas Agendadas</h5>
+        <table class="table table-striped" >
+            <thead>
+                <tr class="table-info">
+                    <th scope="col">No. Cita</th>
+                    <th scope="col">Descripcion</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Hora</th>
+                    <th scope="col">Direccion</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Estado cita</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cita in todas_las_citas %}
+                <tr class="cita-row" data-cita-id="{{ cita.idcita }}"">
+                    <td>{{ cita.idcita }}</td>
+                    <td>{{ cita.descripcioncita }}</td>
+                    <td>{{ cita.fechacita }}</td>
+                    <td>{{ cita.horacita }}</td>
+                    <td>{{ cita.direccioncita }}</td>
+                    <td>{{ cita.idcotizacion.idcliente.numerodocumento.nombre }} {{ cita.idcotizacion.idcliente.numerodocumento.apellido }}</td>
+                    <td>{{ cita.idestadocita.nombreestadocita }}</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#cambiarEstado">
+                            Cambiar estado
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="cambiarEstado" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Cambiar estado</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Formulario para seleccionar el estado de la cita -->
+                                        <form id="cambiarEstadoForm" action="{% url 'cambiar_estado_cita' cita.idcita %}" method="POST">
+                                            {% csrf_token %}
+                                            <div class="mb-3">
+                                                <label for="idestadocita" class="form-label">Estado de la Cita</label>
+                                                <select class="form-select" id="idestadocita" name="idestadocita">
+                                                    <option value="{{ cita.idestadocita.idestadocita }}">{{ cita.idestadocita.nombreestadocita }}</option>
+                                                    <option value="{{ estado.idestadocita }}">{{ estado.nombreestadocita }}</option>
+                                                </select>
+                                            </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" form="cambiarEstadoForm" class="btn btn-primary">Cambiar</button>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <h4 style="color: black;">Datos de contacto </h4>
+    </div>
+    <div class="col-md-12" style="display: flex; flex-wrap: wrap; margin-right: 10px;">
+        {% for cita_cliente in cliente_cita %}
+        <div class="col-lg-4 col-md-6 col-sm-12" style="margin-bottom: 10px;">
+            <div class="card" style="max-height: 200px;">
+                <div class="card-body" style="padding: 10px; background-color: rgba(0, 128, 0, 0.123);">
+                    <div class="card-title">{{ cita_cliente.cliente.numerodocumento.nombre }} {{ cita_cliente.cliente.numerodocumento.apellido }}</div>
+                    <p>Email: {{ cita_cliente.cliente.numerodocumento.email }}</p>
+                    <p>Número de contacto: {{ cita_cliente.cliente.numerodocumento.numerocontacto }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="col-md-12">
+    </div>
+</div>
+
+<script>
+    var timeoutId; // Variable para almacenar el ID del temporizador
+
+    // Función para enviar el formulario después de 4 segundos
+    function enviarFormulario() {
+        document.getElementById('filtro-form').submit();
+    }
+
+    // Detectar cambios en el campo de fecha
+    document.getElementById('fecha').addEventListener('input', function() {
+        // Cancelar el temporizador anterior si existe
+        clearTimeout(timeoutId);
+        // Configurar un nuevo temporizador para enviar el formulario después de 4 segundos
+        timeoutId = setTimeout(enviarFormulario, 1000); // 4000 milisegundos = 4 segundos
+    });
+</script>
+{% endblock %}

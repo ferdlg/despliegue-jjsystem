@@ -1,0 +1,100 @@
+{% extends "menu.html" %}
+{% block titulo %} Productos {% endblock %}
+{% block contenido %}
+    <main class="editar-producto" style="margin-bottom: 50px;">
+        <div class="container py-4">
+            <h2>Crear Producto</h2>
+
+            {% if form.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <ul>
+                    {% for error in form.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+            <form id="createProductoForm" action="{% url 'createProducto' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="_method" value="put">
+                <div class="mb-3 row">
+                    <label for="nombre" class="col-sm-2 col-form-label">Nombre Producto:</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="nombre" id="nombre" value="{{ producto.nombreproducto }}" required>
+                    </div>
+                </div>
+            
+                <div class="mb-3 row">
+                    <label for="descripcion" class="col-sm-2 col-form-label">Descripción Producto:</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="descripcion" id="descripcion" value="{{ producto.descripcionproducto }}" required>
+                    </div>
+                </div>
+            
+                <div class="mb-3 row">
+                    <label for="precio" class="col-sm-2 col-form-label">Precio Producto:</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="precio" id="precio" value="{{ producto.precioproducto }}" required>
+                    </div>
+                </div>
+            
+                <div class="mb-3 row">
+                    <label for="cantidad" class="col-sm-2 col-form-label">Cantidad:</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="cantidad" id="cantidad" value="{{ producto.cantidad }}" required>
+                    </div>
+                </div>
+            
+                <div class="mb-3 row">
+                    <label for="imagen" class="col-sm-2 col-form-label">Imagen Producto:</label>
+                    <div class="col-sm-5">
+                        <input type="file" class="form-control" name="imagen" id="imagenInput" multiple required>
+                    </div>
+                </div>
+                    
+                <div class="mb-3 row">
+                    <label for="categoria" class="col-sm-2 col-form-label">Categoría Producto:</label>
+                    <div class="col-sm-5">
+                        <select name="categoria" id="categoria" class="form-select" required>
+                            <option value="">Seleccione la categoría:</option>
+                            {% for categoria in categorias %}
+                            <option value="{{ categoria.idcategoriaproducto}}" {% if categoria.idcategoriaproducto == producto.idcategoriaproducto.idcategoriaproducto %} selected {% endif %}>{{ categoria.nombrecategoria }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            
+                <div class="mb-3 row">
+                    <label for="proveedor" class="col-sm-2 col-form-label">Proveedor:</label>
+                    <div class="col-sm-5">
+                        <select name="proveedor" id="proveedor" class="form-select" required>
+                            <option value="">Seleccione el proveedor:</option>
+                            {% for proveedor in proveedores %}
+                            <option value="{{ proveedor.idproveedorproducto}}" {% if proveedor.idproveedorproducto == producto.idproveedorproducto.idproveedorproducto %} selected {% endif %}>{{ proveedor.nombreproveedor }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            
+                
+                <a href="{% url 'homeProductos' %}" class="btn btn-secondary">Regresar</a>
+                <button type="submit" class="btn btn-success">Guardar</button>
+            </form>
+            
+            <script>
+                function previewImage(input) {
+                    var preview = document.getElementById('imagen-preview');
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            preview.src = e.target.result;
+                            preview.style.display = 'block';
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+            </script>
+        </div>
+    </main>
+{% endblock %}

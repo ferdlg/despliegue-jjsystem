@@ -1,0 +1,54 @@
+:root {
+    --primary: #0C3759;
+    --secondary: #4BACD1;
+    --light: #FFFFFF;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--light);
+}
+
+/* Estilos para la sección de las citas */
+.content {
+    margin: 4%; 
+    bottom: 10px;
+}
+
+.available_prod {
+    background-color: var(--primary);
+    border-radius: 20px;
+    margin-bottom: 10px;
+    justify-items: center;
+}
+
+.allowed_prod h2 {
+    margin: 0; /* Eliminar el margen interno de la etiqueta h2 */
+    font-weight: bold; /* Texto en negrita */
+}
+
+/* Estilos para la tabla de citas */
+.table {
+    width: 100%; /* Ancho completo */
+    border-collapse: collapse; /* Colapso de bordes de la tabla */
+}
+
+.table th,
+.table td {
+    padding: 8px; /* Relleno interno */
+    border: 1px solid #ddd; /* Borde delgado */
+}
+
+.table th {
+    background-color: #f2f2f2; /* Color de fondo para las cabeceras de las columnas */
+    text-align: left; /* Alineación del texto a la izquierda */
+}
+
+/* Estilos para los botones */
+.btn-create {
+    margin: 0px, 10px, 2px, 0px; /* Margen superior */
+}
+
+.btn-cancelar {
+    margin-right: 10px; /* Margen derecho */
+}

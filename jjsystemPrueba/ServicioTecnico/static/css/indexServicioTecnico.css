@@ -1,0 +1,43 @@
+:root {
+    --primary: rgba(19, 46, 67, 1);
+    --light: #FFFFFF;
+    --color-botones:rgba(21, 107, 0, 0.772);
+    --color-botones-hover:rgba(0, 53, 6, 0.833);
+}
+
+.contenedor-cotizaciones {
+    display: flex;
+    flex-direction: column; 
+    justify-content: space-around;
+    padding: 2%; 
+}
+.contenedor-cotizaciones .card{
+    background-color: rgba(146, 154, 181, 0.315);
+    margin-top: 4%;
+}
+.contenedor-cotizaciones a {
+    background-color: var(--color-botones);
+    border-color: var(--color-botones);
+}
+.contenedor-cotizaciones a:hover{
+    background-color: var(--color-botones-hover);
+    border-color: var(--color-botones-hover);
+}
+.contenedor-citas {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: space-around;
+    padding: 2%; 
+}
+.contenedor-citas a{
+    background-color: var(--color-botones);
+    border-color: var(--color-botones);
+}
+.contenedor-citas a:hover{
+    background-color: var(--color-botones-hover);
+    border-color: var(--color-botones-hover);
+}
+.contenedor-citas .card {
+    flex: 0 1 calc(30% - 20px); 
+    margin: 10px; 
+}

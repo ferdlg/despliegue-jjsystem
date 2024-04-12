@@ -1,0 +1,107 @@
+{% extends "menu.html" %}
+{% block titulo %} Proveedores {% endblock %}
+{% block contenido %}
+<div class="content">
+    <nav class="available_prod">
+        <div class="container">
+            <div class="row">
+                <div class="allowed_prod">
+                    <h2 class="font-weight-bold text-center text-lg-left">Proveedores</h2>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agregar-proveedor">Agregar Proveedor</button>
+    <!-- Modal de agregar proveedor -->
+    <div class="modal fade" id="agregar-proveedor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: black;">Agregar Proveedor</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'crearProveedor' %}" method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="nombreProveedor" class="form-label" style="color: black;">Nombre del Proveedor:</label>
+                            <input type="text" class="form-control" id="nombreProveedor" name="nombreProveedor" required>
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin del modal de agregar proveedor -->
+    <section class="s-data-table">
+        <table class="table data-table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for proveedor in proveedores %}
+                <tr>
+                    <td>{{proveedor.idproveedorproducto}}</td>
+                    <td>{{proveedor.nombreproveedor}}</td>
+                    <td> 
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editar-proveedor-{{proveedor.idproveedorproducto}}">Editar</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminar-proveedor-{{ proveedor.idproveedorproducto }}" tabindex="-1" aria-labelledby="eliminarModalLabel{{ proveedor.idproveedorproducto }}">Eliminar</button>
+                    </td>
+                </tr>
+                <!-- Modal de editar proveedor -->
+                <div class="modal fade" id="editar-proveedor-{{proveedor.idproveedorproducto}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: black;">Editar Proveedor</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{% url 'editarProveedor' idproveedorproducto=proveedor.idproveedorproducto %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="nombreProveedor" class="form-label" style="color: black;">Nombre del Proveedor:</label>
+                                        <input type="text" class="form-control" id="nombreProveedor" name="nombreProveedor" value="{{ proveedor.nombreproveedor }}" required>
+                                    </div>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fin del modal de editar proveedor -->
+                <!-- Modal eliminar proveedor -->
+                <div class="modal fade" id="eliminar-proveedor-{{ proveedor.idproveedorproducto }}" tabindex="-1" aria-labelledby="eliminarModalLabel{{ proveedor.idproveedorproducto }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="eliminarModalLabel{{ proveedor.idproveedorproducto }}" style="color: black;">Confirmar Eliminación</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" style="color: black;">
+                                ¿Estás seguro de que deseas eliminar el proveedor "{{ proveedor.nombreproveedor }}"?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <a href="{% url 'eliminarProveedor' idproveedorproducto=proveedor.idproveedorproducto %}" class="btn btn-danger">Eliminar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fin del modal de eliminar proveedor -->
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "landing/menuLanding.html" %}
+{% block titulo %} Servicios {% endblock %}
+{% load static %} 
+{% block contenido %}
+    <div class="contenido">
+        <div class="contenido-servicios">
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{% static 'images/landing/mantenimiento1.jpg' %}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Servicios de Instalacion</h5>
+                            <p class="card-text">Este servicio está pensado para que puedas instalar los productos que quieras comprar en la sección de Venta de productos. Si ya creaste una lista de cotización, agrega este servicio en la lista para indicar que los quieres instalar con nosotros.</p>
+                            <a href="{% url 'serviciosLanding' categoria=2 %}" class="btn btn-info">Ver servicios</a> <!-- Botón Agregar a cotización -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{% static 'images/analisis_cita.jpeg' %}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Servicio de análisis</h5>
+                            <p class="card-text">Si requieres un sistema de seguridad electrónica pero no sabes qué productos necesitas, nosotros brindamos un servicio de análisis en el que nuestros técnicos evalúan los requerimientos de tu caso específico.</p>
+                            <a href="{% url 'serviciosLanding' categoria=3 %}" class="btn btn-info">Ver servicios</a> <!-- Botón Agregar a cotización -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{% static 'images/landing/mantenimiento3.jpeg' %}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Servicios de Mantenimiento </h5>
+                            <p class="card-text">Si cuentas con productos de seguridad electrónica que presenten fallas o quieres que sean revisados por profesionales, nuestros técnicos están dispuestos a ayudarte.</p>
+                            <a href="{% url 'serviciosLanding' categoria=4 %}" class="btn btn-info">Ver servicios</a> <!-- Botón Agregar a cotización -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambio de Estado Envío</title>
+    <style>
+        /* Estilos CSS para el correo */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .header {
+            padding-top: 5px;
+            background-color: rgba(255, 140, 0, 0.71);
+            text-align: center;
+            padding-bottom: 10px;
+        }
+        .header h1{
+            text-align: center;
+            padding: 5px;
+        }
+        .portada{
+            padding-top: 5px;
+            justify-items: center;
+            text-align: center;
+        }
+        .portada img{
+            justify-content: center;
+            max-width: 50%;
+            height: 50%;
+        }
+        .saludo {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .detalle {
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado -->
+        <div class="header">
+            <h1>Cambio de Estado Envío</h1>
+        </div>
+        <!-- Imagen de portada -->
+        <div class="portada">
+            {% if envio.idestadoenvio == 1 %}
+                <img src="{% static 'imagen_envio_estado1.jpg' %}" alt="Estado 1" style="width: 100%;">
+            {% elif envio.idestadoenvio == 2 %}
+                <img src="{% static 'imagen_envio_estado2.jpg' %}" alt="Estado 2" style="width: 100%;">
+            {% elif envio.idestadoenvio == 3 %}
+                <img src="{% static 'imagen_envio_estado3.jpg' %}" alt="Estado 3" style="width: 100%;">
+            {% endif %}
+        </div>
+        <!-- Saludo -->
+        <div class="saludo">
+            <p>Hola,</p>
+            <p>¡El estado de tu envío ha sido actualizado a: {{ envio.idestadoenvio.nombreestadoenvio }}!</p>
+        </div>
+        <!-- Detalle del envío -->
+        <div class="detalle">
+            <p><strong>Descripción:</strong> {{ detalles_envio.detallesventa }}</p>
+            <p><strong>Dirección de Envío:</strong> {{ detalles_envio.direccionenvio }}</p>
+            <p><strong>Fecha de Venta:</strong> {{ detalles_envio.fechaventa }}</p>
+            <!-- Agrega más detalles según sea necesario -->
+        </div>
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2024 Todos los derechos reservados. JJSystemProject .</p>
+        </div>
+    </div>
+</body>
+</html>

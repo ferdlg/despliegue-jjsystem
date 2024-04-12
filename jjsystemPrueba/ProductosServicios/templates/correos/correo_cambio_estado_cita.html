@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de respuesta a cotización registrada</title>
+    <style>
+        /* Estilos CSS para el correo */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgb(255, 255, 255);
+        }
+        .header {
+            padding-top: 5px;
+            background-color: rgba(244, 134, 0, 0.906);
+            text-align: center;
+            padding-bottom: 10px;
+        }
+        .header h1{
+            text-align: center;
+            padding: 5px;
+            color: #f9f9f9;
+        }
+        .portada{
+            padding-top: 5px;
+            justify-items: center;
+            text-align: center;
+        }
+        .portada img{
+            justify-content: center;
+            max-width: 50%;
+            height: 50%;
+        }
+        .saludo {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .btn {
+            background-color: green;
+            color: #f4f4f4;
+            padding: 5px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .btn-iniciarsesion{
+            margin: 2%;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado -->
+        <div class="header">
+                <h1>Se ha finalizado tu cita</h1>
+        </div>
+        <!-- Imagen de portada -->
+        <div class="portada">
+            <img src="https://img.freepik.com/free-photo/smiling-adult-builder-man-uniform-thumbs-up-isolated-olive-green-wall_141793-66535.jpg?w=826&t=st=1712350447~exp=1712351047~hmac=140796fe5f749bd08e2781a3e0b4f43a3708d3fcc17d3d2538d83cfbc3326fac" alt="Imagen de Portada" style="width: 100%;">
+        </div>
+        <!-- Saludo  -->
+        <div class="saludo">
+                <p>Hola {{ cliente.numerodocumento.nombre }},</p>
+                <p>Se ha finalizado tu cita!</p>
+                <p>Gracias por elegirnos.😄</p> 
+ 
+        </div>
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2024 Todos los derechos reservados. JJSystemProject .</p>
+        </div>
+    </div>
+
+</body>
+</html>
