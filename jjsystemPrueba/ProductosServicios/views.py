@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def landing(request):
-    return render(request, 'landing/Index.html')
+    return render(request, 'landing/index.html')
 
 # mostrar template de servicios
 def servicios(request):
