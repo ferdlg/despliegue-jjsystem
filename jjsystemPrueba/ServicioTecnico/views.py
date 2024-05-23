@@ -21,7 +21,7 @@ def indexTecnicos(request):
     return render(request, 'tecnicos.html')
 
 def inicio(request):
-    return render(request, 'inicio.html')
+    return render(request, 'Inicio.html')
 
 #actualizar datos para admin y tecnico
 def mi_perfil(request):
